@@ -12,6 +12,12 @@
 # Verify kernel and artifact tests
 python3 tests/test_all.py
 
+# Verify second runtime parity (JavaScript)
+node js_runtime/check_parity.mjs
+
+# Verify frozen canonical reference artifact
+python3 -m artifact verify-reference
+
 # Verify Coq proof compiled
 ls -la docs/AtomicKernelCoq.vo docs/AtomicKernelCoq.vok
 
@@ -75,10 +81,10 @@ print(p)"`
   Control: `[1|CH|LANE|TYPE]` byte, optionally followed by `[NUMSYS|SCOPE]` byte  
   Spec: `docs/CONTROL_PLANE_SPEC.md` Sections 5–6
 
-- [ ] **normalization artifacts frozen** `PENDING`  
-  Requires: a reference canonical stream and its sha3_256 hash  
-  Action: write `tests/reference_stream.bin` + `tests/reference_stream_hash.txt`  
-  Acceptance: `sha3_256(reference_stream.bin)` matches stored hash
+- [x] **normalization artifacts frozen**  
+  Artifacts: `tests/reference_stream.bin` + `tests/reference_stream_hash.txt`  
+  Verify: `python3 -m artifact verify-reference`  
+  Expected: `MATCH`
 
 ---
 
@@ -114,22 +120,17 @@ print('MATCH' if ok else 'MISMATCH')"`
 
 - [x] **artifacts match bit-for-bit**  
   Verify: `python3 tests/test_all.py`  
-  Expected: `58/58 passed ✓ ALL GOOD`
+  Expected: `83/83 passed ✓ ALL GOOD`
 
-- [ ] **all admitted invariants in test suite** `PENDING`  
-  File exists: `tests/admitted_invariants.json` (E1, E9, E2, 73 derivation — frozen)  
-  Missing: test assertions in `tests/test_all.py` verifying E1/E9 against replay output  
-  Action: add ~20 lines to `tests/test_all.py`  
+- [x] **all admitted invariants in test suite**  
+  File: `tests/admitted_invariants.json`  
+  Verify: `python3 tests/test_all.py` includes E1/E9 assertions against replay output  
   Acceptance: E1 and E9 values match stored artifact for all 8 states
 
-- [ ] **two independent runtime implementations agree** `PENDING`  
-  Current: Python (`kernel.py`) + Coq (`AtomicKernelCoq.v`) agree on delta law  
-  Missing: a second runtime (Haskell, C, Rust, or JavaScript) that:  
-    1. reads `tests/parity_vectors.json`  
-    2. computes `replay(n, seed, steps)` using the same delta definition  
-    3. compares output against `tests/golden_parity.json`  
-    4. reports MATCH or MISMATCH  
-  Acceptance: runtime #2 reports MATCH for all 5 widths
+- [x] **two independent runtime implementations agree**  
+  Implementations: Python (`kernel.py`) + JavaScript (`js_runtime/check_parity.mjs`)  
+  Verify: `node js_runtime/check_parity.mjs`  
+  Expected: all 5 parity vectors report match
 
 ---
 
@@ -146,20 +147,17 @@ print('MATCH' if ok else 'MISMATCH')"`
 ## Summary
 
 ```
-Done:    11 / 14
-Pending:  3 / 14
-
-Pending items:
-  1. normalization artifacts frozen          (reference stream + hash)
-  2. admitted invariants in test suite       (~20 lines of test code)
-  3. two independent runtime implementations (delta in a second language)
+Done:    14 / 14
+Pending:  0 / 14
 ```
 
 ---
 
-## When All Items Are Done
+## Completion State
 
-When all 14 items are checked, the system satisfies:
+All 14 checklist items are now checked and reproducibly verifiable.
+
+The system satisfies:
 
 > The Atomic Kernel is a bounded deterministic replay system whose only accepted truths are independently reproduced artifacts generated under explicit invariant-preserving laws.
 
