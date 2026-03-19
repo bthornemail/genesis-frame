@@ -1,0 +1,14 @@
+{
+  "name": "atomic-kernel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Atomic Kernel deterministic transport/artifact tooling",
+  "type": "module",
+  "scripts": {
+    "check:parity": "node js_runtime/check_parity.mjs"
+  },
+  "dependencies": {
+    "@zxing/library": "0.21.3",
+    "bwip-js": "4.7.0"
+  }
+}
