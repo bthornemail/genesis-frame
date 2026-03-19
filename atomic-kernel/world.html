@@ -1,540 +1,1551 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atomic Kernel Data Cockpit</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #f2f6f8;
-  --panel: #fbfdff;
-  --ink: #111723;
-  --muted: #5b6779;
-  --line: #cbd9e5;
-  --accent: #0a7a7f;
-  --accent-2: #124a8b;
-  --warn: #992c2c;
-  --ok: #1d7147;
-  --grad-a: #d9f3ff;
-  --grad-b: #f7ffdf;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  color: var(--ink);
-  background:
-    radial-gradient(circle at 14% 8%, var(--grad-a) 0%, transparent 34%),
-    radial-gradient(circle at 80% 14%, var(--grad-b) 0%, transparent 38%),
-    linear-gradient(170deg, #e7f1f5, #eef5ef 45%, #e7edf2 100%);
-  font-family: "Space Grotesk", sans-serif;
-  min-height: 100vh;
-}
-.container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 20px;
-  display: grid;
-  gap: 16px;
-}
-.hero {
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 18px;
-  background: linear-gradient(120deg, #f8fdff 0%, #f6fbf6 100%);
-  box-shadow: 0 10px 32px rgba(20, 43, 70, 0.08);
-  animation: fadein .45s ease;
-}
-.hero h1 {
-  margin: 0;
-  font-size: 1.35rem;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
-.hero p {
-  margin: 8px 0 0;
-  color: var(--muted);
-}
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(80px, 1fr));
-  gap: 10px;
-  margin-top: 14px;
-}
-.metric {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 8px;
-}
-.metric .k {
-  font-size: .66rem;
-  color: var(--muted);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-}
-.metric .v {
-  margin-top: 4px;
-  font-family: "IBM Plex Mono", monospace;
-  font-weight: 700;
-}
-.main {
-  display: grid;
-  grid-template-columns: 1.2fr .8fr;
-  gap: 16px;
-}
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 14px;
-  box-shadow: 0 10px 24px rgba(20, 43, 70, 0.06);
-  animation: rise .42s ease;
-}
-.panel h2 {
-  margin: 0 0 10px;
-  font-size: .95rem;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-}
-.mono { font-family: "IBM Plex Mono", monospace; }
-.stack { display: grid; gap: 10px; }
-label { font-size: .76rem; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
-textarea, input[type=text], input[type=number] {
-  width: 100%;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #fff;
-  padding: 10px;
-  font: 500 .86rem "IBM Plex Mono", monospace;
-  color: var(--ink);
-}
-textarea { min-height: 92px; resize: vertical; }
-.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-button {
-  border: 1px solid #98b8cb;
-  background: linear-gradient(180deg, #fff, #ebf4f8);
-  color: var(--accent-2);
-  border-radius: 8px;
-  padding: 8px 11px;
-  font: 700 .74rem "Space Grotesk", sans-serif;
-  letter-spacing: .05em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-button:hover { border-color: var(--accent-2); transform: translateY(-1px); }
-.small { font-size: .72rem; color: var(--muted); }
-.badge {
-  display: inline-block;
-  border-radius: 999px;
-  padding: 3px 9px;
-  font: 700 .68rem "IBM Plex Mono", monospace;
-  letter-spacing: .05em;
-  border: 1px solid transparent;
-}
-.ok { color: var(--ok); background: #ebfff4; border-color: #8fd3ad; }
-.err { color: var(--warn); background: #fff1f1; border-color: #e2a5a5; }
-.timeline {
-  max-height: 250px;
-  overflow: auto;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-}
-table { width: 100%; border-collapse: collapse; font-size: .78rem; }
-th, td { padding: 6px 8px; border-bottom: 1px solid #e7eef4; text-align: left; }
-th { position: sticky; top: 0; background: #f7fbff; }
-.hashbox {
-  background: #eef7ff;
-  border: 1px solid #bdd6e7;
-  border-radius: 8px;
-  padding: 8px;
-  word-break: break-all;
-  font: 600 .78rem "IBM Plex Mono", monospace;
-}
-.aztec-wrap {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-canvas#aztec {
-  width: 100%;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #fff;
-  min-height: 220px;
-}
-canvas#world {
-  width: 100%;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #0f1521;
-}
-@media (max-width: 980px) {
-  .metrics { grid-template-columns: repeat(3, minmax(80px, 1fr)); }
-  .main { grid-template-columns: 1fr; }
-  .aztec-wrap { grid-template-columns: 1fr; }
-}
-@keyframes fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atomic Kernel Narrative Bootstrap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #111a2a;
+      --muted: #556680;
+      --line: #bfd2e2;
+      --panel: #f8fcff;
+      --panel-soft: #eef6fb;
+      --accent: #0f5f8c;
+      --accent2: #157057;
+      --warn: #ac3535;
+      --scene: #d8e7f2;
+      --shadow: 0 12px 30px rgba(25, 49, 76, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Space Grotesk", sans-serif;
+      background:
+        radial-gradient(circle at 12% 8%, #d7ebfb 0%, transparent 34%),
+        radial-gradient(circle at 86% 14%, #e4f3de 0%, transparent 36%),
+        linear-gradient(165deg, #eaf2f7, #eef6ee 46%, #e7eef4 100%);
+    }
+    .shell {
+      display: grid;
+      grid-template-columns: 360px minmax(0, 1fr);
+      gap: 14px;
+      min-height: 100vh;
+      padding: 14px;
+    }
+    .panel, .stage-wrap {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+    .panel {
+      padding: 12px;
+      display: grid;
+      grid-template-rows: auto auto auto auto auto 1fr;
+      gap: 10px;
+      overflow: hidden;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.03rem;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .sub { color: var(--muted); font-size: .79rem; }
+    .hint {
+      border: 1px solid var(--line);
+      background: var(--panel-soft);
+      border-radius: 10px;
+      padding: 8px;
+      color: var(--muted);
+      font-size: .73rem;
+      line-height: 1.35;
+    }
+    .section-title {
+      margin: 0 0 5px;
+      font-size: .71rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+    }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .controls { display: grid; gap: 7px; }
+    button {
+      border: 1px solid #98b9cf;
+      background: linear-gradient(180deg, #fff, #ecf6fc);
+      color: var(--accent);
+      border-radius: 8px;
+      padding: 7px 10px;
+      font: 700 .73rem "Space Grotesk", sans-serif;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      cursor: pointer;
+    }
+    button:hover { border-color: var(--accent); }
+    button.warn { color: var(--warn); border-color: #d5a0a0; }
+    button.primary { color: #fff; background: linear-gradient(180deg, #2376a5, #0f5f8c); border-color: #0f5f8c; }
+    button.good { color: #fff; background: linear-gradient(180deg, #248369, #157057); border-color: #157057; }
+    button:disabled { opacity: .52; cursor: not-allowed; }
+    .artifact-list {
+      display: grid;
+      gap: 8px;
+      max-height: 24vh;
+      overflow: auto;
+      padding-right: 2px;
+    }
+    .artifact {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      padding: 8px;
+      cursor: grab;
+      user-select: none;
+      display: grid;
+      gap: 3px;
+    }
+    .artifact .name { font-size: .82rem; font-weight: 700; }
+    .artifact .meta { font-size: .66rem; color: var(--muted); font-family: "IBM Plex Mono", monospace; }
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--muted);
+      padding: 4px 9px;
+      font: 600 .67rem "IBM Plex Mono", monospace;
+    }
+    textarea, .status {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 7px;
+      font: 600 .7rem "IBM Plex Mono", monospace;
+      color: var(--muted);
+      white-space: pre-wrap;
+    }
+    textarea { min-height: 118px; resize: vertical; }
+    .status { min-height: 72px; }
+
+    .stage-wrap {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      overflow: hidden;
+    }
+    .stage-head {
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #f9fdff, #f2f8fd);
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .stats { display: flex; gap: 8px; flex-wrap: wrap; }
+    #stage {
+      position: relative;
+      min-height: 560px;
+      background: var(--scene);
+      overflow: hidden;
+    }
+    #drop-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      display: none;
+      place-items: center;
+      background: rgba(14, 95, 139, 0.16);
+      color: #0f5f8c;
+      border: 2px dashed rgba(15, 95, 140, 0.5);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      pointer-events: none;
+      font-size: 1rem;
+    }
+    #stage.dragging #drop-overlay { display: grid; }
+
+    .story-ui {
+      position: absolute;
+      z-index: 8;
+      inset: 12px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .story-main, .story-side {
+      border: 1px solid rgba(191, 210, 226, .92);
+      border-radius: 12px;
+      background: rgba(248, 252, 255, .95);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(2px);
+      pointer-events: auto;
+      overflow: hidden;
+    }
+    .story-main {
+      display: grid;
+      grid-template-rows: auto minmax(0,1fr) auto;
+    }
+    .story-head {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .story-title { margin: 0; font-size: .93rem; }
+    .story-body {
+      padding: 12px;
+      overflow: auto;
+      font-size: .9rem;
+      line-height: 1.45;
+      color: #1a2740;
+      white-space: pre-wrap;
+    }
+    .story-actions {
+      border-top: 1px solid var(--line);
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+      max-height: 220px;
+      overflow: auto;
+    }
+    .choice-btn {
+      text-align: left;
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: .84rem;
+      line-height: 1.3;
+      white-space: normal;
+    }
+    .story-side {
+      display: grid;
+      grid-template-rows: auto auto minmax(0,1fr);
+    }
+    .story-block {
+      border-bottom: 1px solid var(--line);
+      padding: 9px;
+    }
+    .story-block:last-child { border-bottom: none; }
+    .inv-list, .hub-list, .codex-list {
+      display: grid;
+      gap: 6px;
+      max-height: 180px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+    .codex-list { max-height: none; }
+    .mini {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 7px;
+      font-size: .72rem;
+      color: var(--muted);
+    }
+    .hidden { display: none !important; }
+
+    @media (max-width: 1100px) {
+      .shell { grid-template-columns: 1fr; }
+      .panel { grid-template-rows: repeat(6, auto); }
+      #stage { min-height: 460px; }
+      .story-ui { grid-template-columns: 1fr; inset: 8px; }
+      .story-side { grid-template-rows: repeat(3, minmax(84px, auto)); }
+    }
+  </style>
+
+  <script async src="https://unpkg.com/es-module-shims@1.10.0/dist/es-module-shims.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.165.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.165.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script src="./narrative_data/narrative_bundle.js"></script>
 </head>
 <body>
-<div class="container">
-  <section class="hero">
-    <h1>Atomic Kernel Data Cockpit</h1>
-    <p>Pipeline-first deterministic tooling: stream -> control timeline -> canonical hash -> Aztec surface, with live world replay.</p>
-    <div class="metrics">
-      <div class="metric"><div class="k">Tick</div><div class="v mono" id="m-tick">0</div></div>
-      <div class="metric"><div class="k">Clock</div><div class="v mono" id="m-clock">0.1.00</div></div>
-      <div class="metric"><div class="k">Orbit</div><div class="v mono" id="m-orbit">0</div></div>
-      <div class="metric"><div class="k">Offset</div><div class="v mono" id="m-offset">0</div></div>
-      <div class="metric"><div class="k">Phase</div><div class="v mono" id="m-phase">0</div></div>
-      <div class="metric"><div class="k">Events</div><div class="v mono" id="m-events">0</div></div>
-      <div class="metric"><div class="k">Hash</div><div class="v mono" id="m-hshort">-</div></div>
-    </div>
-  </section>
+  <div class="shell">
+    <aside class="panel">
+      <header>
+        <h1>Narrative Artifact Toolkit</h1>
+        <div class="sub">Story mode + editor mode in one scene.</div>
+      </header>
 
-  <section class="main">
-    <div class="stack">
-      <article class="panel">
-        <h2>Pipeline Workspace</h2>
-        <div class="stack">
-          <div>
-            <label for="tick">Tick for CT=11 validation</label>
-            <input id="tick" type="number" min="0" value="4">
-          </div>
-          <div>
-            <label for="raw">Raw stream bytes (hex)</label>
-            <textarea id="raw" spellcheck="false" class="mono">1C0348656C6C6F1D73DEAD1E3BE288821F174A2F1D0F9A</textarea>
-          </div>
-          <div class="row">
-            <button id="btn-parse">Parse Stream</button>
-            <button id="btn-canon">Canonicalize</button>
-            <button id="btn-cobs-e">COBS Encode</button>
-            <button id="btn-cobs-d">COBS Decode</button>
-            <button id="btn-ref">Load Reference</button>
-          </div>
-          <div id="status" class="badge ok">READY</div>
-          <div class="small" id="err"></div>
+      <div class="hint">
+        Drag artifacts into scene. Story mode drives chapter progression and inventory gates across worlds.
+      </div>
+
+      <div>
+        <div class="section-title">Mode + Saves</div>
+        <div class="row">
+          <button id="btn-story-mode" class="good">Story Mode</button>
+          <button id="btn-editor-mode">Editor Mode</button>
+          <button id="btn-new-game" class="primary">New Game</button>
         </div>
-      </article>
-
-      <article class="panel">
-        <h2>Control Event Timeline</h2>
-        <div class="timeline">
-          <table>
-            <thead><tr><th>#</th><th>Kind</th><th>CH</th><th>Lane</th><th>CT</th><th>Payload</th></tr></thead>
-            <tbody id="events"></tbody>
-          </table>
+        <div class="row" style="margin-top:6px;">
+          <button id="btn-slot-1">Load Slot 1</button>
+          <button id="btn-slot-2">Load Slot 2</button>
+          <button id="btn-slot-3">Load Slot 3</button>
+          <button id="btn-save-current">Save Current</button>
+          <button id="btn-export-save">Export Save</button>
+          <button id="btn-import-save">Import Save</button>
         </div>
-      </article>
+      </div>
 
-      <article class="panel">
-        <h2>Artifact Hash + Aztec Surface</h2>
-        <div class="stack">
-          <div class="hashbox" id="hash">sha3_256: (compute canonical stream first)</div>
-          <div class="row">
-            <button id="btn-aztec">Render Aztec</button>
-            <button id="btn-verify">Verify Upload</button>
-            <input id="imgfile" type="file" accept="image/*">
-          </div>
-          <div class="aztec-wrap">
-            <canvas id="aztec" width="360" height="360"></canvas>
-            <div>
-              <div class="small">Aztec payload (hex-as-text for browser preview):</div>
-              <textarea id="aztext" spellcheck="false" class="mono"></textarea>
-              <div class="small" id="verify-out">No verification run yet.</div>
+      <div>
+        <div class="section-title">Scene Artifacts</div>
+        <div id="artifact-list" class="artifact-list"></div>
+      </div>
+
+      <div class="controls">
+        <button id="btn-reset-camera">Reset Camera</button>
+        <button id="btn-clear-scene" class="warn">Clear Scene Objects</button>
+        <button id="btn-mode-move">Mode: Move (W)</button>
+        <button id="btn-mode-rotate">Mode: Rotate (E)</button>
+        <button id="btn-mode-scale">Mode: Scale (R)</button>
+        <button id="btn-save-layout">Save Layout JSON</button>
+        <button id="btn-load-layout">Load Layout JSON</button>
+      </div>
+
+      <div class="hint">
+        <div><strong>Snap Placement</strong> <input id="snap-enable" type="checkbox" checked> on</div>
+        <div>step <input id="snap-step" type="number" value="1" min="0.1" step="0.1" style="width:70px;"></div>
+      </div>
+
+      <textarea id="layout-json" spellcheck="false"></textarea>
+      <div id="status" class="status">READY</div>
+    </aside>
+
+    <main class="stage-wrap">
+      <div class="stage-head">
+        <div>
+          <strong>Three.js Narrative Bootstrap</strong>
+          <div class="sub">Phase flow: boot cinematic -> hub -> chapter scene -> hub return -> epilogue.</div>
+        </div>
+        <div class="stats">
+          <span class="pill" id="pill-mode">mode: story</span>
+          <span class="pill" id="pill-phase">phase: boot_cinematic</span>
+          <span class="pill" id="pill-objects">objects: 0</span>
+          <span class="pill" id="pill-selected">selected: none</span>
+        </div>
+      </div>
+
+      <div id="stage">
+        <div id="drop-overlay">Drop Artifact</div>
+
+        <div id="story-ui" class="story-ui">
+          <section class="story-main">
+            <div class="story-head">
+              <h2 id="story-title" class="story-title">Boot Sequence</h2>
+              <div class="row">
+                <button id="btn-story-next" class="primary">Continue</button>
+                <button id="btn-open-codex">Codex</button>
+              </div>
             </div>
-          </div>
+            <div id="story-body" class="story-body"></div>
+            <div id="story-actions" class="story-actions"></div>
+          </section>
+
+          <aside class="story-side">
+            <div class="story-block">
+              <div class="section-title">Inventory</div>
+              <div id="inventory-list" class="inv-list"></div>
+            </div>
+            <div class="story-block">
+              <div class="section-title">World Hub</div>
+              <div id="hub-list" class="hub-list"></div>
+            </div>
+            <div class="story-block">
+              <div class="section-title">Codex</div>
+              <div id="codex-list" class="codex-list"></div>
+            </div>
+          </aside>
         </div>
-      </article>
-    </div>
+      </div>
+    </main>
+  </div>
 
-    <div class="stack">
-      <article class="panel">
-        <h2>Deterministic World Replay</h2>
-        <canvas id="world" width="520" height="320"></canvas>
-        <div class="row" style="margin-top:10px;">
-          <button id="play" class="on">Pause</button>
-          <button id="step">+1</button>
-          <button id="back">-1</button>
-          <button id="reset">Reset</button>
-          <label class="small">fps <input id="fps" type="range" min="1" max="60" value="8"></label>
-          <span class="small mono" id="fpsv">8</span>
-        </div>
-      </article>
-      <article class="panel">
-        <h2>Simulation Table</h2>
-        <div class="timeline" style="max-height:320px;">
-          <table>
-            <thead><tr><th>Seed</th><th>State</th><th>x</th><th>y</th><th>Orbit</th><th>Offset</th><th>Sym</th></tr></thead>
-            <tbody id="worldtbl"></tbody>
-          </table>
-        </div>
-      </article>
-    </div>
-  </section>
-</div>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { TransformControls } from 'three/addons/controls/TransformControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-<script src="https://cdn.jsdelivr.net/npm/js-sha3@0.9.3/src/sha3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bwip-js@4.7.0/dist/bwip-js-min.js"></script>
-<script>
-const B = [0,1,3,6,9,8,6,3];
-const CHANNEL = { FS:0x1C, GS:0x1D, RS:0x1E, US:0x1F };
-const CHANNEL_BY = { 0x1C:'FS', 0x1D:'GS', 0x1E:'RS', 0x1F:'US' };
+    const NARRATIVE_DATA = window.NARRATIVE_DATA || { hub: { meta: {}, gates: [] }, chapters: {} };
 
-function cleanHex(s){ return s.replace(/[^0-9a-fA-F]/g,'').toUpperCase(); }
-function bytesFromHex(h){ const x = cleanHex(h); if (x.length%2) throw new Error('HEX_ODD_LENGTH'); return Uint8Array.from(x.match(/../g)||[],b=>parseInt(b,16)); }
-function hexFromBytes(bytes){ return Array.from(bytes).map(b=>b.toString(16).padStart(2,'0')).join('').toUpperCase(); }
+    const stage = document.getElementById('stage');
+    const artifactList = document.getElementById('artifact-list');
+    const statusEl = document.getElementById('status');
+    const layoutText = document.getElementById('layout-json');
+    const storyUI = document.getElementById('story-ui');
 
-function encodeControl(channelCode,lane,context,ext){
-  const mask = ((lane&0xF)<<4)|((context&0x3)<<2)|0x03;
-  const out = [channelCode, mask];
-  if(context===2){
-    if(typeof ext !== 'string' || [...ext].length !== 1) throw new Error('CT10_NEEDS_ONE_CHAR');
-    out.push(...new TextEncoder().encode(ext));
-  } else if(context===3){
-    if(typeof ext !== 'number') throw new Error('CT11_NEEDS_EXT_BYTE');
-    out.push(ext & 0xFF);
-  }
-  return out;
-}
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(stage.clientWidth, stage.clientHeight);
+    renderer.shadowMap.enabled = true;
+    stage.appendChild(renderer.domElement);
 
-function parseOneUtf8(bytes, i){
-  const first = bytes[i];
-  if(first === undefined) throw Object.assign(new Error('CT10_MISSING_UTF8'),{code:'CT10_MISSING_UTF8'});
-  let n = 0;
-  if(first <= 0x7F) n = 1;
-  else if(first>=0xC2 && first<=0xDF) n = 2;
-  else if(first>=0xE0 && first<=0xEF) n = 3;
-  else if(first>=0xF0 && first<=0xF4) n = 4;
-  else throw Object.assign(new Error('CT10_INVALID_UTF8_LEAD'),{code:'CT10_INVALID_UTF8'});
-  if(i+n > bytes.length) throw Object.assign(new Error('CT10_TRUNCATED_UTF8'),{code:'CT10_INVALID_UTF8'});
-  const chunk = bytes.slice(i, i+n);
-  try {
-    const ch = new TextDecoder('utf-8', {fatal:true}).decode(chunk);
-    return { char: ch, n, utf8: hexFromBytes(chunk) };
-  } catch {
-    throw Object.assign(new Error('CT10_INVALID_UTF8'),{code:'CT10_INVALID_UTF8'});
-  }
-}
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xd8e7f2);
 
-function parseControlStream(bytes, tick){
-  const events = [];
-  for(let i=0;i<bytes.length;){
-    const b = bytes[i];
-    if(CHANNEL_BY[b]){
-      if(i+1 >= bytes.length) throw Object.assign(new Error('MISSING_MASK'),{code:'MISSING_MASK'});
-      const mask = bytes[i+1];
-      if((mask & 0x03) !== 0x03) throw Object.assign(new Error('INVALID_MASK_MARKER'),{code:'INVALID_MASK_MARKER'});
-      const lane = (mask>>4)&0xF;
-      const context = (mask>>2)&0x3;
-      const event = {channel:CHANNEL_BY[b], lane, context, payload_kind:'control', payload:{mask}, tick};
-      i += 2;
-      if(context === 1){
-        event.payload_kind = 'numsys';
-        event.payload = { mask, numsys:(lane>>2)&0x3, lane_within_ctx: lane&0x3 };
-      } else if(context === 2){
-        const dec = parseOneUtf8(bytes, i);
-        i += dec.n;
-        event.payload_kind = 'unicode';
-        event.payload = { mask, char:dec.char, utf8:dec.utf8, codepoint:dec.char.codePointAt(0) };
-      } else if(context === 3){
-        if(i >= bytes.length) throw Object.assign(new Error('CT11_MISSING_EXT'),{code:'CT11_MISSING_EXT'});
-        const ext = bytes[i++];
-        const expected = B[tick % 8] & 0xF;
-        const selector = (ext >> 4) & 0xF;
-        if(selector !== expected) throw Object.assign(new Error('CT11_ALGO_MISMATCH'),{code:'CT11_ALGO_MISMATCH'});
-        event.payload_kind = 'extended';
-        event.payload = { mask, algorithm_byte: ext, selector, param: ext & 0xF };
-      }
-      events.push(event);
-    } else {
-      events.push({channel:'DATA',lane:-1,context:0,payload_kind:'data',payload:b,tick});
-      i += 1;
-    }
-  }
-  return events;
-}
+    const camera = new THREE.PerspectiveCamera(52, stage.clientWidth / stage.clientHeight, 0.1, 220);
+    camera.position.set(7, 6, 9);
 
-function canonicalStream(events){
-  const out = [];
-  for(const e of events){
-    if(e.payload_kind === 'data'){ out.push(e.payload & 0xFF); continue; }
-    const ch = CHANNEL[e.channel];
-    if(e.context === 2){
-      out.push(...encodeControl(ch, e.lane, e.context, e.payload.char));
-    } else if(e.context === 3){
-      out.push(...encodeControl(ch, e.lane, e.context, e.payload.algorithm_byte));
-    } else {
-      out.push(...encodeControl(ch, e.lane, e.context));
-    }
-  }
-  return Uint8Array.from(out);
-}
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 1.2, 0);
 
-function cobsEncode(data){
-  if(!data.length) return Uint8Array.from([1]);
-  const out = [0];
-  let codePos = 0, code = 1;
-  for(const b of data){
-    if(b===0){ out[codePos]=code; codePos=out.length; out.push(0); code=1; }
-    else { out.push(b); code +=1; if(code===0xFF){ out[codePos]=code; codePos=out.length; out.push(0); code=1; } }
-  }
-  out[codePos]=code;
-  return Uint8Array.from(out);
-}
-function cobsDecode(data){
-  if(!data.length) throw new Error('COBS_EMPTY');
-  if(Array.from(data).some(b=>b===0)) throw new Error('COBS_ZERO_IN_FRAME');
-  const out=[];
-  for(let i=0;i<data.length;){
-    const code=data[i++];
-    const end=i+code-1;
-    if(end>data.length) throw new Error('COBS_OVERRUN');
-    while(i<end) out.push(data[i++]);
-    if(code!==0xFF && i<data.length) out.push(0);
-  }
-  return Uint8Array.from(out);
-}
-
-const rawEl = document.getElementById('raw');
-const tickEl = document.getElementById('tick');
-const errEl = document.getElementById('err');
-const statusEl = document.getElementById('status');
-const eventsEl = document.getElementById('events');
-const hashEl = document.getElementById('hash');
-const aztextEl = document.getElementById('aztext');
-let currentEvents = [];
-let currentCanonical = new Uint8Array();
-
-function setStatus(ok, text){
-  statusEl.className = 'badge ' + (ok ? 'ok' : 'err');
-  statusEl.textContent = text;
-}
-function renderEvents(events){
-  eventsEl.innerHTML = '';
-  events.forEach((e, i)=>{
-    const tr = document.createElement('tr');
-    const payload = typeof e.payload === 'object' ? JSON.stringify(e.payload) : e.payload;
-    tr.innerHTML = `<td>${i}</td><td>${e.payload_kind}</td><td>${e.channel}</td><td>${e.lane}</td><td>${e.context}</td><td class="mono">${payload}</td>`;
-    eventsEl.appendChild(tr);
-  });
-  document.getElementById('m-events').textContent = String(events.length);
-}
-function updateHash(bytes){
-  const digest = 'sha3_256:' + sha3_256(bytes);
-  hashEl.textContent = digest;
-  document.getElementById('m-hshort').textContent = digest.slice(9, 17);
-}
-
-function runParse(){
-  try {
-    const tick = Number(tickEl.value || 0);
-    const bytes = bytesFromHex(rawEl.value);
-    currentEvents = parseControlStream(bytes, tick);
-    currentCanonical = canonicalStream(currentEvents);
-    renderEvents(currentEvents);
-    updateHash(currentCanonical);
-    aztextEl.value = hexFromBytes(currentCanonical);
-    setStatus(true, 'PARSE OK');
-    errEl.textContent = '';
-  } catch (e) {
-    setStatus(false, 'FAIL-CLOSED');
-    errEl.textContent = e.code ? `${e.code}: ${e.message}` : String(e.message || e);
-  }
-}
-
-const REFERENCE_HEX = '1C0348656C6C6F1D73DEAD1E3BE288821F174A2F1D0F9A';
-document.getElementById('btn-ref').addEventListener('click', ()=>{ rawEl.value = REFERENCE_HEX; tickEl.value = 4; runParse(); });
-document.getElementById('btn-parse').addEventListener('click', runParse);
-document.getElementById('btn-canon').addEventListener('click', ()=>{ runParse(); rawEl.value = hexFromBytes(currentCanonical); });
-document.getElementById('btn-cobs-e').addEventListener('click', ()=>{ try { const b=bytesFromHex(rawEl.value); rawEl.value = hexFromBytes(cobsEncode(b)); setStatus(true,'COBS ENCODED'); } catch(e){ setStatus(false,'COBS ERROR'); errEl.textContent=String(e.message||e);} });
-document.getElementById('btn-cobs-d').addEventListener('click', ()=>{ try { const b=bytesFromHex(rawEl.value); rawEl.value = hexFromBytes(cobsDecode(b)); setStatus(true,'COBS DECODED'); } catch(e){ setStatus(false,'COBS ERROR'); errEl.textContent=String(e.message||e);} });
-
-const azCanvas = document.getElementById('aztec');
-document.getElementById('btn-aztec').addEventListener('click', ()=>{
-  runParse();
-  try {
-    bwipjs.toCanvas(azCanvas, {
-      bcid: 'azteccode',
-      text: aztextEl.value,
-      scale: 3,
-      includetext: false,
-      eclevel: 23
+    const transformControls = new TransformControls(camera, renderer.domElement);
+    transformControls.setMode('translate');
+    scene.add(transformControls);
+    transformControls.addEventListener('dragging-changed', (ev) => {
+      controls.enabled = !ev.value;
     });
-    setStatus(true, 'AZTEC RENDERED');
-  } catch (e) {
-    setStatus(false, 'AZTEC RENDER FAIL');
-    errEl.textContent = String(e.message || e);
-  }
-});
 
-document.getElementById('btn-verify').addEventListener('click', async ()=>{
-  const out = document.getElementById('verify-out');
-  const file = document.getElementById('imgfile').files[0];
-  if(!file){ out.textContent = 'Choose an image first.'; return; }
-  if(!('BarcodeDetector' in window)){ out.textContent = 'BarcodeDetector unavailable in this browser.'; return; }
-  const detector = new BarcodeDetector({ formats: ['aztec'] });
-  const bmp = await createImageBitmap(file);
-  const found = await detector.detect(bmp);
-  if(!found.length){ out.textContent = 'No Aztec symbol detected.'; return; }
-  const decoded = (found[0].rawValue || '').trim().toUpperCase();
-  const expected = aztextEl.value.trim().toUpperCase();
-  out.textContent = decoded === expected ? 'VERIFY OK: decoded payload matches.' : `VERIFY FAIL: decoded=${decoded} expected=${expected}`;
-});
+    const gltfLoader = new GLTFLoader();
+    const textureLoader = new THREE.TextureLoader();
 
-// World simulation (deterministic)
-const MASK=0xFFFF, CC=0x1D1D;
-const SEEDS=[0x0001,0x0013,0x00A7,0x0401,0x1D1D,0x2B3C,0x3FFF,0x4E2A,0x5A01,0x6B6B,0x7ABC,0x8080,0x9F1E,0xA3C5,0xBEEF,0xCAFE];
-const CHARS='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+=';
-function rotl(x,n){ return ((x<<n)|(x>>>(16-n)))&MASK; }
-function rotr(x,n){ return ((x>>>n)|(x<<(16-n)))&MASK; }
-function advance(x){ return (rotl(x,1)^rotl(x,3)^rotr(x,2)^CC)&MASK; }
-function tick(s,t){ return advance((s^B[t%8])&MASK); }
-function stateAt(seed,n){ let s=seed&MASK; for(let t=0;t<n;t++) s=tick(s,t); return s; }
-function posAt(n){ const full=Math.floor(n/8), rem=n%8; return full*36 + B.slice(0,rem).reduce((a,b)=>a+b,0); }
-function readPos(p){ return { orbit:Math.floor(p/36), offset:p%36 }; }
-function observe(seed,n){ const state=stateAt(seed,n); const pos=posAt(n); const ro=readPos(pos); return {seed,state,hex:`0x${state.toString(16).toUpperCase().padStart(4,'0')}`, orbit:ro.orbit, offset:ro.offset, phase:n%8, x:state%64, y:[...state.toString(2)].filter(x=>x==='1').length*4, color:`rgb(${(state>>8)&255},${(state>>3)&255},${(state^(ro.orbit*17))&255})`, sym:CHARS[(state^ro.orbit)%CHARS.length]}; }
+    const hemi = new THREE.HemisphereLight(0xe8f2ff, 0xb7cba9, 1.0);
+    scene.add(hemi);
+    const dir = new THREE.DirectionalLight(0xffffff, 1.15);
+    dir.position.set(6, 14, 10);
+    dir.castShadow = true;
+    scene.add(dir);
 
-const wCanvas=document.getElementById('world'); const wctx=wCanvas.getContext('2d');
-let tn=0, playing=true, fps=8, last=0;
-const trails={}; SEEDS.forEach(s=>trails[s]=[]);
-function renderWorld(objs){
-  wctx.fillStyle='rgba(8,16,32,0.35)'; wctx.fillRect(0,0,wCanvas.width,wCanvas.height);
-  wctx.strokeStyle='rgba(87,124,167,0.2)'; wctx.lineWidth=.5;
-  for(let x=0;x<wCanvas.width;x+=52){ wctx.beginPath(); wctx.moveTo(x,0); wctx.lineTo(x,wCanvas.height); wctx.stroke(); }
-  for(let y=0;y<wCanvas.height;y+=32){ wctx.beginPath(); wctx.moveTo(0,y); wctx.lineTo(wCanvas.width,y); wctx.stroke(); }
-  objs.forEach(o=>{ const t=trails[o.seed]; t.push({x:o.x*8,y:o.y,color:o.color}); if(t.length>40)t.shift(); t.forEach((p,i)=>{wctx.globalAlpha=(i/40)*0.5; wctx.fillStyle=p.color; wctx.fillRect(p.x-1,p.y-1,3,3);}); });
-  objs.forEach(o=>{ const x=o.x*8,y=o.y; wctx.globalAlpha=1; wctx.fillStyle=o.color; wctx.beginPath(); wctx.arc(x,y,4+(o.offset%6),0,Math.PI*2); wctx.fill(); wctx.fillStyle='#fff'; wctx.font='bold 9px IBM Plex Mono'; wctx.textAlign='center'; wctx.textBaseline='middle'; wctx.fillText(o.sym,x,y); });
-  wctx.globalAlpha=1;
-}
-function updateWorldTable(objs){
-  const tb=document.getElementById('worldtbl'); tb.innerHTML='';
-  objs.forEach(o=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td class="mono">${o.seed}</td><td class="mono">${o.hex}</td><td>${o.x}</td><td>${o.y}</td><td>${o.orbit}</td><td>${o.offset}</td><td style="color:${o.color};font-weight:700;">${o.sym}</td>`; tb.appendChild(tr); });
-}
-function setMetrics(n){
-  const pos=posAt(n); const {orbit,offset}=readPos(pos); const phase=n%8; const clk=`${orbit}.${phase+1}.${offset.toString(16).padStart(2,'0').toUpperCase()}`;
-  document.getElementById('m-tick').textContent=n;
-  document.getElementById('m-clock').textContent=clk;
-  document.getElementById('m-orbit').textContent=orbit;
-  document.getElementById('m-offset').textContent=offset;
-  document.getElementById('m-phase').textContent=phase;
-}
-function step(dir=1){ tn=Math.max(0,tn+dir); const objs=SEEDS.map(s=>observe(s,tn)); renderWorld(objs); updateWorldTable(objs); setMetrics(tn); }
-function loop(ts){ requestAnimationFrame(loop); if(!playing) return; if(ts-last<1000/fps) return; last=ts; step(1); }
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(140, 140),
+      new THREE.MeshStandardMaterial({ color: 0xd4e1eb, roughness: 0.96, metalness: 0.02 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.receiveShadow = true;
+    scene.add(floor);
 
-document.getElementById('play').addEventListener('click',()=>{ playing=!playing; document.getElementById('play').textContent=playing?'Pause':'Play'; });
-document.getElementById('step').addEventListener('click',()=>{ playing=false; step(1); });
-document.getElementById('back').addEventListener('click',()=>{ playing=false; step(-1); });
-document.getElementById('reset').addEventListener('click',()=>{ tn=0; SEEDS.forEach(s=>trails[s]=[]); step(0); });
-document.getElementById('fps').addEventListener('input',(e)=>{ fps=Number(e.target.value); document.getElementById('fpsv').textContent=String(fps); });
+    const grid = new THREE.GridHelper(140, 140, 0x88a4bc, 0xb8c9d8);
+    grid.position.y = 0.002;
+    scene.add(grid);
 
-runParse();
-step(0);
-requestAnimationFrame(loop);
-</script>
+    const placedRoot = new THREE.Group();
+    scene.add(placedRoot);
+    const hubRoot = new THREE.Group();
+    hubRoot.name = 'hub-root';
+    scene.add(hubRoot);
+
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    const dropPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+    const dropPoint = new THREE.Vector3();
+
+    let selected = null;
+    let toolMode = 'translate';
+    let appMode = 'story';
+    const extraArtifacts = [];
+    const hubNodeMeshes = [];
+    const hubNodeByChapter = new Map();
+    const hubLineByChapter = new Map();
+
+    const SAVE_VERSION = 1;
+    const SLOT_KEYS = ["ak_story_slot_1", "ak_story_slot_2", "ak_story_slot_3"];
+    const AUTOSAVE_KEY = "ak_story_autosave";
+    let activeSlot = 0;
+
+    const GameDirector = {
+      state: {
+        version: SAVE_VERSION,
+        current_phase: 'boot_cinematic',
+        current_chapter: null,
+        current_scene_id: null,
+        inventory: [],
+        unlocked_chapters: [],
+        seen_scenes: [],
+        choice_history: [],
+        completed_chapters: [],
+        layout: null,
+        boot_index: 0,
+      },
+      chapterMap: NARRATIVE_DATA.chapters,
+      gateList: NARRATIVE_DATA.hub.gates || [],
+      chapterOrder: Object.values(NARRATIVE_DATA.chapters)
+        .map((c) => c.meta)
+        .sort((a, b) => a.order - b.order)
+        .map((m) => m.id),
+      prologueId: NARRATIVE_DATA.hub.meta.prologue_chapter_id,
+
+      startNewGame(slotIndex = 0) {
+        activeSlot = slotIndex;
+        this.state = {
+          version: SAVE_VERSION,
+          current_phase: 'boot_cinematic',
+          current_chapter: this.prologueId,
+          current_scene_id: null,
+          inventory: [],
+          unlocked_chapters: [this.prologueId],
+          seen_scenes: [],
+          choice_history: [],
+          completed_chapters: [],
+          layout: null,
+          boot_index: 0,
+        };
+        this.saveGame(slotIndex);
+        this.render();
+      },
+
+      loadGame(slotIndex = 0) {
+        activeSlot = slotIndex;
+        const raw = localStorage.getItem(SLOT_KEYS[slotIndex]);
+        if (!raw) {
+          setStatus(`No save in slot ${slotIndex + 1}; starting new game.`);
+          this.startNewGame(slotIndex);
+          return;
+        }
+        try {
+          const parsed = JSON.parse(raw);
+          this.state = {
+            version: parsed.version || SAVE_VERSION,
+            current_phase: parsed.current_phase || 'boot_cinematic',
+            current_chapter: parsed.current_chapter || this.prologueId,
+            current_scene_id: parsed.current_scene_id || null,
+            inventory: Array.isArray(parsed.inventory) ? parsed.inventory : [],
+            unlocked_chapters: Array.isArray(parsed.unlocked_chapters) ? parsed.unlocked_chapters : [this.prologueId],
+            seen_scenes: Array.isArray(parsed.seen_scenes) ? parsed.seen_scenes : [],
+            choice_history: Array.isArray(parsed.choice_history) ? parsed.choice_history : [],
+            completed_chapters: Array.isArray(parsed.completed_chapters) ? parsed.completed_chapters : [],
+            layout: parsed.layout || null,
+            boot_index: Number.isInteger(parsed.boot_index) ? parsed.boot_index : 0,
+          };
+          this.render();
+          setStatus(`Loaded slot ${slotIndex + 1}`);
+        } catch {
+          setStatus(`Slot ${slotIndex + 1} is invalid JSON.`);
+        }
+      },
+
+      saveGame(slotIndex = 0) {
+        localStorage.setItem(SLOT_KEYS[slotIndex], JSON.stringify(this.state));
+        setStatus(`Saved slot ${slotIndex + 1}`);
+      },
+
+      autosave() {
+        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(this.state));
+      },
+
+      jumpToChapter(chapterId) {
+        if (!this.chapterMap[chapterId]) return;
+        this.state.current_chapter = chapterId;
+        this.state.current_scene_id = this.getIntroScene(chapterId)?.id || null;
+        this.state.current_phase = 'chapter_scene';
+        this.render();
+      },
+
+      grantArtifact(artifactId) {
+        if (!this.state.inventory.includes(artifactId)) {
+          this.state.inventory.push(artifactId);
+          this.autosave();
+          this.render();
+        }
+      },
+
+      exportState() {
+        return JSON.stringify(this.state, null, 2);
+      },
+
+      importState(raw, slotIndex = activeSlot) {
+        const parsed = JSON.parse(raw);
+        this.state = {
+          version: parsed.version || SAVE_VERSION,
+          current_phase: parsed.current_phase || 'boot_cinematic',
+          current_chapter: parsed.current_chapter || this.prologueId,
+          current_scene_id: parsed.current_scene_id || null,
+          inventory: Array.isArray(parsed.inventory) ? parsed.inventory : [],
+          unlocked_chapters: Array.isArray(parsed.unlocked_chapters) ? parsed.unlocked_chapters : [this.prologueId],
+          seen_scenes: Array.isArray(parsed.seen_scenes) ? parsed.seen_scenes : [],
+          choice_history: Array.isArray(parsed.choice_history) ? parsed.choice_history : [],
+          completed_chapters: Array.isArray(parsed.completed_chapters) ? parsed.completed_chapters : [],
+          layout: parsed.layout || null,
+          boot_index: Number.isInteger(parsed.boot_index) ? parsed.boot_index : 0,
+        };
+        this.saveGame(slotIndex);
+        this.autosave();
+        this.render();
+      },
+
+      getRecords(chapterId, type) {
+        const c = this.chapterMap[chapterId];
+        if (!c) return [];
+        return c.records.filter((r) => r.type === type);
+      },
+
+      getIntroScene(chapterId) {
+        const c = this.chapterMap[chapterId];
+        if (!c) return null;
+        return c.records.find((r) => r.type === 'scene' && r.id === c.meta.intro_scene_id) || null;
+      },
+
+      findScene(chapterId, sceneId) {
+        return this.getRecords(chapterId, 'scene').find((s) => s.id === sceneId) || null;
+      },
+
+      isUnlocked(chapterId) {
+        return this.state.unlocked_chapters.includes(chapterId);
+      },
+
+      gateFor(chapterId) {
+        return this.gateList.find((g) => g.target_chapter_id === chapterId) || null;
+      },
+
+      hasRequired(requirements) {
+        return (requirements || []).every((r) => this.state.inventory.includes(r));
+      },
+
+      unlockEligibleChapters() {
+        for (const gate of this.gateList) {
+          if (this.state.unlocked_chapters.includes(gate.target_chapter_id)) continue;
+          if (this.hasRequired(gate.requires_artifacts)) {
+            this.state.unlocked_chapters.push(gate.target_chapter_id);
+          }
+        }
+      },
+
+      enterChapter(chapterId) {
+        const gate = this.gateFor(chapterId);
+        if (gate && !this.hasRequired(gate.requires_artifacts)) {
+          const missing = gate.requires_artifacts.filter((r) => !this.state.inventory.includes(r));
+          setStatus(`Gate locked: ${missing.join(', ')}`);
+          return;
+        }
+        this.state.current_chapter = chapterId;
+        const intro = this.getIntroScene(chapterId);
+        this.state.current_scene_id = intro ? intro.id : null;
+        this.state.current_phase = 'chapter_scene';
+        this.autosave();
+        this.render();
+      },
+
+      choose(choiceId) {
+        const chapterId = this.state.current_chapter;
+        const choices = this.getRecords(chapterId, 'choice');
+        const choice = choices.find((c) => c.id === choiceId);
+        if (!choice) return;
+        if (!this.hasRequired(choice.requires_artifacts)) {
+          setStatus('Choice blocked by missing artifact requirement.');
+          return;
+        }
+
+        for (const aid of choice.grants_artifacts || []) {
+          if (!this.state.inventory.includes(aid)) this.state.inventory.push(aid);
+        }
+
+        this.state.choice_history.push({
+          chapter_id: chapterId,
+          scene_id: this.state.current_scene_id,
+          choice_id: choice.id,
+        });
+
+        if (choice.to_scene_id === '__hub__') {
+          if (!this.state.completed_chapters.includes(chapterId)) {
+            this.state.completed_chapters.push(chapterId);
+          }
+          this.unlockEligibleChapters();
+          const meta = this.chapterMap[chapterId]?.meta;
+          this.state.current_phase = meta?.phase === 'epilogue' ? 'epilogue' : 'hub_return';
+          this.state.current_scene_id = null;
+        } else {
+          this.state.current_scene_id = choice.to_scene_id;
+        }
+
+        this.autosave();
+        this.render();
+      },
+
+      markSceneSeen(sceneId) {
+        if (sceneId && !this.state.seen_scenes.includes(sceneId)) this.state.seen_scenes.push(sceneId);
+      },
+
+      renderBoot() {
+        const cards = [
+`The archive vault opens.
+Signal rises in the crystal lattice, and forgotten worlds answer by name.`,
+`You are the Watcher-Operator.
+You do not conquer worlds. You align them through lawful artifacts.`,
+`Protocol:
+1) Enter chapters
+2) Traverse scenes
+3) Collect cross-world artifacts
+4) Unlock sealed gates in the hub`,
+`Bootstrap complete.
+Enter the Prologue and begin reconciliation.`
+        ];
+        const idx = Math.max(0, Math.min(this.state.boot_index || 0, cards.length - 1));
+        setStoryTitle(`Boot Sequence ${idx + 1}/${cards.length}`);
+        setStoryBody(cards[idx]);
+        if (idx < cards.length - 1) {
+          setStoryActions([]);
+        } else {
+          setStoryActions([
+            { label: 'Begin Prologue', action: () => {
+              this.state.current_phase = 'chapter_scene';
+              this.state.current_chapter = this.prologueId;
+              this.state.current_scene_id = this.getIntroScene(this.prologueId)?.id || null;
+              this.autosave();
+              this.render();
+            } }
+          ]);
+        }
+      },
+
+      renderHub(returned = false) {
+        this.state.current_phase = returned ? 'hub_return' : 'hub';
+        setStoryTitle(returned ? 'World Hub — Return' : 'World Hub');
+        setStoryBody('Select a chapter world. Gates unlock when cross-world artifact requirements are met.');
+
+        const items = this.chapterOrder.map((cid) => {
+          const meta = this.chapterMap[cid].meta;
+          const gate = this.gateFor(cid);
+          const unlocked = this.isUnlocked(cid) || (gate && this.hasRequired(gate.requires_artifacts));
+          return {
+            label: `${unlocked ? 'Enter' : 'Locked'} · ${meta.title}`,
+            disabled: !unlocked,
+            action: () => this.enterChapter(cid),
+            detail: unlocked ? 'Unlocked' : (gate?.lock_text || 'Locked'),
+          };
+        });
+
+        setStoryActions(items);
+        this.autosave();
+      },
+
+      renderChapter() {
+        const chapterId = this.state.current_chapter;
+        const scene = this.findScene(chapterId, this.state.current_scene_id) || this.getIntroScene(chapterId);
+        if (!scene) {
+          this.renderHub(true);
+          return;
+        }
+        this.state.current_scene_id = scene.id;
+        this.markSceneSeen(scene.id);
+
+        if (!this.hasRequired(scene.requires_artifacts)) {
+          const missing = scene.requires_artifacts.filter((x) => !this.state.inventory.includes(x));
+          setStoryTitle('Chapter Gate Blocked');
+          setStoryBody(`Missing artifacts: ${missing.join(', ')}\n\nReturn to hub and explore other worlds.`);
+          setStoryActions([
+            { label: 'Return to Hub', action: () => this.renderHub(true) }
+          ]);
+          return;
+        }
+
+        for (const aid of scene.grants_artifacts || []) {
+          if (!this.state.inventory.includes(aid)) this.state.inventory.push(aid);
+        }
+
+        setStoryTitle(`${this.chapterMap[chapterId].meta.title} · ${scene.heading}`);
+        setStoryBody(scene.body_text);
+
+        const chapterChoices = this.getRecords(chapterId, 'choice').filter((c) => c.from_scene_id === scene.id);
+        const actions = chapterChoices.map((c) => {
+          const ok = this.hasRequired(c.requires_artifacts);
+          return {
+            label: c.label,
+            disabled: !ok,
+            action: () => this.choose(c.id),
+            detail: ok ? '' : 'Locked by requirement',
+          };
+        });
+
+        setStoryActions(actions);
+        this.autosave();
+      },
+
+      renderEpilogue() {
+        setStoryTitle('Epilogue State');
+        setStoryBody('You have completed the final chapter path currently unlocked. Continue exploring the hub or start a new slot.');
+        setStoryActions([
+          { label: 'Return to Hub', action: () => this.renderHub(true) },
+          { label: 'Start New Cycle', action: () => this.startNewGame(0) },
+        ]);
+      },
+
+      render() {
+        document.getElementById('pill-phase').textContent = `phase: ${this.state.current_phase}`;
+        if (this.state.current_phase === 'boot_cinematic') this.renderBoot();
+        else if (this.state.current_phase === 'hub') this.renderHub(false);
+        else if (this.state.current_phase === 'hub_return') this.renderHub(true);
+        else if (this.state.current_phase === 'chapter_scene') this.renderChapter();
+        else this.renderEpilogue();
+
+        refreshInventory();
+        refreshHubSide();
+        refreshCodex();
+        refreshArtifactCards();
+        updateHubGraphState();
+      },
+    };
+
+    function makeLabelSprite(text) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 120;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = 'rgba(248,252,255,0.88)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = '#bfd2e2';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
+      ctx.fillStyle = '#1a2740';
+      ctx.font = '700 38px "Space Grotesk", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text.slice(0, 26), canvas.width / 2, canvas.height / 2);
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.minFilter = THREE.LinearFilter;
+      const material = new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false });
+      const sprite = new THREE.Sprite(material);
+      sprite.scale.set(3.2, 0.75, 1);
+      return sprite;
+    }
+
+    function showHubGraphForPhase(phase) {
+      return appMode === 'story' && (phase === 'hub' || phase === 'hub_return' || phase === 'epilogue');
+    }
+
+    function buildHubGraph() {
+      hubNodeMeshes.length = 0;
+      hubNodeByChapter.clear();
+      hubLineByChapter.clear();
+      while (hubRoot.children.length) {
+        const n = hubRoot.children.pop();
+        n.removeFromParent();
+      }
+
+      const count = Math.max(1, GameDirector.chapterOrder.length);
+      const radius = 10.5;
+      const y = 1.15;
+
+      const center = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.9, 1.3, 0.22, 36),
+        new THREE.MeshStandardMaterial({ color: 0x244463, emissive: 0x0d2032, roughness: 0.45, metalness: 0.2 })
+      );
+      center.position.set(0, 0.11, 0);
+      hubRoot.add(center);
+
+      for (let i = 0; i < count; i += 1) {
+        const chapterId = GameDirector.chapterOrder[i];
+        const meta = GameDirector.chapterMap[chapterId]?.meta;
+        const angle = -Math.PI / 2 + (Math.PI * 2 * i) / count;
+        const x = Math.cos(angle) * radius;
+        const z = Math.sin(angle) * radius;
+
+        const node = new THREE.Group();
+        node.position.set(x, y, z);
+
+        const mesh = new THREE.Mesh(
+          new THREE.SphereGeometry(0.62, 28, 20),
+          new THREE.MeshStandardMaterial({ color: 0x718699, emissive: 0x263948, roughness: 0.35, metalness: 0.35 })
+        );
+        mesh.userData.chapterId = chapterId;
+        mesh.userData.baseY = y;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        node.add(mesh);
+
+        const ring = new THREE.Mesh(
+          new THREE.TorusGeometry(0.86, 0.08, 12, 40),
+          new THREE.MeshStandardMaterial({ color: 0xbfd2e2, emissive: 0x09141c, roughness: 0.5, metalness: 0.2 })
+        );
+        ring.rotation.x = Math.PI / 2;
+        ring.position.y = -0.1;
+        mesh.userData.ring = ring;
+        node.add(ring);
+
+        const label = makeLabelSprite(meta?.title || chapterId);
+        label.position.set(0, 1.38, 0);
+        node.add(label);
+        mesh.userData.label = label;
+
+        hubRoot.add(node);
+        hubNodeMeshes.push(mesh);
+        hubNodeByChapter.set(chapterId, mesh);
+
+        const points = [
+          new THREE.Vector3(0, 0.16, 0),
+          new THREE.Vector3(x, 0.18, z),
+        ];
+        const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+        const line = new THREE.Line(
+          lineGeo,
+          new THREE.LineBasicMaterial({ color: 0x97afc4, transparent: true, opacity: 0.8 })
+        );
+        line.userData.chapterId = chapterId;
+        hubRoot.add(line);
+        hubLineByChapter.set(chapterId, line);
+      }
+    }
+
+    function updateHubGraphState() {
+      for (const chapterId of GameDirector.chapterOrder) {
+        const mesh = hubNodeByChapter.get(chapterId);
+        if (!mesh) continue;
+        const ring = mesh.userData.ring;
+        const label = mesh.userData.label;
+        const gate = GameDirector.gateFor(chapterId);
+        const unlocked = GameDirector.isUnlocked(chapterId) || (gate && GameDirector.hasRequired(gate.requires_artifacts));
+        const active = GameDirector.state.current_chapter === chapterId;
+
+        mesh.material.color.setHex(unlocked ? 0x2f8f73 : 0x718699);
+        mesh.material.emissive.setHex(active ? 0x1a4d60 : (unlocked ? 0x12392e : 0x263948));
+        mesh.scale.setScalar(active ? 1.15 : 1);
+
+        if (ring) {
+          ring.material.color.setHex(unlocked ? 0x9de5cc : 0xbfd2e2);
+          ring.material.emissive.setHex(active ? 0x1e5d49 : 0x0b1b26);
+        }
+
+        if (label) {
+          label.material.opacity = unlocked ? 0.96 : 0.56;
+        }
+
+        const line = hubLineByChapter.get(chapterId);
+        if (line) {
+          line.material.color.setHex(unlocked ? 0x7bc9ab : 0x97afc4);
+          line.material.opacity = unlocked ? 0.95 : 0.45;
+        }
+      }
+      hubRoot.visible = showHubGraphForPhase(GameDirector.state.current_phase);
+    }
+
+    function setStatus(msg) {
+      statusEl.textContent = msg;
+    }
+
+    function setStoryTitle(text) {
+      document.getElementById('story-title').textContent = text;
+    }
+
+    function setStoryBody(text) {
+      document.getElementById('story-body').textContent = text || '';
+    }
+
+    function setStoryActions(list) {
+      const box = document.getElementById('story-actions');
+      box.innerHTML = '';
+      for (const item of list) {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.textContent = item.detail ? `${item.label} — ${item.detail}` : item.label;
+        btn.disabled = !!item.disabled;
+        btn.addEventListener('click', item.action);
+        box.appendChild(btn);
+      }
+      document.getElementById('btn-story-next').classList.toggle('hidden', list.length > 0);
+    }
+
+    function refreshInventory() {
+      const inv = document.getElementById('inventory-list');
+      inv.innerHTML = '';
+      if (!GameDirector.state.inventory.length) {
+        inv.innerHTML = '<div class="mini">No artifacts collected yet.</div>';
+        return;
+      }
+      for (const id of GameDirector.state.inventory) {
+        const m = document.createElement('div');
+        m.className = 'mini';
+        m.textContent = id;
+        inv.appendChild(m);
+      }
+    }
+
+    function refreshHubSide() {
+      const box = document.getElementById('hub-list');
+      box.innerHTML = '';
+      for (const cid of GameDirector.chapterOrder) {
+        const meta = GameDirector.chapterMap[cid].meta;
+        const gate = GameDirector.gateFor(cid);
+        const unlocked = GameDirector.isUnlocked(cid) || (gate && GameDirector.hasRequired(gate.requires_artifacts));
+        const m = document.createElement('div');
+        m.className = 'mini';
+        m.textContent = `${unlocked ? 'UNLOCKED' : 'LOCKED'} · ${meta.title}`;
+        box.appendChild(m);
+      }
+    }
+
+    function sceneById(sceneId) {
+      for (const ch of Object.values(GameDirector.chapterMap)) {
+        const s = ch.records.find((r) => r.type === 'scene' && r.id === sceneId);
+        if (s) return { scene: s, chapter: ch.meta };
+      }
+      return null;
+    }
+
+    function refreshCodex() {
+      const box = document.getElementById('codex-list');
+      box.innerHTML = '';
+      if (!GameDirector.state.seen_scenes.length) {
+        box.innerHTML = '<div class="mini">No scenes recorded yet.</div>';
+        return;
+      }
+      for (const sid of GameDirector.state.seen_scenes.slice(-20).reverse()) {
+        const row = sceneById(sid);
+        if (!row) continue;
+        const m = document.createElement('div');
+        m.className = 'mini';
+        const excerpt = row.scene.body_text.slice(0, 90).replace(/\s+/g, ' ');
+        m.textContent = `${row.chapter.title}: ${row.scene.heading}\n${excerpt}${row.scene.body_text.length > 90 ? '…' : ''}`;
+        box.appendChild(m);
+      }
+    }
+
+    function artifactFromId(aid) {
+      for (const ch of Object.values(GameDirector.chapterMap)) {
+        const a = ch.records.find((r) => r.type === 'artifact' && r.id === aid);
+        if (a) return a;
+      }
+      return null;
+    }
+
+    function runtimeArtifactCards() {
+      const base = [
+        {
+          id: 'tool_cube',
+          name: 'Tool Cube',
+          kind: 'primitive',
+          meta: 'toolkit/primitive',
+          payload: { primitive: 'box', color: 0x2f78a6 },
+        },
+        {
+          id: 'tool_duck',
+          name: 'Starter GLB Duck',
+          kind: 'glb-url',
+          meta: 'toolkit/glb',
+          payload: { url: 'https://threejs.org/examples/models/gltf/Duck/glTF-Binary/Duck.glb' },
+        },
+        {
+          id: 'tool_sigil_svg',
+          name: 'Starter Sigil SVG',
+          kind: 'svg',
+          meta: 'toolkit/svg',
+          payload: {
+            text: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b5f86"/>
+      <stop offset="1" stop-color="#2f8f73"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" fill="#f4fbff"/>
+  <circle cx="128" cy="128" r="96" fill="none" stroke="url(#g)" stroke-width="10"/>
+  <path d="M68 148 L128 58 L188 148 Z" fill="none" stroke="#22496b" stroke-width="12"/>
+  <circle cx="128" cy="128" r="20" fill="#22496b"/>
+</svg>`,
+          },
+        },
+      ];
+
+      for (const aid of GameDirector.state.inventory) {
+        const art = artifactFromId(aid);
+        if (!art) continue;
+        base.push({
+          id: `inv_${aid}`,
+          name: art.name,
+          kind: art.model_ref?.type === 'primitive' ? 'primitive' : 'primitive',
+          meta: `inventory/${art.chapter_id}`,
+          payload: {
+            primitive: art.model_ref?.primitive || 'box',
+            color: art.model_ref?.color || 0x4f8db1,
+          },
+        });
+      }
+
+      for (const x of extraArtifacts) base.push(x);
+      return base;
+    }
+
+    function refreshArtifactCards() {
+      artifactList.innerHTML = '';
+      for (const item of runtimeArtifactCards()) {
+        const card = document.createElement('div');
+        card.className = 'artifact';
+        card.draggable = true;
+        card.dataset.payload = JSON.stringify(item);
+        card.innerHTML = `<div class="name">${item.name}</div><div class="meta">${item.meta}</div>`;
+        card.addEventListener('dragstart', (ev) => {
+          ev.dataTransfer.setData('text/plain', card.dataset.payload);
+          ev.dataTransfer.effectAllowed = 'copy';
+        });
+        artifactList.appendChild(card);
+      }
+    }
+
+    function setAppMode(mode) {
+      appMode = mode;
+      document.getElementById('pill-mode').textContent = `mode: ${mode}`;
+      storyUI.classList.toggle('hidden', mode !== 'story');
+      document.getElementById('btn-story-mode').disabled = mode === 'story';
+      document.getElementById('btn-editor-mode').disabled = mode === 'editor';
+      updateHubGraphState();
+      setStatus(`App mode: ${mode}`);
+    }
+
+    function setSelected(obj) {
+      selected = obj || null;
+      if (selected) transformControls.attach(selected);
+      else transformControls.detach();
+      document.getElementById('pill-selected').textContent = `selected: ${selected ? selected.name : 'none'}`;
+      document.getElementById('pill-objects').textContent = `objects: ${placedRoot.children.length}`;
+    }
+
+    function snapEnabled() { return document.getElementById('snap-enable').checked; }
+    function snapStep() { return Math.max(0.1, Number(document.getElementById('snap-step').value || 1)); }
+
+    function setDropPointFromClient(clientX, clientY) {
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const hit = raycaster.ray.intersectPlane(dropPlane, dropPoint);
+      if (hit && snapEnabled()) {
+        const s = snapStep();
+        dropPoint.x = Math.round(dropPoint.x / s) * s;
+        dropPoint.z = Math.round(dropPoint.z / s) * s;
+      }
+      return hit;
+    }
+
+    function fitAndPlace(obj, point, token, savedTransform = null) {
+      if (savedTransform) {
+        obj.position.set(...savedTransform.position);
+        obj.rotation.set(...savedTransform.rotation);
+        obj.scale.set(...savedTransform.scale);
+      } else {
+        const box = new THREE.Box3().setFromObject(obj);
+        const size = box.getSize(new THREE.Vector3());
+        const maxSide = Math.max(size.x, size.y, size.z, 0.001);
+        obj.scale.multiplyScalar(1.8 / maxSide);
+
+        const box2 = new THREE.Box3().setFromObject(obj);
+        obj.position.sub(new THREE.Vector3(0, box2.min.y, 0));
+        obj.position.x += point.x;
+        obj.position.z += point.z;
+      }
+
+      obj.traverse((n) => {
+        if (n.isMesh) {
+          n.castShadow = true;
+          n.receiveShadow = true;
+        }
+      });
+
+      obj.userData.artifactToken = token;
+      placedRoot.add(obj);
+      setSelected(obj);
+    }
+
+    function spawnPrimitive(item, point, savedTransform = null) {
+      const geo = new THREE.BoxGeometry(1, 1, 1);
+      const mat = new THREE.MeshStandardMaterial({
+        color: item.payload?.color || 0x2f78a6,
+        roughness: 0.4,
+        metalness: 0.12,
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.name = `${item.name}-${Date.now()}`;
+      fitAndPlace(mesh, point, item, savedTransform);
+    }
+
+    function spawnGlb(item, point, savedTransform = null) {
+      gltfLoader.load(item.payload.url, (gltf) => {
+        const root = gltf.scene;
+        root.name = item.name;
+        fitAndPlace(root, point, item, savedTransform);
+      }, undefined, (err) => setStatus(`GLB load failed: ${err?.message || 'unknown'}`));
+    }
+
+    function spawnSvgText(svgText, item, point, savedTransform = null) {
+      const blob = new Blob([svgText], { type: 'image/svg+xml' });
+      const url = URL.createObjectURL(blob);
+      textureLoader.load(url, (tex) => {
+        const mat = new THREE.MeshStandardMaterial({ map: tex, transparent: true, side: THREE.DoubleSide });
+        const plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
+        plane.name = item.name;
+        fitAndPlace(plane, point, item, savedTransform);
+        URL.revokeObjectURL(url);
+      }, undefined, () => URL.revokeObjectURL(url));
+    }
+
+    function spawnArtifact(item, point, savedTransform = null) {
+      if (item.kind === 'primitive') return spawnPrimitive(item, point, savedTransform);
+      if (item.kind === 'glb-url') return spawnGlb(item, point, savedTransform);
+      if (item.kind === 'svg') return spawnSvgText(item.payload.text, item, point, savedTransform);
+      if (item.kind === 'file-glb') return spawnGlb({ ...item, payload: { url: item.payload.dataUrl } }, point, savedTransform);
+      if (item.kind === 'file-svg') return spawnSvgText(item.payload.text, item, point, savedTransform);
+      setStatus(`Unsupported artifact kind: ${item.kind}`);
+    }
+
+    function addDroppedFile(file) {
+      const lower = file.name.toLowerCase();
+      let kind = null;
+      if (lower.endsWith('.svg')) kind = 'file-svg';
+      if (lower.endsWith('.glb') || lower.endsWith('.gltf')) kind = 'file-glb';
+      if (!kind) {
+        setStatus(`Unsupported file: ${file.name}`);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        extraArtifacts.unshift({
+          id: `drop_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`,
+          name: file.name,
+          kind,
+          meta: `dropped/${kind}`,
+          payload: kind === 'file-svg' ? { text: String(reader.result) } : { dataUrl: String(reader.result) },
+        });
+        refreshArtifactCards();
+      };
+      if (kind === 'file-svg') reader.readAsText(file);
+      else reader.readAsDataURL(file);
+    }
+
+    function sceneLayoutObject(obj) {
+      return {
+        artifact: obj.userData.artifactToken || null,
+        transform: {
+          position: [obj.position.x, obj.position.y, obj.position.z],
+          rotation: [obj.rotation.x, obj.rotation.y, obj.rotation.z],
+          scale: [obj.scale.x, obj.scale.y, obj.scale.z],
+        },
+      };
+    }
+
+    function clearSceneObjects() {
+      while (placedRoot.children.length) {
+        const c = placedRoot.children.pop();
+        c.removeFromParent();
+      }
+      setSelected(null);
+    }
+
+    function saveLayoutToText() {
+      const layout = {
+        version: 1,
+        camera: {
+          position: [camera.position.x, camera.position.y, camera.position.z],
+          target: [controls.target.x, controls.target.y, controls.target.z],
+        },
+        extraArtifacts,
+        objects: placedRoot.children.map(sceneLayoutObject),
+      };
+      layoutText.value = JSON.stringify(layout, null, 2);
+      GameDirector.state.layout = layout;
+      GameDirector.autosave();
+      setStatus(`Layout saved with ${layout.objects.length} objects.`);
+    }
+
+    function itemFromToken(token) {
+      const all = runtimeArtifactCards();
+      return all.find((x) => x.id === token.id) || token;
+    }
+
+    function loadLayoutFromObject(layout) {
+      if (!layout || typeof layout !== 'object') {
+        setStatus('Invalid layout object.');
+        return;
+      }
+
+      if (Array.isArray(layout.extraArtifacts)) {
+        extraArtifacts.length = 0;
+        for (const x of layout.extraArtifacts) extraArtifacts.push(x);
+      }
+
+      clearSceneObjects();
+
+      if (layout.camera) {
+        camera.position.set(...layout.camera.position);
+        controls.target.set(...layout.camera.target);
+        controls.update();
+      }
+
+      const objs = Array.isArray(layout.objects) ? layout.objects : [];
+      for (const row of objs) {
+        const item = itemFromToken(row.artifact);
+        if (!item) continue;
+        spawnArtifact(item, new THREE.Vector3(0, 0, 0), row.transform);
+      }
+      refreshArtifactCards();
+      setStatus(`Layout loaded with ${objs.length} objects.`);
+    }
+
+    function loadLayoutFromText() {
+      const raw = layoutText.value.trim();
+      if (!raw) return setStatus('Layout JSON empty.');
+      try {
+        loadLayoutFromObject(JSON.parse(raw));
+      } catch {
+        setStatus('Layout JSON invalid.');
+      }
+    }
+
+    function exportLayoutFile() {
+      saveLayoutToText();
+      const blob = new Blob([layoutText.value], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `atomic-layout-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function deleteSelectedObject() {
+      if (!selected) return;
+      selected.removeFromParent();
+      setSelected(null);
+      setStatus('Selected object deleted.');
+    }
+
+    // DnD
+    stage.addEventListener('dragover', (ev) => {
+      ev.preventDefault();
+      stage.classList.add('dragging');
+    });
+    stage.addEventListener('dragleave', () => stage.classList.remove('dragging'));
+    stage.addEventListener('drop', (ev) => {
+      ev.preventDefault();
+      stage.classList.remove('dragging');
+
+      if (!setDropPointFromClient(ev.clientX, ev.clientY)) {
+        setStatus('Could not resolve floor drop point.');
+        return;
+      }
+
+      if (ev.dataTransfer.files && ev.dataTransfer.files.length) {
+        for (const f of ev.dataTransfer.files) addDroppedFile(f);
+        return;
+      }
+
+      const payload = ev.dataTransfer.getData('text/plain');
+      if (!payload) return;
+      try {
+        const item = JSON.parse(payload);
+        spawnArtifact(item, dropPoint.clone());
+      } catch {
+        setStatus('Invalid artifact drag payload.');
+      }
+    });
+
+    renderer.domElement.addEventListener('pointerdown', (ev) => {
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((ev.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((ev.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+
+      if (hubRoot.visible && appMode === 'story') {
+        const nodeHits = raycaster.intersectObjects(hubNodeMeshes, false);
+        if (nodeHits.length) {
+          const chapterId = nodeHits[0].object.userData.chapterId;
+          if (chapterId) {
+            GameDirector.enterChapter(chapterId);
+            setSelected(null);
+            return;
+          }
+        }
+      }
+
+      const hits = raycaster.intersectObjects(placedRoot.children, true);
+      if (hits.length) {
+        let root = hits[0].object;
+        while (root.parent && root.parent !== placedRoot) root = root.parent;
+        setSelected(root);
+      } else {
+        setSelected(null);
+      }
+    });
+
+    // Controls
+    document.getElementById('btn-story-mode').addEventListener('click', () => setAppMode('story'));
+    document.getElementById('btn-editor-mode').addEventListener('click', () => setAppMode('editor'));
+
+    document.getElementById('btn-new-game').addEventListener('click', () => GameDirector.startNewGame(0));
+    document.getElementById('btn-slot-1').addEventListener('click', () => GameDirector.loadGame(0));
+    document.getElementById('btn-slot-2').addEventListener('click', () => GameDirector.loadGame(1));
+    document.getElementById('btn-slot-3').addEventListener('click', () => GameDirector.loadGame(2));
+    document.getElementById('btn-save-current').addEventListener('click', () => GameDirector.saveGame(activeSlot));
+
+    document.getElementById('btn-reset-camera').addEventListener('click', () => {
+      camera.position.set(7, 6, 9);
+      controls.target.set(0, 1.2, 0);
+      controls.update();
+    });
+    document.getElementById('btn-clear-scene').addEventListener('click', clearSceneObjects);
+    document.getElementById('btn-mode-move').addEventListener('click', () => { toolMode = 'translate'; transformControls.setMode(toolMode); });
+    document.getElementById('btn-mode-rotate').addEventListener('click', () => { toolMode = 'rotate'; transformControls.setMode(toolMode); });
+    document.getElementById('btn-mode-scale').addEventListener('click', () => { toolMode = 'scale'; transformControls.setMode(toolMode); });
+
+    document.getElementById('btn-save-layout').addEventListener('click', saveLayoutToText);
+    document.getElementById('btn-load-layout').addEventListener('click', loadLayoutFromText);
+    document.getElementById('btn-open-codex').addEventListener('click', () => {
+      setStatus('Codex shows seen scenes in right panel.');
+    });
+    document.getElementById('btn-story-next').addEventListener('click', () => {
+      if (GameDirector.state.current_phase === 'boot_cinematic') {
+        GameDirector.state.boot_index = (GameDirector.state.boot_index || 0) + 1;
+      }
+      GameDirector.render();
+    });
+
+    function applySnapSettings() {
+      if (document.getElementById('snap-enable').checked) {
+        const s = Math.max(0.1, Number(document.getElementById('snap-step').value || 1));
+        transformControls.setTranslationSnap(s);
+        transformControls.setRotationSnap(THREE.MathUtils.degToRad(15));
+        transformControls.setScaleSnap(s * 0.1);
+      } else {
+        transformControls.setTranslationSnap(null);
+        transformControls.setRotationSnap(null);
+        transformControls.setScaleSnap(null);
+      }
+    }
+    document.getElementById('snap-enable').addEventListener('change', applySnapSettings);
+    document.getElementById('snap-step').addEventListener('input', applySnapSettings);
+
+    const importInput = document.createElement('input');
+    importInput.type = 'file';
+    importInput.accept = 'application/json,.json';
+    importInput.style.display = 'none';
+    document.body.appendChild(importInput);
+    importInput.addEventListener('change', () => {
+      const file = importInput.files && importInput.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const obj = JSON.parse(String(reader.result));
+          layoutText.value = JSON.stringify(obj, null, 2);
+          loadLayoutFromObject(obj);
+        } catch {
+          setStatus('Imported JSON invalid.');
+        } finally {
+          importInput.value = '';
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    const saveExportInput = document.createElement('input');
+    saveExportInput.type = 'file';
+    saveExportInput.accept = 'application/json,.json';
+    saveExportInput.style.display = 'none';
+    document.body.appendChild(saveExportInput);
+    saveExportInput.addEventListener('change', () => {
+      const file = saveExportInput.files && saveExportInput.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          GameDirector.importState(String(reader.result), activeSlot);
+          setStatus(`Imported save into slot ${activeSlot + 1}`);
+        } catch {
+          setStatus('Imported save JSON invalid.');
+        } finally {
+          saveExportInput.value = '';
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById('btn-export-save').addEventListener('click', () => {
+      const data = GameDirector.exportState();
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `atomic-story-save-slot-${activeSlot + 1}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setStatus(`Exported slot ${activeSlot + 1} save JSON.`);
+    });
+
+    document.getElementById('btn-import-save').addEventListener('click', () => {
+      saveExportInput.click();
+    });
+
+    window.addEventListener('keydown', (ev) => {
+      const tag = ev.target && ev.target.tagName ? ev.target.tagName.toLowerCase() : '';
+      if (tag === 'input' || tag === 'textarea') return;
+      const k = ev.key.toLowerCase();
+
+      if (!ev.ctrlKey && !ev.metaKey) {
+        if (k === 'w') { ev.preventDefault(); document.getElementById('btn-mode-move').click(); }
+        else if (k === 'e') { ev.preventDefault(); document.getElementById('btn-mode-rotate').click(); }
+        else if (k === 'r') { ev.preventDefault(); document.getElementById('btn-mode-scale').click(); }
+        else if (k === 'delete' || k === 'backspace') { ev.preventDefault(); deleteSelectedObject(); }
+        return;
+      }
+
+      if (k === 's') { ev.preventDefault(); exportLayoutFile(); }
+      else if (k === 'o') { ev.preventDefault(); importInput.click(); }
+    });
+
+    function onResize() {
+      renderer.setSize(stage.clientWidth, stage.clientHeight);
+      camera.aspect = stage.clientWidth / stage.clientHeight;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', onResize);
+
+    // public runtime methods
+    window.startNewGame = (slot = 0) => GameDirector.startNewGame(slot);
+    window.loadGame = (slot = 0) => GameDirector.loadGame(slot);
+    window.saveGame = (slot = 0) => GameDirector.saveGame(slot);
+    window.jumpToChapter = (chapterId) => GameDirector.jumpToChapter(chapterId);
+    window.grantArtifact = (artifactId) => GameDirector.grantArtifact(artifactId);
+
+    applySnapSettings();
+    buildHubGraph();
+    setAppMode('story');
+
+    if (localStorage.getItem(AUTOSAVE_KEY)) {
+      try {
+        GameDirector.importState(localStorage.getItem(AUTOSAVE_KEY), 0);
+      } catch {
+        GameDirector.startNewGame(0);
+      }
+    } else if (localStorage.getItem(SLOT_KEYS[0])) {
+      GameDirector.loadGame(0);
+    } else {
+      GameDirector.startNewGame(0);
+    }
+
+    const clock = new THREE.Clock();
+    function animate() {
+      const dt = clock.getDelta();
+      controls.update(dt);
+      const t = clock.elapsedTime;
+      if (hubRoot.visible) {
+        hubRoot.rotation.y += dt * 0.08;
+        for (const mesh of hubNodeMeshes) {
+          const baseY = mesh.userData.baseY || 1.15;
+          mesh.parent.position.y = baseY + Math.sin(t * 1.5 + mesh.parent.position.x * 0.1) * 0.08;
+          if (mesh.userData.ring) {
+            mesh.userData.ring.rotation.z += dt * 0.35;
+          }
+        }
+      }
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
 </body>
 </html>

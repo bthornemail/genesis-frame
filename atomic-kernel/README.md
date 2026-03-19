@@ -33,14 +33,30 @@ atomic-kernel/
 ## Run it
 
 ```bash
-# Verify everything works (47 tests, all must pass)
+# Verify everything works (kernel + transport + runtime + narrative pipeline)
 python3 tests/test_all.py
+
+# Build/rebuild narrative chapter data from markdown corpus
+python3 tools/build_narrative_ndjson.py --write
+python3 tools/build_narrative_ndjson.py --verify
 
 # Open the live world viewer
 open world.html          # macOS
 xdg-open world.html      # Linux
 # or just drag world.html into any browser
 ```
+
+## World.html modes
+
+- `Story Mode`: playable bootstrap sequence (`boot_cinematic -> hub -> chapter_scene`) with cross-world artifact gates.
+- `Editor Mode`: drag/drop artifact toolkit (primitive + starter GLB + starter SVG + dropped GLB/SVG files).
+- Save system: 3 slots + autosave + JSON import/export backup.
+- Debug API in browser console:
+  - `startNewGame(slot)`
+  - `loadGame(slot)`
+  - `saveGame(slot)`
+  - `jumpToChapter(chapterId)`
+  - `grantArtifact(artifactId)`
 
 ## The algorithm
 

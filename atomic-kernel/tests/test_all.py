@@ -8,6 +8,7 @@ import os
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -244,6 +245,81 @@ else:
     if proc.stderr.strip():
         print(proc.stderr.strip())
     check("js runtime parity vectors pass", proc.returncode == 0)
+
+# ── Narrative pipeline + NDJSON validation ────────────────────────
+print("\nNarrative pipeline:")
+repo_root = Path(os.path.dirname(os.path.dirname(__file__))).parent
+builder = repo_root / "atomic-kernel" / "tools" / "build_narrative_ndjson.py"
+narr_source = repo_root / "narrative-series" / "When Wisdom, Law, and the Tribe Sat Down Together"
+narr_bundle = repo_root / "atomic-kernel" / "narrative_data" / "narrative_bundle.js"
+
+build_verify = subprocess.run(
+    [sys.executable, str(builder), "--verify"],
+    capture_output=True,
+    text=True,
+)
+if build_verify.stdout.strip():
+    print(build_verify.stdout.strip())
+if build_verify.stderr.strip():
+    print(build_verify.stderr.strip())
+check("narrative build determinism verify", build_verify.returncode == 0)
+
+bundle_ok = narr_bundle.exists()
+check("narrative bundle exists", bundle_ok)
+if bundle_ok:
+    raw = narr_bundle.read_text(encoding="utf-8")
+    prefix = "window.NARRATIVE_DATA = "
+    suffix = ";\n"
+    schema_ok = False
+    chapter_count_ok = False
+    id_uniqueness_ok = False
+    if raw.startswith(prefix) and raw.endswith(suffix):
+        data = json.loads(raw[len(prefix):-len(suffix)])
+        chapters = data.get("chapters", {})
+        chapter_count = len(chapters)
+
+        expected_paths = []
+        expected_paths.extend(sorted((narr_source / "PRELUDE").glob("*.md")))
+        for roman in ("I", "II", "III", "IV", "V", "VI", "VII", "VIII"):
+            p = narr_source / f"ARTICLE {roman}.md"
+            if p.exists():
+                expected_paths.append(p)
+        aside = narr_source / "ASIDE.md"
+        if aside.exists():
+            expected_paths.append(aside)
+        expected_paths.extend(sorted((narr_source / "EPILOUGE").glob("*.md")))
+        chapter_count_ok = chapter_count == len(expected_paths)
+
+        seen_ids = set()
+        id_uniqueness_ok = True
+        schema_ok = True
+        required = {
+            "chapter_meta": {"id", "title", "source_path", "order", "world_theme", "intro_scene_id"},
+            "scene": {"id", "chapter_id", "heading", "body_text", "world_node", "grants_artifacts", "requires_artifacts"},
+            "choice": {"id", "from_scene_id", "label", "to_scene_id", "requires_artifacts", "grants_artifacts"},
+            "artifact": {"id", "name", "description", "model_ref", "cross_world_tags"},
+        }
+        for ch in chapters.values():
+            recs = ch.get("records", [])
+            by_type = {}
+            for r in recs:
+                rid = r.get("id")
+                if rid:
+                    if rid in seen_ids:
+                        id_uniqueness_ok = False
+                    seen_ids.add(rid)
+                by_type.setdefault(r.get("type"), []).append(r)
+            for rtype, keys in required.items():
+                rows = by_type.get(rtype, [])
+                if not rows:
+                    schema_ok = False
+                    continue
+                for row in rows:
+                    if not keys.issubset(set(row.keys())):
+                        schema_ok = False
+    check("every markdown file maps to chapter data", chapter_count_ok)
+    check("ndjson runtime schema coverage", schema_ok)
+    check("deterministic id uniqueness in bundle", id_uniqueness_ok)
 
 # ── Final ─────────────────────────────────────────────────────────
 print()
