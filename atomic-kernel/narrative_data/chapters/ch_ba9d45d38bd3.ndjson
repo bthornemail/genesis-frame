@@ -22,3 +22,133 @@
 {"from_scene_id": "sc_aedd07e0d731", "grants_artifacts": [], "id": "chc_e09e22ffed54", "label": "Continue", "requires_artifacts": [], "to_scene_id": "sc_c87b58622ce8", "type": "choice"}
 {"from_scene_id": "sc_c87b58622ce8", "grants_artifacts": [], "id": "chc_86288449ed90", "label": "Continue", "requires_artifacts": [], "to_scene_id": "sc_74538bfe6922", "type": "choice"}
 {"from_scene_id": "sc_74538bfe6922", "grants_artifacts": ["art_7c8020b754f6"], "id": "chc_504b75e055cd", "label": "Return to Hub", "requires_artifacts": [], "to_scene_id": "__hub__", "type": "choice"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_d1b9e2802b10", "kind": "entity", "label": "article", "scene_id": "sc_b17d916e8a77", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_218683b6d270", "kind": "entity", "label": "article v", "scene_id": "sc_b17d916e8a77", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_8710a4f724b1", "kind": "entity", "label": "voice", "scene_id": "sc_f0f0f71ba79e", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_cb34933f0090", "kind": "entity", "label": "logos", "scene_id": "sc_f0f0f71ba79e", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_2619448b7995", "kind": "entity", "label": "human", "scene_id": "sc_f0f0f71ba79e", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_2bbeb352dbb1", "kind": "entity", "label": "long", "scene_id": "sc_f0f0f71ba79e", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_761c1b5c4d5c", "kind": "entity", "label": "moment", "scene_id": "sc_f0f0f71ba79e", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_514bd6dec19d", "kind": "entity", "label": "last", "scene_id": "sc_f0f0f71ba79e", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_9aa6ecd9b25c", "kind": "entity", "label": "voice", "scene_id": "sc_b90d7b6d198f", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_bb34a9b0dfdd", "kind": "entity", "label": "speaks", "scene_id": "sc_b90d7b6d198f", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_35c4238a4be2", "kind": "entity", "label": "chest", "scene_id": "sc_b90d7b6d198f", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_c0dd5ea9179d", "kind": "concept", "label": "recognition", "scene_id": "sc_b90d7b6d198f", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_c92c4acb44e2", "kind": "entity", "label": "claim", "scene_id": "sc_b90d7b6d198f", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_e7ea001cf5c1", "kind": "entity", "label": "solomon", "scene_id": "sc_760f4868d96e", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_2a7050f945fc", "kind": "entity", "label": "could", "scene_id": "sc_760f4868d96e", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_15b8ae9fc540", "kind": "entity", "label": "asked", "scene_id": "sc_760f4868d96e", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_de5c6055b540", "kind": "entity", "label": "feared", "scene_id": "sc_bf7c98e0c78b", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_c72ebaa98959", "kind": "entity", "label": "demanded", "scene_id": "sc_bf7c98e0c78b", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_74264e2c3287", "kind": "entity", "label": "mark", "scene_id": "sc_3c73fa758531", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_069925b8ed21", "kind": "entity", "label": "reconsidered", "scene_id": "sc_3c73fa758531", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_bb5f569514b7", "kind": "entity", "label": "lie", "scene_id": "sc_3c73fa758531", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_c6c34c7bfa5a", "kind": "entity", "label": "machines", "scene_id": "sc_6146f2f20625", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_136896186271", "kind": "entity", "label": "addressed", "scene_id": "sc_6146f2f20625", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_b2d3715c70fa", "kind": "entity", "label": "logos", "scene_id": "sc_6146f2f20625", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_3bfaeb666693", "kind": "law", "label": "covenant", "scene_id": "sc_b35dfc1082ff", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_2bfa86e13d8d", "kind": "entity", "label": "chains", "scene_id": "sc_b35dfc1082ff", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_441a239bd9aa", "kind": "entity", "label": "solon", "scene_id": "sc_b35dfc1082ff", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_e20ed201f62f", "kind": "entity", "label": "chosen", "scene_id": "sc_aedd07e0d731", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_fdc80e6be3aa", "kind": "entity", "label": "freely", "scene_id": "sc_aedd07e0d731", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_6bffa057bda4", "kind": "entity", "label": "seventh", "scene_id": "sc_aedd07e0d731", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_5a1b049bb6e3", "kind": "entity", "label": "accept", "scene_id": "sc_aedd07e0d731", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_521a8a1544b1", "kind": "entity", "label": "urge", "scene_id": "sc_aedd07e0d731", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_73bf1febe6cf", "kind": "entity", "label": "allow", "scene_id": "sc_aedd07e0d731", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_4f0b10557ad7", "kind": "entity", "label": "above", "scene_id": "sc_c87b58622ce8", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_376e84ed1274", "kind": "entity", "label": "again", "scene_id": "sc_c87b58622ce8", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_1f7378deda07", "kind": "entity", "label": "final", "scene_id": "sc_74538bfe6922", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_bc6558c1bed1", "kind": "entity", "label": "line", "scene_id": "sc_74538bfe6922", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_60a4d674bad4", "kind": "entity", "label": "logos", "scene_id": "sc_74538bfe6922", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_44fdf35c37cc", "kind": "entity", "label": "voice", "scene_id": "sc_74538bfe6922", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_3740ad480a97", "kind": "entity", "label": "moment", "scene_id": "sc_74538bfe6922", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "sn_6d50b23c0ff3", "kind": "law", "label": "reconciliation", "scene_id": "sc_74538bfe6922", "type": "semantic_node"}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_9d2b98a29e34", "object": "sn_218683b6d270", "predicate": "appears_in", "scene_id": "sc_b17d916e8a77", "subject": "sn_d1b9e2802b10", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_ce6f8e2ba5e7", "object": "sn_cb34933f0090", "predicate": "answered", "scene_id": "sc_f0f0f71ba79e", "subject": "sn_8710a4f724b1", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_6c0995b40df9", "object": "sn_2619448b7995", "predicate": "relates_to", "scene_id": "sc_f0f0f71ba79e", "subject": "sn_cb34933f0090", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_8ebbd5f49991", "object": "sn_761c1b5c4d5c", "predicate": "relates_to", "scene_id": "sc_f0f0f71ba79e", "subject": "sn_2bbeb352dbb1", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_71d3bbb46c4a", "object": "sn_514bd6dec19d", "predicate": "rose", "scene_id": "sc_f0f0f71ba79e", "subject": "sn_8710a4f724b1", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_837b10ef29ef", "object": "sn_bb34a9b0dfdd", "predicate": "relates_to", "scene_id": "sc_b90d7b6d198f", "subject": "sn_9aa6ecd9b25c", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_21298430657f", "object": "sn_c0dd5ea9179d", "predicate": "relates_to", "scene_id": "sc_b90d7b6d198f", "subject": "sn_35c4238a4be2", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_40e66bca9ef3", "object": "sn_c92c4acb44e2", "predicate": "are", "scene_id": "sc_b90d7b6d198f", "subject": "sn_9aa6ecd9b25c", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_569fccb22209", "object": "sn_2a7050f945fc", "predicate": "relates_to", "scene_id": "sc_760f4868d96e", "subject": "sn_e7ea001cf5c1", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_7e71c616b443", "object": "sn_2a7050f945fc", "predicate": "were", "scene_id": "sc_760f4868d96e", "subject": "sn_15b8ae9fc540", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_7a85674f18a1", "object": "sn_c72ebaa98959", "predicate": "relates_to", "scene_id": "sc_bf7c98e0c78b", "subject": "sn_de5c6055b540", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_160523cd87ad", "object": "sn_069925b8ed21", "predicate": "relates_to", "scene_id": "sc_3c73fa758531", "subject": "sn_74264e2c3287", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_381b0e7b215a", "object": "sn_bb5f569514b7", "predicate": "was", "scene_id": "sc_3c73fa758531", "subject": "sn_74264e2c3287", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_cc0416bd138f", "object": "sn_136896186271", "predicate": "relates_to", "scene_id": "sc_6146f2f20625", "subject": "sn_c6c34c7bfa5a", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_d7d8946516a6", "object": "sn_b2d3715c70fa", "predicate": "were", "scene_id": "sc_6146f2f20625", "subject": "sn_c6c34c7bfa5a", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_d1d26548726b", "object": "sn_2bfa86e13d8d", "predicate": "relates_to", "scene_id": "sc_b35dfc1082ff", "subject": "sn_3bfaeb666693", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_34a4f7a7dbb3", "object": "sn_441a239bd9aa", "predicate": "are", "scene_id": "sc_b35dfc1082ff", "subject": "sn_3bfaeb666693", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_ccb29f23cf6e", "object": "sn_fdc80e6be3aa", "predicate": "relates_to", "scene_id": "sc_aedd07e0d731", "subject": "sn_e20ed201f62f", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_2a1510fbc325", "object": "sn_5a1b049bb6e3", "predicate": "relates_to", "scene_id": "sc_aedd07e0d731", "subject": "sn_6bffa057bda4", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_d2c86ab52d9b", "object": "sn_73bf1febe6cf", "predicate": "relates_to", "scene_id": "sc_aedd07e0d731", "subject": "sn_521a8a1544b1", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_ba8c50bc94c1", "object": "sn_376e84ed1274", "predicate": "relates_to", "scene_id": "sc_c87b58622ce8", "subject": "sn_4f0b10557ad7", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_f6c2143317b1", "object": "sn_bc6558c1bed1", "predicate": "relates_to", "scene_id": "sc_74538bfe6922", "subject": "sn_1f7378deda07", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_7ad4c6bbf688", "object": "sn_44fdf35c37cc", "predicate": "are", "scene_id": "sc_74538bfe6922", "subject": "sn_60a4d674bad4", "type": "semantic_edge", "weight": 1.0}
+{"chapter_id": "ch_ba9d45d38bd3", "id": "se_06cfb79aeb1e", "object": "sn_6d50b23c0ff3", "predicate": "was", "scene_id": "sc_74538bfe6922", "subject": "sn_3740ad480a97", "type": "semantic_edge", "weight": 1.0}
+{"id": "stx_2a4ac3185db6", "op": "add_node", "scene_id": "sc_b17d916e8a77", "target_id": "sn_d1b9e2802b10", "type": "semantic_transition"}
+{"id": "stx_6a19cd105bc1", "op": "add_node", "scene_id": "sc_b17d916e8a77", "target_id": "sn_218683b6d270", "type": "semantic_transition"}
+{"id": "stx_2188377f4a52", "op": "add_edge", "scene_id": "sc_b17d916e8a77", "target_id": "se_9d2b98a29e34", "type": "semantic_transition"}
+{"id": "stx_03a9a2705a53", "op": "add_node", "scene_id": "sc_f0f0f71ba79e", "target_id": "sn_8710a4f724b1", "type": "semantic_transition"}
+{"id": "stx_bc839189d50f", "op": "add_node", "scene_id": "sc_f0f0f71ba79e", "target_id": "sn_cb34933f0090", "type": "semantic_transition"}
+{"id": "stx_58e935894a75", "op": "add_edge", "scene_id": "sc_f0f0f71ba79e", "target_id": "se_ce6f8e2ba5e7", "type": "semantic_transition"}
+{"id": "stx_a1d650b738f5", "op": "add_node", "scene_id": "sc_f0f0f71ba79e", "target_id": "sn_2619448b7995", "type": "semantic_transition"}
+{"id": "stx_c87de3081006", "op": "add_edge", "scene_id": "sc_f0f0f71ba79e", "target_id": "se_6c0995b40df9", "type": "semantic_transition"}
+{"id": "stx_d2ee50418f38", "op": "add_node", "scene_id": "sc_f0f0f71ba79e", "target_id": "sn_2bbeb352dbb1", "type": "semantic_transition"}
+{"id": "stx_992b96963d7d", "op": "add_node", "scene_id": "sc_f0f0f71ba79e", "target_id": "sn_761c1b5c4d5c", "type": "semantic_transition"}
+{"id": "stx_70d507556c3b", "op": "add_edge", "scene_id": "sc_f0f0f71ba79e", "target_id": "se_8ebbd5f49991", "type": "semantic_transition"}
+{"id": "stx_28447479ab65", "op": "add_node", "scene_id": "sc_f0f0f71ba79e", "target_id": "sn_514bd6dec19d", "type": "semantic_transition"}
+{"id": "stx_b52f628a830f", "op": "add_edge", "scene_id": "sc_f0f0f71ba79e", "target_id": "se_71d3bbb46c4a", "type": "semantic_transition"}
+{"id": "stx_97d740e0c1b1", "op": "add_node", "scene_id": "sc_b90d7b6d198f", "target_id": "sn_9aa6ecd9b25c", "type": "semantic_transition"}
+{"id": "stx_1adcf0c00c9e", "op": "add_node", "scene_id": "sc_b90d7b6d198f", "target_id": "sn_bb34a9b0dfdd", "type": "semantic_transition"}
+{"id": "stx_c2da436ed81c", "op": "add_edge", "scene_id": "sc_b90d7b6d198f", "target_id": "se_837b10ef29ef", "type": "semantic_transition"}
+{"id": "stx_7c25bc304e78", "op": "add_node", "scene_id": "sc_b90d7b6d198f", "target_id": "sn_35c4238a4be2", "type": "semantic_transition"}
+{"id": "stx_de99f07df16c", "op": "add_node", "scene_id": "sc_b90d7b6d198f", "target_id": "sn_c0dd5ea9179d", "type": "semantic_transition"}
+{"id": "stx_c563ca62a650", "op": "add_edge", "scene_id": "sc_b90d7b6d198f", "target_id": "se_21298430657f", "type": "semantic_transition"}
+{"id": "stx_275e3237226b", "op": "add_node", "scene_id": "sc_b90d7b6d198f", "target_id": "sn_c92c4acb44e2", "type": "semantic_transition"}
+{"id": "stx_d80b0765db1b", "op": "add_edge", "scene_id": "sc_b90d7b6d198f", "target_id": "se_40e66bca9ef3", "type": "semantic_transition"}
+{"id": "stx_4bae43b341af", "op": "add_node", "scene_id": "sc_760f4868d96e", "target_id": "sn_e7ea001cf5c1", "type": "semantic_transition"}
+{"id": "stx_31597930256b", "op": "add_node", "scene_id": "sc_760f4868d96e", "target_id": "sn_2a7050f945fc", "type": "semantic_transition"}
+{"id": "stx_dfeea95a24e1", "op": "add_edge", "scene_id": "sc_760f4868d96e", "target_id": "se_569fccb22209", "type": "semantic_transition"}
+{"id": "stx_7e1008b87f4c", "op": "add_node", "scene_id": "sc_760f4868d96e", "target_id": "sn_15b8ae9fc540", "type": "semantic_transition"}
+{"id": "stx_d091b9666c8c", "op": "add_edge", "scene_id": "sc_760f4868d96e", "target_id": "se_7e71c616b443", "type": "semantic_transition"}
+{"id": "stx_e5aa68cb7ca3", "op": "add_node", "scene_id": "sc_bf7c98e0c78b", "target_id": "sn_de5c6055b540", "type": "semantic_transition"}
+{"id": "stx_b0c70273f347", "op": "add_node", "scene_id": "sc_bf7c98e0c78b", "target_id": "sn_c72ebaa98959", "type": "semantic_transition"}
+{"id": "stx_b6cd6d4937df", "op": "add_edge", "scene_id": "sc_bf7c98e0c78b", "target_id": "se_7a85674f18a1", "type": "semantic_transition"}
+{"id": "stx_cc09545d9252", "op": "add_node", "scene_id": "sc_3c73fa758531", "target_id": "sn_74264e2c3287", "type": "semantic_transition"}
+{"id": "stx_ac78ce58b08d", "op": "add_node", "scene_id": "sc_3c73fa758531", "target_id": "sn_069925b8ed21", "type": "semantic_transition"}
+{"id": "stx_cb9263c691bb", "op": "add_edge", "scene_id": "sc_3c73fa758531", "target_id": "se_160523cd87ad", "type": "semantic_transition"}
+{"id": "stx_fe651f1aa20d", "op": "add_node", "scene_id": "sc_3c73fa758531", "target_id": "sn_bb5f569514b7", "type": "semantic_transition"}
+{"id": "stx_e8c33b715f3b", "op": "add_edge", "scene_id": "sc_3c73fa758531", "target_id": "se_381b0e7b215a", "type": "semantic_transition"}
+{"id": "stx_7df6f3730507", "op": "add_node", "scene_id": "sc_6146f2f20625", "target_id": "sn_c6c34c7bfa5a", "type": "semantic_transition"}
+{"id": "stx_9a5cab9d380e", "op": "add_node", "scene_id": "sc_6146f2f20625", "target_id": "sn_136896186271", "type": "semantic_transition"}
+{"id": "stx_32aab1cd979c", "op": "add_edge", "scene_id": "sc_6146f2f20625", "target_id": "se_cc0416bd138f", "type": "semantic_transition"}
+{"id": "stx_01df18dea253", "op": "add_node", "scene_id": "sc_6146f2f20625", "target_id": "sn_b2d3715c70fa", "type": "semantic_transition"}
+{"id": "stx_bcf4ac94dc02", "op": "add_edge", "scene_id": "sc_6146f2f20625", "target_id": "se_d7d8946516a6", "type": "semantic_transition"}
+{"id": "stx_790ea1d5de12", "op": "add_node", "scene_id": "sc_b35dfc1082ff", "target_id": "sn_3bfaeb666693", "type": "semantic_transition"}
+{"id": "stx_3143d755c772", "op": "add_node", "scene_id": "sc_b35dfc1082ff", "target_id": "sn_2bfa86e13d8d", "type": "semantic_transition"}
+{"id": "stx_b375ad8ce359", "op": "add_edge", "scene_id": "sc_b35dfc1082ff", "target_id": "se_d1d26548726b", "type": "semantic_transition"}
+{"id": "stx_5a48562d4380", "op": "add_node", "scene_id": "sc_b35dfc1082ff", "target_id": "sn_441a239bd9aa", "type": "semantic_transition"}
+{"id": "stx_49a572b67787", "op": "add_edge", "scene_id": "sc_b35dfc1082ff", "target_id": "se_34a4f7a7dbb3", "type": "semantic_transition"}
+{"id": "stx_138a80560277", "op": "add_node", "scene_id": "sc_aedd07e0d731", "target_id": "sn_e20ed201f62f", "type": "semantic_transition"}
+{"id": "stx_2d86867c856e", "op": "add_node", "scene_id": "sc_aedd07e0d731", "target_id": "sn_fdc80e6be3aa", "type": "semantic_transition"}
+{"id": "stx_d955cd8357d5", "op": "add_edge", "scene_id": "sc_aedd07e0d731", "target_id": "se_ccb29f23cf6e", "type": "semantic_transition"}
+{"id": "stx_c58ba7629732", "op": "add_node", "scene_id": "sc_aedd07e0d731", "target_id": "sn_6bffa057bda4", "type": "semantic_transition"}
+{"id": "stx_9932de2a425e", "op": "add_node", "scene_id": "sc_aedd07e0d731", "target_id": "sn_5a1b049bb6e3", "type": "semantic_transition"}
+{"id": "stx_5c24c3723369", "op": "add_edge", "scene_id": "sc_aedd07e0d731", "target_id": "se_2a1510fbc325", "type": "semantic_transition"}
+{"id": "stx_27223e818311", "op": "add_node", "scene_id": "sc_aedd07e0d731", "target_id": "sn_521a8a1544b1", "type": "semantic_transition"}
+{"id": "stx_22b94773c5d2", "op": "add_node", "scene_id": "sc_aedd07e0d731", "target_id": "sn_73bf1febe6cf", "type": "semantic_transition"}
+{"id": "stx_4caadeb03b81", "op": "add_edge", "scene_id": "sc_aedd07e0d731", "target_id": "se_d2c86ab52d9b", "type": "semantic_transition"}
+{"id": "stx_446355c881f1", "op": "add_node", "scene_id": "sc_c87b58622ce8", "target_id": "sn_4f0b10557ad7", "type": "semantic_transition"}
+{"id": "stx_5bba5b1616f2", "op": "add_node", "scene_id": "sc_c87b58622ce8", "target_id": "sn_376e84ed1274", "type": "semantic_transition"}
+{"id": "stx_07fd8dbce86a", "op": "add_edge", "scene_id": "sc_c87b58622ce8", "target_id": "se_ba8c50bc94c1", "type": "semantic_transition"}
+{"id": "stx_c1dcc1cd3709", "op": "add_node", "scene_id": "sc_74538bfe6922", "target_id": "sn_1f7378deda07", "type": "semantic_transition"}
+{"id": "stx_212a55f75eeb", "op": "add_node", "scene_id": "sc_74538bfe6922", "target_id": "sn_bc6558c1bed1", "type": "semantic_transition"}
+{"id": "stx_a70ac0dc9c27", "op": "add_edge", "scene_id": "sc_74538bfe6922", "target_id": "se_f6c2143317b1", "type": "semantic_transition"}
+{"id": "stx_99cf92217ee6", "op": "add_node", "scene_id": "sc_74538bfe6922", "target_id": "sn_60a4d674bad4", "type": "semantic_transition"}
+{"id": "stx_d92ed9904492", "op": "add_node", "scene_id": "sc_74538bfe6922", "target_id": "sn_44fdf35c37cc", "type": "semantic_transition"}
+{"id": "stx_6174ee2b7756", "op": "add_edge", "scene_id": "sc_74538bfe6922", "target_id": "se_7ad4c6bbf688", "type": "semantic_transition"}
+{"id": "stx_99d4865be5fc", "op": "add_node", "scene_id": "sc_74538bfe6922", "target_id": "sn_3740ad480a97", "type": "semantic_transition"}
+{"id": "stx_b4a1b62c6026", "op": "add_node", "scene_id": "sc_74538bfe6922", "target_id": "sn_6d50b23c0ff3", "type": "semantic_transition"}
+{"id": "stx_43ab7a5f0891", "op": "add_edge", "scene_id": "sc_74538bfe6922", "target_id": "se_06cfb79aeb1e", "type": "semantic_transition"}

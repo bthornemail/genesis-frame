@@ -38,11 +38,17 @@
       min-height: 100vh;
       padding: 14px;
     }
+    body.scene-first .shell {
+      grid-template-columns: minmax(0, 1fr);
+    }
     .panel, .stage-wrap {
       border: 1px solid var(--line);
       border-radius: 14px;
       background: var(--panel);
       box-shadow: var(--shadow);
+    }
+    body.scene-first .panel {
+      display: none;
     }
     .panel {
       padding: 12px;
@@ -131,6 +137,33 @@
     }
     textarea { min-height: 118px; resize: vertical; }
     .status { min-height: 72px; }
+    .field {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 7px;
+      font: 600 .7rem "IBM Plex Mono", monospace;
+      color: var(--muted);
+    }
+    .timeline-slider {
+      width: 100%;
+      accent-color: #1c6b97;
+    }
+    .control-grid {
+      display: grid;
+      gap: 6px;
+      grid-template-columns: 1fr 1fr;
+    }
+    .control-grid .field,
+    .control-grid button {
+      width: 100%;
+    }
+    .mono-note {
+      font: 600 .67rem "IBM Plex Mono", monospace;
+      color: var(--muted);
+      white-space: pre-wrap;
+    }
 
     .stage-wrap {
       display: grid;
@@ -148,6 +181,32 @@
       align-items: center;
     }
     .stats { display: flex; gap: 8px; flex-wrap: wrap; }
+    .plane-rail {
+      display: inline-grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 4px;
+      background: #fff;
+    }
+    .plane-rail button {
+      padding: 6px 10px;
+      font-size: .68rem;
+    }
+    .basis-rail {
+      display: inline-grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 4px;
+      background: #fff;
+    }
+    .basis-rail button {
+      padding: 6px 10px;
+      font-size: .68rem;
+    }
     #stage {
       position: relative;
       min-height: 560px;
@@ -169,20 +228,30 @@
       font-size: 1rem;
     }
     #stage.dragging #drop-overlay { display: grid; }
+    #btn-toggle-toolbox {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 12;
+      pointer-events: auto;
+    }
 
     .story-ui {
       position: absolute;
       z-index: 8;
-      inset: 12px;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
       display: grid;
       grid-template-columns: minmax(0, 1fr) 300px;
       gap: 10px;
       pointer-events: none;
+      max-height: min(48vh, 380px);
     }
     .story-main, .story-side {
       border: 1px solid rgba(191, 210, 226, .92);
       border-radius: 12px;
-      background: rgba(248, 252, 255, .95);
+      background: rgba(248, 252, 255, .86);
       box-shadow: var(--shadow);
       backdrop-filter: blur(2px);
       pointer-events: auto;
@@ -250,13 +319,52 @@
       font-size: .72rem;
       color: var(--muted);
     }
+    .semantic-list {
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow: auto;
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+    }
+    .nav-list {
+      display: grid;
+      gap: 6px;
+      max-height: 240px;
+      overflow: auto;
+    }
+    .node-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 7px;
+      font-size: .74rem;
+      color: var(--ink);
+      cursor: pointer;
+    }
+    .node-item.active {
+      border-color: #2f78a6;
+      box-shadow: 0 0 0 1px #2f78a63a inset;
+    }
+    .ctx-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .ctx-view {
+      margin-top: 6px;
+      min-height: 120px;
+      max-height: 260px;
+      overflow: auto;
+      white-space: pre-wrap;
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+    }
     .hidden { display: none !important; }
+    .simple-ui .advanced-only { display: none !important; }
 
     @media (max-width: 1100px) {
       .shell { grid-template-columns: 1fr; }
       .panel { grid-template-rows: repeat(6, auto); }
       #stage { min-height: 460px; }
-      .story-ui { grid-template-columns: 1fr; inset: 8px; }
+      .story-ui { grid-template-columns: 1fr; left: 8px; right: 8px; bottom: 8px; max-height: min(56vh, 460px); }
       .story-side { grid-template-rows: repeat(3, minmax(84px, auto)); }
     }
   </style>
@@ -270,6 +378,7 @@
       }
     }
   </script>
+  <script src="./nlp/bundle.js"></script>
   <script src="./narrative_data/narrative_bundle.js"></script>
 </head>
 <body>
@@ -278,13 +387,16 @@
       <header>
         <h1>Narrative Artifact Toolkit</h1>
         <div class="sub">Story mode + editor mode in one scene.</div>
+        <div class="row" style="margin-top:6px;">
+          <button id="btn-toggle-complexity-panel" class="primary">Advanced UI</button>
+        </div>
       </header>
 
       <div class="hint">
         Drag artifacts into scene. Story mode drives chapter progression and inventory gates across worlds.
       </div>
 
-      <div>
+      <div id="mode-saves-panel" data-plane-scope="FS">
         <div class="section-title">Mode + Saves</div>
         <div class="row">
           <button id="btn-story-mode" class="good">Story Mode</button>
@@ -299,14 +411,145 @@
           <button id="btn-export-save">Export Save</button>
           <button id="btn-import-save">Import Save</button>
         </div>
+        <div class="row" style="margin-top:6px;">
+          <button id="btn-export-projection">Export Projection</button>
+          <button id="btn-import-projection">Import Projection</button>
+          <button id="btn-copy-projection">Copy Projection JSON</button>
+          <button id="btn-export-aztec">Export Aztec PNG</button>
+          <button id="btn-import-aztec">Import Aztec PNG</button>
+        </div>
       </div>
 
-      <div>
+      <div id="artifacts-panel" data-plane-scope="GS">
         <div class="section-title">Scene Artifacts</div>
         <div id="artifact-list" class="artifact-list"></div>
       </div>
 
-      <div class="controls">
+      <div id="navigator-panel" class="hint advanced-only" data-plane-scope="GS">
+        <div class="section-title">Navigator</div>
+        <div id="node-nav-list" class="nav-list"></div>
+      </div>
+
+      <div id="context-panel" class="hint advanced-only" data-plane-scope="FS,GS,RS,US">
+        <div class="section-title">Node Context</div>
+        <div class="ctx-tabs">
+          <button data-plane-tab="FS">FS</button>
+          <button data-plane-tab="GS">GS</button>
+          <button data-plane-tab="RS">RS</button>
+          <button data-plane-tab="US">US</button>
+        </div>
+        <div id="ctx-actions" class="row" style="margin-top:6px;"></div>
+        <div id="ctx-view" class="mini ctx-view">(no node selected)</div>
+      </div>
+
+      <div id="timeline-panel" class="hint advanced-only" data-plane-scope="FS">
+        <div class="section-title">Timeline Replay</div>
+        <input id="timeline-slider" class="timeline-slider" type="range" min="0" max="0" value="0">
+        <div class="row" style="margin-top:6px;">
+          <button id="btn-timeline-back">Step -</button>
+          <button id="btn-timeline-forward">Step +</button>
+          <button id="btn-timeline-play" class="good">Play</button>
+          <button id="btn-timeline-pause">Pause</button>
+          <button id="btn-timeline-rewind">Rewind</button>
+          <button id="btn-export-events">Export Log</button>
+        </div>
+        <div id="timeline-meta" class="sub" style="margin-top:6px;">timeline: 0/0 · paused</div>
+      </div>
+
+      <div id="webhook-panel" class="hint advanced-only" data-plane-scope="FS">
+        <div class="section-title">Webhook Lanes</div>
+        <input id="outbound-url" class="field" type="text" placeholder="outbound webhook URL">
+        <input id="inbound-url" class="field" type="text" placeholder="inbound webhook URL" style="margin-top:6px;">
+        <div class="row" style="margin-top:6px;">
+          <button id="btn-webhook-ping">Emit Ping</button>
+          <button id="btn-webhook-poll">Poll Inbound</button>
+        </div>
+      </div>
+
+      <div id="cp-panel" class="hint advanced-only" data-plane-scope="RS">
+        <div class="section-title">Control Plane</div>
+        <div class="control-grid">
+          <select id="cp-channel" class="field">
+            <option>FS</option><option>GS</option><option>RS</option><option>US</option>
+          </select>
+          <input id="cp-lane" class="field" type="number" min="0" max="15" value="0">
+          <select id="cp-numsys" class="field">
+            <option value="2">bin</option>
+            <option value="8">oct</option>
+            <option value="10" selected>dec</option>
+            <option value="16">hex</option>
+            <option value="36">base36</option>
+            <option value="codepoint">codepoint</option>
+            <option value="mixed">mixed</option>
+          </select>
+          <select id="cp-scope" class="field">
+            <option value="next-unit">next-unit</option>
+            <option value="next-record">next-record</option>
+            <option value="next-group">next-group</option>
+            <option value="next-file">next-file</option>
+            <option value="quoted-literal">quoted-literal</option>
+            <option value="structural-region">structural-region</option>
+          </select>
+          <input id="cp-plane" class="field" type="number" min="0" max="16" value="0" placeholder="plane">
+          <input id="cp-codepoint" class="field" type="text" value="0041" placeholder="codepoint hex">
+        </div>
+        <div class="row" style="margin-top:6px;">
+          <button id="btn-cp-esc">ESC</button>
+          <button id="btn-cp-literal">ESC ESC</button>
+          <button id="btn-cp-apply" class="good">Apply Frame</button>
+          <button id="btn-cp-close">Close Scope</button>
+        </div>
+        <div class="row" style="margin-top:6px;">
+          <button id="btn-cp-codepoint">Emit Codepoint</button>
+        </div>
+        <div id="cp-status" class="mono-note" style="margin-top:6px;">mode=DATA scope=[] basis=10 numsys=10 lane=0 channel=FS</div>
+        <textarea id="cp-diagram-spec" class="field" rows="6" style="margin-top:6px;font-family:'JetBrains Mono','Fira Code',monospace;" placeholder="<diagram>
+  <node id=&quot;FS&quot; label=&quot;File&quot; channel=&quot;FS&quot;/>
+  <node id=&quot;GS&quot; label=&quot;Group&quot; channel=&quot;GS&quot;/>
+  <edge from=&quot;FS&quot; to=&quot;GS&quot; label=&quot;next-group&quot;/>
+</diagram>
+
+# or line mode:
+node FS File ch=FS
+node GS Group ch=GS
+FS->GS:next-group"></textarea>
+        <div class="row" style="margin-top:6px;">
+          <button id="btn-cp-render-diagram" class="good">Render UML/XML</button>
+          <button id="btn-cp-clear-diagram">Clear UML/XML</button>
+        </div>
+        <textarea id="menu-ring-spec" class="field" rows="5" style="margin-top:6px;font-family:'JetBrains Mono','Fira Code',monospace;" placeholder="<menu>
+  <item action=&quot;toggle_toolbox&quot; label=&quot;Toolbox&quot; color=&quot;#2f78a6&quot; angle=&quot;200&quot; radius=&quot;6.2&quot; />
+</menu>
+
+# or line mode:
+item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
+        <div class="row" style="margin-top:6px;">
+          <button id="btn-menu-render" class="good">Render Menu Ring</button>
+          <button id="btn-menu-reset">Reset Menu Ring</button>
+        </div>
+      </div>
+
+      <div id="semantic-panel" class="hint advanced-only" data-plane-scope="GS">
+        <div class="section-title">Semantic Inspector</div>
+        <div id="semantic-meta" class="mono-note">No semantic artifact.</div>
+        <div id="semantic-list" class="semantic-list mini" style="margin-top:6px;">(empty)</div>
+        <div class="row" style="margin-top:8px;">
+          <select id="template-select" class="field"></select>
+          <button id="btn-template-instantiate" class="good">Instantiate</button>
+        </div>
+        <div class="row" style="margin-top:6px;">
+          <button id="btn-template-import">Import Template</button>
+          <button id="btn-template-export">Export Template</button>
+          <button id="btn-template-clonepkg">Template -> Package</button>
+        </div>
+        <div class="row" style="margin-top:6px;">
+          <button id="btn-template-semantic">-> Semantic</button>
+          <button id="btn-template-control">-> Control UML</button>
+          <button id="btn-template-world">-> World</button>
+        </div>
+      </div>
+
+      <div id="transform-panel" class="controls advanced-only" data-plane-scope="US">
         <button id="btn-reset-camera">Reset Camera</button>
         <button id="btn-clear-scene" class="warn">Clear Scene Objects</button>
         <button id="btn-mode-move">Mode: Move (W)</button>
@@ -316,12 +559,12 @@
         <button id="btn-load-layout">Load Layout JSON</button>
       </div>
 
-      <div class="hint">
+      <div id="snap-panel" class="hint advanced-only" data-plane-scope="US">
         <div><strong>Snap Placement</strong> <input id="snap-enable" type="checkbox" checked> on</div>
         <div>step <input id="snap-step" type="number" value="1" min="0.1" step="0.1" style="width:70px;"></div>
       </div>
 
-      <textarea id="layout-json" spellcheck="false"></textarea>
+      <textarea id="layout-json" class="advanced-only" data-plane-scope="US" spellcheck="false"></textarea>
       <div id="status" class="status">READY</div>
     </aside>
 
@@ -330,41 +573,73 @@
         <div>
           <strong>Three.js Narrative Bootstrap</strong>
           <div class="sub">Phase flow: boot cinematic -> hub -> chapter scene -> hub return -> epilogue.</div>
+          <div class="row" style="margin-top:6px;" data-plane-scope="FS">
+            <button id="btn-toggle-complexity-stage">Advanced UI</button>
+          </div>
+          <div class="row" style="margin-top:6px;" data-plane-scope="FS">
+            <button id="btn-frame-world" class="good">World</button>
+            <button id="btn-frame-control">Control</button>
+            <button id="btn-frame-codepoint">Codepoint</button>
+            <button id="btn-frame-aztec">Aztec</button>
+            <button id="btn-frame-semantic">Semantic</button>
+            <button id="btn-frame-replay">Replay</button>
+          </div>
+          <div class="row" style="margin-top:6px;">
+            <div class="plane-rail">
+              <button id="btn-global-plane-fs">FS</button>
+              <button id="btn-global-plane-gs">GS</button>
+              <button id="btn-global-plane-rs">RS</button>
+              <button id="btn-global-plane-us">US</button>
+            </div>
+          </div>
+          <div class="row" style="margin-top:6px;">
+            <div class="basis-rail">
+              <button id="btn-global-basis-2">2</button>
+              <button id="btn-global-basis-10">10</button>
+              <button id="btn-global-basis-16">16</button>
+              <button id="btn-global-basis-codepoint">CP</button>
+              <button id="btn-global-basis-mixed">MIX</button>
+            </div>
+          </div>
         </div>
         <div class="stats">
           <span class="pill" id="pill-mode">mode: story</span>
+          <span class="pill" id="pill-frame">frame: world</span>
           <span class="pill" id="pill-phase">phase: boot_cinematic</span>
+          <span class="pill" id="pill-plane">plane: RS</span>
+          <span class="pill" id="pill-basis">basis: 10</span>
           <span class="pill" id="pill-objects">objects: 0</span>
           <span class="pill" id="pill-selected">selected: none</span>
         </div>
       </div>
 
       <div id="stage">
+        <button id="btn-toggle-toolbox" class="primary">Toolbox</button>
         <div id="drop-overlay">Drop Artifact</div>
 
         <div id="story-ui" class="story-ui">
-          <section class="story-main">
-            <div class="story-head">
+          <section class="story-main" data-plane-scope="RS,US">
+            <div class="story-head" data-plane-scope="RS">
               <h2 id="story-title" class="story-title">Boot Sequence</h2>
               <div class="row">
                 <button id="btn-story-next" class="primary">Continue</button>
                 <button id="btn-open-codex">Codex</button>
               </div>
             </div>
-            <div id="story-body" class="story-body"></div>
-            <div id="story-actions" class="story-actions"></div>
+            <div id="story-body" class="story-body" data-plane-scope="RS"></div>
+            <div id="story-actions" class="story-actions" data-plane-scope="US"></div>
           </section>
 
           <aside class="story-side">
-            <div class="story-block">
+            <div class="story-block" data-plane-scope="GS">
               <div class="section-title">Inventory</div>
               <div id="inventory-list" class="inv-list"></div>
             </div>
-            <div class="story-block">
+            <div class="story-block" data-plane-scope="GS">
               <div class="section-title">World Hub</div>
               <div id="hub-list" class="hub-list"></div>
             </div>
-            <div class="story-block">
+            <div class="story-block" data-plane-scope="FS">
               <div class="section-title">Codex</div>
               <div id="codex-list" class="codex-list"></div>
             </div>
@@ -396,6 +671,16 @@
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xd8e7f2);
+    const UI_FRAMES = {
+      WORLD: 'world',
+      CONTROL: 'control_plane',
+      CODEPOINT: 'codepoint_plane',
+      AZTEC: 'aztec_plane',
+      SEMANTIC: 'semantic_graph',
+      REPLAY: 'replay_timeline',
+    };
+    const SEM_NODE_KINDS = new Set(['entity', 'place', 'artifact', 'law', 'concept', 'event', 'role']);
+    const SEM_EDGE_KINDS = new Set(['seeks', 'binds', 'enters', 'reveals', 'opposes', 'unlocks', 'remembers', 'causes', 'requires', 'grants', 'relates_to']);
 
     const camera = new THREE.PerspectiveCamera(52, stage.clientWidth / stage.clientHeight, 0.1, 220);
     camera.position.set(7, 6, 9);
@@ -421,23 +706,48 @@
     dir.castShadow = true;
     scene.add(dir);
 
+    const worldRoot = new THREE.Group();
+    worldRoot.name = 'world-root';
+    scene.add(worldRoot);
+    const controlPlaneRoot = new THREE.Group();
+    controlPlaneRoot.name = 'control-plane-root';
+    scene.add(controlPlaneRoot);
+    const codepointPlaneRoot = new THREE.Group();
+    codepointPlaneRoot.name = 'codepoint-plane-root';
+    scene.add(codepointPlaneRoot);
+    const aztecRoot = new THREE.Group();
+    aztecRoot.name = 'aztec-root';
+    scene.add(aztecRoot);
+    const replayRoot = new THREE.Group();
+    replayRoot.name = 'replay-root';
+    scene.add(replayRoot);
+    const semanticRoot = new THREE.Group();
+    semanticRoot.name = 'semantic-root';
+    scene.add(semanticRoot);
+    const menuRoot = new THREE.Group();
+    menuRoot.name = 'menu-root';
+    worldRoot.add(menuRoot);
+
     const floor = new THREE.Mesh(
       new THREE.PlaneGeometry(140, 140),
       new THREE.MeshStandardMaterial({ color: 0xd4e1eb, roughness: 0.96, metalness: 0.02 })
     );
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
-    scene.add(floor);
+    worldRoot.add(floor);
 
     const grid = new THREE.GridHelper(140, 140, 0x88a4bc, 0xb8c9d8);
     grid.position.y = 0.002;
-    scene.add(grid);
+    worldRoot.add(grid);
 
     const placedRoot = new THREE.Group();
-    scene.add(placedRoot);
+    worldRoot.add(placedRoot);
     const hubRoot = new THREE.Group();
     hubRoot.name = 'hub-root';
-    scene.add(hubRoot);
+    worldRoot.add(hubRoot);
+    const narrativeRoot = new THREE.Group();
+    narrativeRoot.name = 'narrative-root';
+    worldRoot.add(narrativeRoot);
 
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
@@ -451,26 +761,351 @@
     const hubNodeMeshes = [];
     const hubNodeByChapter = new Map();
     const hubLineByChapter = new Map();
+    const cpChannelMeshById = new Map();
+    const menuMeshByAction = new Map();
+    let narrativeMarker = null;
+    let semanticGraph = null;
+    let isReplaying = false;
+    let playAccumulator = 0;
+    let sceneNounArtifacts = [];
+    let cpLaneMarker = null;
+    let cpCodepointMarker = null;
+    let cpDiagramRoot = null;
+    let lastDiagramSpec = null;
+    let uiSelectedNodeId = null;
+    let uiPlaneTab = 'RS';
+    let uiExpandedNodeIds = new Set();
+    let runtimeNodeIndex = new Map();
+    let uiComplexityMode = 'simple';
+    let sceneFirstMode = true;
+    let lastMenuRingSpec = null;
+    let progressionTemplateBundle = null;
+    const progressionTemplateById = new Map();
+    const builtInTemplateIds = new Set();
+    let cycleLabelSprite = null;
+    let cycleLabelSetText = null;
+    const semanticDocuments = new Map();
 
-    const SAVE_VERSION = 1;
+    const SAVE_VERSION = 2;
+    const TEMPLATE_STORE_KEY = "ak_progression_templates_custom_v1";
+    const DEFAULT_MENU_RING_SPEC = [
+      'item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2',
+      'item toggle_mode Mode color=#2f8f73 angle=220 radius=6.2',
+      'item cycle_frame Frame color=#9b7f2c angle=240 radius=6.2',
+      'item cycle_replay Cycle color=#8b4f92 angle=260 radius=6.2',
+    ].join('\n');
     const SLOT_KEYS = ["ak_story_slot_1", "ak_story_slot_2", "ak_story_slot_3"];
     const AUTOSAVE_KEY = "ak_story_autosave";
+    const BASIS_SPEC_STORE_KEY = "ak_basis_specs_custom_v1";
+    const BASIS_OPTIONS = ['2', '8', '10', '16', '36', 'codepoint', 'mixed'];
+    const BASIS_TO_NUMSYS = { '2': 2, '8': 8, '10': 10, '16': 16, '36': 36 };
+    const DEFAULT_BASIS_SPEC_BY_ID = {
+      bin_v1: { type: 'basis_spec', id: 'bin_v1', kind: '2', labels: ['value'] },
+      oct_v1: { type: 'basis_spec', id: 'oct_v1', kind: '8', labels: ['value'] },
+      dec_v1: { type: 'basis_spec', id: 'dec_v1', kind: '10', labels: ['value'] },
+      hex_v1: { type: 'basis_spec', id: 'hex_v1', kind: '16', labels: ['value'] },
+      base36_v1: { type: 'basis_spec', id: 'base36_v1', kind: '36', labels: ['value'] },
+      codepoint_v1: { type: 'basis_spec', id: 'codepoint_v1', kind: 'codepoint', labels: ['codepoint'] },
+      orbit_offset_v1: { type: 'basis_spec', id: 'orbit_offset_v1', kind: 'mixed', radices: [36], labels: ['offset', 'orbit'] },
+      channel_lane_v1: { type: 'basis_spec', id: 'channel_lane_v1', kind: 'mixed', radices: [16], labels: ['lane', 'channel'] },
+    };
+    const DEFAULT_BASIS_SPEC_ID_BY_KIND = {
+      '2': 'bin_v1',
+      '8': 'oct_v1',
+      '10': 'dec_v1',
+      '16': 'hex_v1',
+      '36': 'base36_v1',
+      codepoint: 'codepoint_v1',
+      mixed: 'orbit_offset_v1',
+    };
+    const basisSpecRegistry = new Map();
     let activeSlot = 0;
+    const controlPlaneState = {
+      mode: 'DATA',
+      channel: 'FS',
+      lane: 0,
+      numsys: 10,
+      basis: '10',
+      basis_spec_id: 'dec_v1',
+      scope_stack: [],
+      escape_pending: false,
+      codepoint_plane: 0,
+      codepoint_hex: '0041',
+      last_emitted_codepoint: null,
+      diagram_spec: '',
+    };
 
-    const GameDirector = {
-      state: {
+    function cloneState(state) {
+      return JSON.parse(JSON.stringify(state));
+    }
+
+    function stableStringify(value) {
+      if (value === null || typeof value !== 'object') return JSON.stringify(value);
+      if (Array.isArray(value)) return `[${value.map((x) => stableStringify(x)).join(',')}]`;
+      const keys = Object.keys(value).sort();
+      const body = keys.map((k) => `${JSON.stringify(k)}:${stableStringify(value[k])}`).join(',');
+      return `{${body}}`;
+    }
+
+    function bytesToBase64(bytes) {
+      let bin = '';
+      const chunk = 0x8000;
+      for (let i = 0; i < bytes.length; i += chunk) {
+        const part = bytes.subarray(i, Math.min(bytes.length, i + chunk));
+        bin += String.fromCharCode(...part);
+      }
+      return btoa(bin);
+    }
+
+    function base64ToBytes(b64) {
+      const bin = atob(String(b64 || ''));
+      const out = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i += 1) out[i] = bin.charCodeAt(i);
+      return out;
+    }
+
+    function utf8Encode(text) {
+      return new TextEncoder().encode(String(text || ''));
+    }
+
+    function utf8Decode(bytes) {
+      return new TextDecoder().decode(bytes);
+    }
+
+    const ALLOWED_ARTIFACT_KINDS = new Set([
+      'projection_package',
+      'semantic_graph_artifact',
+      'progression_template',
+      'control_diagram_artifact',
+    ]);
+
+    async function sha256Hex(bytes) {
+      const digest = await crypto.subtle.digest('SHA-256', bytes);
+      return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function createArtifactPackageV1(artifactKind, payloadObject) {
+      const kind = String(artifactKind || 'projection_package');
+      if (!ALLOWED_ARTIFACT_KINDS.has(kind)) throw new Error(`unsupported artifact kind: ${kind}`);
+      const canonicalJson = stableStringify(payloadObject);
+      const payloadBytes = utf8Encode(canonicalJson);
+      const hash = await sha256Hex(payloadBytes);
+      return {
+        type: 'artifact_package',
+        version: 1,
+        artifact_kind: kind,
+        payload_encoding: 'utf8-json',
+        payload_b64: bytesToBase64(payloadBytes),
+        fingerprint_algo: 'sha256',
+        fingerprint: `sha256:${hash}`,
+        created_at: new Date().toISOString(),
+      };
+    }
+
+    async function verifyArtifactPackageV1(pkg) {
+      if (!pkg || typeof pkg !== 'object') throw new Error('artifact package must be object');
+      if (pkg.type !== 'artifact_package' || Number(pkg.version) !== 1) throw new Error('unsupported artifact package type/version');
+      if (!ALLOWED_ARTIFACT_KINDS.has(String(pkg.artifact_kind || ''))) throw new Error(`unsupported artifact kind: ${pkg.artifact_kind}`);
+      if (pkg.payload_encoding !== 'utf8-json') throw new Error('unsupported payload encoding');
+      if (pkg.fingerprint_algo !== 'sha256') throw new Error('unsupported fingerprint algorithm');
+      const payloadBytes = base64ToBytes(pkg.payload_b64 || '');
+      const got = `sha256:${await sha256Hex(payloadBytes)}`;
+      if (got !== pkg.fingerprint) throw new Error('artifact fingerprint mismatch');
+      const payload = JSON.parse(utf8Decode(payloadBytes));
+      return { payload, payloadBytes };
+    }
+
+    let bwipLoadPromise = null;
+    function loadBwipJs() {
+      if (window.bwipjs) return Promise.resolve(window.bwipjs);
+      if (bwipLoadPromise) return bwipLoadPromise;
+      bwipLoadPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/bwip-js@4.7.0/dist/bwip-js-min.js';
+        script.onload = () => (window.bwipjs ? resolve(window.bwipjs) : reject(new Error('bwipjs unavailable')));
+        script.onerror = () => reject(new Error('failed to load bwip-js'));
+        document.head.appendChild(script);
+      });
+      return bwipLoadPromise;
+    }
+
+    let zxingLoadPromise = null;
+    function loadZxing() {
+      if (zxingLoadPromise) return zxingLoadPromise;
+      zxingLoadPromise = import('https://unpkg.com/@zxing/library@0.21.3/esm/index.js');
+      return zxingLoadPromise;
+    }
+
+    function normalizeBasisSpec(spec) {
+      if (!spec || typeof spec !== 'object') throw new Error('basis_spec must be an object');
+      const id = String(spec.id || '').trim();
+      const kind = String(spec.kind || '').trim();
+      if (!id) throw new Error('basis_spec.id is required');
+      if (!BASIS_OPTIONS.includes(kind)) throw new Error(`basis_spec.kind must be one of ${BASIS_OPTIONS.join(',')}`);
+      const out = {
+        type: 'basis_spec',
+        id,
+        kind,
+        labels: Array.isArray(spec.labels) ? spec.labels.map((x) => String(x)) : ['value'],
+      };
+      if (kind === 'mixed') {
+        const radices = Array.isArray(spec.radices) ? spec.radices.map((x) => Number(x)) : [];
+        if (!radices.length || radices.some((x) => !Number.isFinite(x) || x < 2 || !Number.isInteger(x))) {
+          throw new Error('mixed basis_spec.radices must be integer array, each >= 2');
+        }
+        out.radices = radices;
+      }
+      return out;
+    }
+
+    function saveCustomBasisSpecs() {
+      const custom = [];
+      for (const [id, spec] of basisSpecRegistry.entries()) {
+        if (!Object.hasOwn(DEFAULT_BASIS_SPEC_BY_ID, id)) custom.push(spec);
+      }
+      localStorage.setItem(BASIS_SPEC_STORE_KEY, JSON.stringify({ version: 1, specs: custom }));
+    }
+
+    function registerBasisSpec(spec, opts = { persist: true }) {
+      const normalized = normalizeBasisSpec(spec);
+      basisSpecRegistry.set(normalized.id, normalized);
+      if (opts.persist !== false) saveCustomBasisSpecs();
+      return normalized.id;
+    }
+
+    function loadBasisSpecs() {
+      basisSpecRegistry.clear();
+      for (const spec of Object.values(DEFAULT_BASIS_SPEC_BY_ID)) {
+        basisSpecRegistry.set(spec.id, normalizeBasisSpec(spec));
+      }
+      try {
+        const raw = localStorage.getItem(BASIS_SPEC_STORE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        for (const spec of (parsed.specs || [])) registerBasisSpec(spec, { persist: false });
+      } catch {
+        // keep defaults only
+      }
+    }
+
+    function basisSpecById(specId) {
+      if (specId && basisSpecRegistry.has(specId)) return basisSpecRegistry.get(specId);
+      const fallbackId = DEFAULT_BASIS_SPEC_ID_BY_KIND[String(controlPlaneState.basis || '10')] || 'dec_v1';
+      return basisSpecRegistry.get(fallbackId) || basisSpecRegistry.get('dec_v1');
+    }
+
+    function resolveBasisSpec(basis, specId = null) {
+      if (specId && basisSpecRegistry.has(specId)) {
+        const byId = basisSpecRegistry.get(specId);
+        if (byId.kind === basis) return byId;
+      }
+      const def = DEFAULT_BASIS_SPEC_ID_BY_KIND[basis] || 'dec_v1';
+      return basisSpecRegistry.get(def) || basisSpecRegistry.get('dec_v1');
+    }
+
+    function mixedEncode(value, radices) {
+      let v = Number(value) >>> 0;
+      const coords = [];
+      for (const r of radices) {
+        coords.push(v % r);
+        v = Math.floor(v / r);
+      }
+      coords.push(v);
+      return coords;
+    }
+
+    function mixedDecode(coords, radices) {
+      if (!Array.isArray(coords) || coords.length !== radices.length + 1) throw new Error('mixed coords length mismatch');
+      let v = Number(coords[coords.length - 1]);
+      if (!Number.isFinite(v) || v < 0 || !Number.isInteger(v)) throw new Error('mixed tail must be non-negative integer');
+      for (let i = radices.length - 1; i >= 0; i -= 1) {
+        const c = Number(coords[i]);
+        const r = Number(radices[i]);
+        if (!Number.isFinite(c) || c < 0 || c >= r || !Number.isInteger(c)) throw new Error('mixed coordinate out of range');
+        v = c + r * v;
+      }
+      return v >>> 0;
+    }
+
+    function projectValue(value, plane, basisSpecInput) {
+      const basisSpec = typeof basisSpecInput === 'string' ? basisSpecById(basisSpecInput) : normalizeBasisSpec(basisSpecInput || basisSpecById(null));
+      const v = Number(value) >>> 0;
+      if (basisSpec.kind === '2') return { plane, basis_spec_id: basisSpec.id, basis: '2', rendered: `0b${v.toString(2)}` };
+      if (basisSpec.kind === '8') return { plane, basis_spec_id: basisSpec.id, basis: '8', rendered: `0o${v.toString(8)}` };
+      if (basisSpec.kind === '10') return { plane, basis_spec_id: basisSpec.id, basis: '10', rendered: String(v) };
+      if (basisSpec.kind === '16') return { plane, basis_spec_id: basisSpec.id, basis: '16', rendered: `0x${v.toString(16).toUpperCase()}` };
+      if (basisSpec.kind === '36') return { plane, basis_spec_id: basisSpec.id, basis: '36', rendered: v.toString(36).toUpperCase() };
+      if (basisSpec.kind === 'codepoint') return { plane, basis_spec_id: basisSpec.id, basis: 'codepoint', rendered: `U+${v.toString(16).toUpperCase().padStart(4, '0')}` };
+      const coords = mixedEncode(v, basisSpec.radices || [36]);
+      return { plane, basis_spec_id: basisSpec.id, basis: 'mixed', rendered: { coords, radices: basisSpec.radices || [36] } };
+    }
+
+    function interpretValue(representation, plane, basisSpecInput) {
+      const basisSpec = typeof basisSpecInput === 'string' ? basisSpecById(basisSpecInput) : normalizeBasisSpec(basisSpecInput || basisSpecById(null));
+      if (basisSpec.kind === '2') return parseInt(String(representation).replace(/^0b/i, ''), 2) >>> 0;
+      if (basisSpec.kind === '8') return parseInt(String(representation).replace(/^0o/i, ''), 8) >>> 0;
+      if (basisSpec.kind === '10') return parseInt(String(representation), 10) >>> 0;
+      if (basisSpec.kind === '16') return parseInt(String(representation).replace(/^0x/i, ''), 16) >>> 0;
+      if (basisSpec.kind === '36') return parseInt(String(representation), 36) >>> 0;
+      if (basisSpec.kind === 'codepoint') return parseInt(String(representation).replace(/^U\+/i, ''), 16) >>> 0;
+      if (!representation || typeof representation !== 'object' || !Array.isArray(representation.coords)) {
+        throw new Error('mixed representation must be object with coords[]');
+      }
+      return mixedDecode(representation.coords, basisSpec.radices || [36]);
+    }
+
+    function slug(text) {
+      return String(text || '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'node';
+    }
+
+    function sid(value, prefix = 'id') {
+      let h = 2166136261;
+      const s = String(value || '');
+      for (let i = 0; i < s.length; i += 1) {
+        h ^= s.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return `${prefix}_${(h >>> 0).toString(16).padStart(8, '0')}`;
+    }
+
+    function makeGenesisState(prologueId) {
+      return {
         version: SAVE_VERSION,
         current_phase: 'boot_cinematic',
-        current_chapter: null,
+        current_chapter: prologueId || null,
         current_scene_id: null,
         inventory: [],
-        unlocked_chapters: [],
+        unlocked_chapters: prologueId ? [prologueId] : [],
         seen_scenes: [],
         choice_history: [],
         completed_chapters: [],
         layout: null,
         boot_index: 0,
-      },
+        event_log: [],
+        timeline_index: 0,
+        play_state: 'paused',
+        play_speed: 1,
+        ui_frame: UI_FRAMES.WORLD,
+        ui_subframe: null,
+        ui_complexity_mode: 'simple',
+        ui_selected_node_id: null,
+        ui_plane_tab: 'RS',
+        ui_basis: '10',
+        ui_basis_spec_id: 'dec_v1',
+        ui_expanded_node_ids: [],
+        scene_first_mode: true,
+        menu_ring_spec: DEFAULT_MENU_RING_SPEC,
+        cp_diagram_spec: '',
+        semantic_graph_artifact: null,
+        semantic_artifact_meta: null,
+      };
+    }
+
+    const GameDirector = {
+      state: makeGenesisState(null),
       chapterMap: NARRATIVE_DATA.chapters,
       gateList: NARRATIVE_DATA.hub.gates || [],
       chapterOrder: Object.values(NARRATIVE_DATA.chapters)
@@ -479,21 +1114,30 @@
         .map((m) => m.id),
       prologueId: NARRATIVE_DATA.hub.meta.prologue_chapter_id,
 
+      nextEventTime() {
+        return this.state.event_log.length;
+      },
+
+      appendEvent(type, payload = {}, source = 'local') {
+        if (isReplaying) return;
+        const event = {
+          t: this.nextEventTime(),
+          type,
+          source,
+          chapter_id: this.state.current_chapter,
+          scene_id: this.state.current_scene_id,
+          payload,
+        };
+        this.state.event_log.push(event);
+        this.state.timeline_index = this.state.event_log.length;
+        emitOutboundWebhook(event);
+        updateTimelineUI();
+      },
+
       startNewGame(slotIndex = 0) {
         activeSlot = slotIndex;
-        this.state = {
-          version: SAVE_VERSION,
-          current_phase: 'boot_cinematic',
-          current_chapter: this.prologueId,
-          current_scene_id: null,
-          inventory: [],
-          unlocked_chapters: [this.prologueId],
-          seen_scenes: [],
-          choice_history: [],
-          completed_chapters: [],
-          layout: null,
-          boot_index: 0,
-        };
+        this.state = makeGenesisState(this.prologueId);
+        this.appendEvent('new_game', { slot: slotIndex });
         this.saveGame(slotIndex);
         this.render();
       },
@@ -520,6 +1164,27 @@
             completed_chapters: Array.isArray(parsed.completed_chapters) ? parsed.completed_chapters : [],
             layout: parsed.layout || null,
             boot_index: Number.isInteger(parsed.boot_index) ? parsed.boot_index : 0,
+            event_log: Array.isArray(parsed.event_log) ? parsed.event_log : [],
+            timeline_index: Number.isInteger(parsed.timeline_index) ? parsed.timeline_index : (Array.isArray(parsed.event_log) ? parsed.event_log.length : 0),
+            play_state: parsed.play_state === 'playing' || parsed.play_state === 'rewinding' ? parsed.play_state : 'paused',
+            play_speed: Number(parsed.play_speed) > 0 ? Number(parsed.play_speed) : 1,
+            ui_frame: Object.values(UI_FRAMES).includes(parsed.ui_frame) ? parsed.ui_frame : UI_FRAMES.WORLD,
+            ui_subframe: parsed.ui_subframe || null,
+            ui_complexity_mode: parsed.ui_complexity_mode === 'advanced' ? 'advanced' : 'simple',
+            ui_selected_node_id: typeof parsed.ui_selected_node_id === 'string' ? parsed.ui_selected_node_id : null,
+            ui_plane_tab: ['FS', 'GS', 'RS', 'US'].includes(parsed.ui_plane_tab)
+              ? parsed.ui_plane_tab
+              : (['FS', 'GS', 'RS', 'US'].includes(parsed.ui_context_tab) ? parsed.ui_context_tab : 'RS'),
+            ui_basis: BASIS_OPTIONS.includes(String(parsed.ui_basis || '')) ? String(parsed.ui_basis) : '10',
+            ui_basis_spec_id: typeof parsed.ui_basis_spec_id === 'string' ? parsed.ui_basis_spec_id : null,
+            ui_expanded_node_ids: Array.isArray(parsed.ui_expanded_node_ids) ? parsed.ui_expanded_node_ids.filter((x) => typeof x === 'string') : [],
+            scene_first_mode: parsed.scene_first_mode !== false,
+            menu_ring_spec: typeof parsed.menu_ring_spec === 'string' ? parsed.menu_ring_spec : DEFAULT_MENU_RING_SPEC,
+            cp_diagram_spec: typeof parsed.cp_diagram_spec === 'string' ? parsed.cp_diagram_spec : '',
+            semantic_graph_artifact: parsed.semantic_graph_artifact && typeof parsed.semantic_graph_artifact === 'object'
+              ? cloneState(parsed.semantic_graph_artifact) : null,
+            semantic_artifact_meta: parsed.semantic_artifact_meta && typeof parsed.semantic_artifact_meta === 'object'
+              ? cloneState(parsed.semantic_artifact_meta) : null,
           };
           this.render();
           setStatus(`Loaded slot ${slotIndex + 1}`);
@@ -542,14 +1207,36 @@
         this.state.current_chapter = chapterId;
         this.state.current_scene_id = this.getIntroScene(chapterId)?.id || null;
         this.state.current_phase = 'chapter_scene';
+        this.appendEvent('chapter_entered', { chapter_id: chapterId, reason: 'jump' }, 'debug');
         this.render();
       },
 
       grantArtifact(artifactId) {
-        if (!this.state.inventory.includes(artifactId)) {
-          this.state.inventory.push(artifactId);
+        if (this.addArtifactToInventory(artifactId)) {
           this.autosave();
           this.render();
+        }
+      },
+
+      addArtifactToInventory(artifactId) {
+        if (this.state.inventory.includes(artifactId)) return false;
+        this.state.inventory.push(artifactId);
+        ensureInventoryArtifactInScene(artifactId);
+        this.appendEvent('artifact_granted', { artifact_id: artifactId });
+        return true;
+      },
+
+      setSemanticArtifact(artifact, meta = null, opts = {}) {
+        const normalized = artifact && typeof artifact === 'object' ? cloneState(artifact) : null;
+        const normalizedMeta = meta && typeof meta === 'object' ? cloneState(meta) : null;
+        this.state.semantic_graph_artifact = normalized;
+        this.state.semantic_artifact_meta = normalizedMeta;
+        if (opts.emit !== false && normalized) {
+          this.appendEvent(
+            'semantic_graph_materialized',
+            { artifact: normalized, meta: normalizedMeta },
+            opts.source || 'semantic'
+          );
         }
       },
 
@@ -571,6 +1258,27 @@
           completed_chapters: Array.isArray(parsed.completed_chapters) ? parsed.completed_chapters : [],
           layout: parsed.layout || null,
           boot_index: Number.isInteger(parsed.boot_index) ? parsed.boot_index : 0,
+          event_log: Array.isArray(parsed.event_log) ? parsed.event_log : [],
+          timeline_index: Number.isInteger(parsed.timeline_index) ? parsed.timeline_index : (Array.isArray(parsed.event_log) ? parsed.event_log.length : 0),
+          play_state: parsed.play_state === 'playing' || parsed.play_state === 'rewinding' ? parsed.play_state : 'paused',
+          play_speed: Number(parsed.play_speed) > 0 ? Number(parsed.play_speed) : 1,
+          ui_frame: Object.values(UI_FRAMES).includes(parsed.ui_frame) ? parsed.ui_frame : UI_FRAMES.WORLD,
+          ui_subframe: parsed.ui_subframe || null,
+          ui_complexity_mode: parsed.ui_complexity_mode === 'advanced' ? 'advanced' : 'simple',
+          ui_selected_node_id: typeof parsed.ui_selected_node_id === 'string' ? parsed.ui_selected_node_id : null,
+          ui_plane_tab: ['FS', 'GS', 'RS', 'US'].includes(parsed.ui_plane_tab)
+            ? parsed.ui_plane_tab
+            : (['FS', 'GS', 'RS', 'US'].includes(parsed.ui_context_tab) ? parsed.ui_context_tab : 'RS'),
+          ui_basis: BASIS_OPTIONS.includes(String(parsed.ui_basis || '')) ? String(parsed.ui_basis) : '10',
+          ui_basis_spec_id: typeof parsed.ui_basis_spec_id === 'string' ? parsed.ui_basis_spec_id : null,
+          ui_expanded_node_ids: Array.isArray(parsed.ui_expanded_node_ids) ? parsed.ui_expanded_node_ids.filter((x) => typeof x === 'string') : [],
+          scene_first_mode: parsed.scene_first_mode !== false,
+          menu_ring_spec: typeof parsed.menu_ring_spec === 'string' ? parsed.menu_ring_spec : DEFAULT_MENU_RING_SPEC,
+          cp_diagram_spec: typeof parsed.cp_diagram_spec === 'string' ? parsed.cp_diagram_spec : '',
+          semantic_graph_artifact: parsed.semantic_graph_artifact && typeof parsed.semantic_graph_artifact === 'object'
+            ? cloneState(parsed.semantic_graph_artifact) : null,
+          semantic_artifact_meta: parsed.semantic_artifact_meta && typeof parsed.semantic_artifact_meta === 'object'
+            ? cloneState(parsed.semantic_artifact_meta) : null,
         };
         this.saveGame(slotIndex);
         this.autosave();
@@ -605,11 +1313,168 @@
         return (requirements || []).every((r) => this.state.inventory.includes(r));
       },
 
+      applyEvent(event) {
+        const payload = event.payload || {};
+        if (event.type === 'boot_advanced') {
+          this.state.boot_index = Math.max(0, Number(payload.boot_index ?? this.state.boot_index + 1));
+          if (payload.begin_prologue) {
+            this.state.current_phase = 'chapter_scene';
+            this.state.current_chapter = this.prologueId;
+            this.state.current_scene_id = this.getIntroScene(this.prologueId)?.id || null;
+          }
+          return;
+        }
+        if (event.type === 'chapter_entered') {
+          const chapterId = payload.chapter_id;
+          if (!this.chapterMap[chapterId]) return;
+          const gate = this.gateFor(chapterId);
+          if (gate && !this.hasRequired(gate.requires_artifacts || [])) return;
+          this.state.current_chapter = chapterId;
+          this.state.current_scene_id = this.getIntroScene(chapterId)?.id || null;
+          this.state.current_phase = 'chapter_scene';
+          return;
+        }
+        if (event.type === 'scene_entered') {
+          const sceneId = payload.scene_id;
+          if (sceneId && !this.state.seen_scenes.includes(sceneId)) this.state.seen_scenes.push(sceneId);
+          this.state.current_scene_id = sceneId || this.state.current_scene_id;
+          return;
+        }
+        if (event.type === 'choice_selected') {
+          const chapterId = payload.chapter_id || this.state.current_chapter;
+          const choiceId = payload.choice_id;
+          if (!chapterId || !choiceId) return;
+          const choices = this.getRecords(chapterId, 'choice');
+          const choice = choices.find((c) => c.id === choiceId);
+          if (!choice) return;
+          this.state.choice_history.push({
+            chapter_id: chapterId,
+            scene_id: this.state.current_scene_id,
+            choice_id: choice.id,
+          });
+          for (const aid of choice.grants_artifacts || []) {
+            if (!this.state.inventory.includes(aid)) this.state.inventory.push(aid);
+          }
+          if (choice.to_scene_id === '__hub__') {
+            if (!this.state.completed_chapters.includes(chapterId)) this.state.completed_chapters.push(chapterId);
+            const meta = this.chapterMap[chapterId]?.meta;
+            this.state.current_phase = meta?.phase === 'epilogue' ? 'epilogue' : 'hub_return';
+            this.state.current_scene_id = null;
+          } else {
+            this.state.current_scene_id = choice.to_scene_id;
+            this.state.current_phase = 'chapter_scene';
+          }
+          return;
+        }
+        if (event.type === 'artifact_granted') {
+          const aid = payload.artifact_id;
+          if (aid && !this.state.inventory.includes(aid)) this.state.inventory.push(aid);
+          return;
+        }
+        if (event.type === 'chapter_unlocked') {
+          const chapterId = payload.chapter_id;
+          if (chapterId && !this.state.unlocked_chapters.includes(chapterId)) this.state.unlocked_chapters.push(chapterId);
+          return;
+        }
+        if (event.type === 'phase_set') {
+          if (payload.phase) this.state.current_phase = payload.phase;
+          return;
+        }
+        if (event.type === 'semantic_graph_materialized') {
+          this.state.semantic_graph_artifact = payload.artifact && typeof payload.artifact === 'object'
+            ? cloneState(payload.artifact) : null;
+          this.state.semantic_artifact_meta = payload.meta && typeof payload.meta === 'object'
+            ? cloneState(payload.meta) : null;
+          return;
+        }
+        if (event.type === 'control_plane') {
+          if (payload.action === 'esc_open') {
+            controlPlaneState.mode = 'ESCAPE_PENDING';
+            return;
+          }
+          if (payload.action === 'esc_literal') {
+            controlPlaneState.mode = 'DATA';
+            return;
+          }
+          if (payload.action === 'set_frame') {
+            const prev = {
+              numsys: controlPlaneState.numsys,
+              basis: controlPlaneState.basis,
+              basis_spec_id: controlPlaneState.basis_spec_id,
+              channel: controlPlaneState.channel,
+              lane: controlPlaneState.lane,
+            };
+            controlPlaneState.channel = payload.channel || controlPlaneState.channel;
+            controlPlaneState.lane = Number(payload.lane ?? controlPlaneState.lane);
+            if (BASIS_OPTIONS.includes(String(payload.basis || ''))) controlPlaneState.basis = String(payload.basis);
+            if (typeof payload.basis_spec_id === 'string' && basisSpecRegistry.has(payload.basis_spec_id)) {
+              controlPlaneState.basis_spec_id = payload.basis_spec_id;
+            }
+            controlPlaneState.numsys = Number(payload.numsys ?? controlPlaneState.numsys);
+            controlPlaneState.mode = 'CONTROL';
+            if (payload.scope) cpPushScope(payload.scope, prev);
+            return;
+          }
+          if (payload.action === 'emit_codepoint') {
+            controlPlaneState.last_emitted_codepoint = payload.codepoint || null;
+            return;
+          }
+          if (payload.action === 'close_scope') {
+            cpPopScope();
+            return;
+          }
+          if (payload.action === 'uml_render') {
+            this.state.cp_diagram_spec = String(payload.spec || '');
+            controlPlaneState.diagram_spec = this.state.cp_diagram_spec;
+            return;
+          }
+          if (payload.action === 'uml_clear') {
+            this.state.cp_diagram_spec = '';
+            controlPlaneState.diagram_spec = '';
+            return;
+          }
+        }
+      },
+
+      replayTo(targetIndex) {
+        const idx = Math.max(0, Math.min(targetIndex, this.state.event_log.length));
+        const log = this.state.event_log.slice();
+        const preserved = {
+          layout: this.state.layout,
+          play_state: this.state.play_state,
+          play_speed: this.state.play_speed,
+          event_log: log,
+          ui_frame: this.state.ui_frame,
+          ui_subframe: this.state.ui_subframe,
+          ui_plane_tab: this.state.ui_plane_tab,
+          ui_basis: this.state.ui_basis,
+          ui_basis_spec_id: this.state.ui_basis_spec_id,
+        };
+        isReplaying = true;
+        this.state = {
+          ...makeGenesisState(this.prologueId),
+          event_log: log,
+          play_state: preserved.play_state,
+          play_speed: preserved.play_speed,
+          layout: preserved.layout,
+          ui_frame: preserved.ui_frame,
+          ui_subframe: preserved.ui_subframe,
+          ui_plane_tab: preserved.ui_plane_tab,
+          ui_basis: preserved.ui_basis,
+          ui_basis_spec_id: preserved.ui_basis_spec_id,
+        };
+        for (let i = 0; i < idx; i += 1) this.applyEvent(log[i]);
+        this.state.timeline_index = idx;
+        this.render();
+        isReplaying = false;
+      },
+
       unlockEligibleChapters() {
         for (const gate of this.gateList) {
           if (this.state.unlocked_chapters.includes(gate.target_chapter_id)) continue;
           if (this.hasRequired(gate.requires_artifacts)) {
             this.state.unlocked_chapters.push(gate.target_chapter_id);
+            this.appendEvent('chapter_unlocked', { chapter_id: gate.target_chapter_id });
           }
         }
       },
@@ -625,6 +1490,8 @@
         const intro = this.getIntroScene(chapterId);
         this.state.current_scene_id = intro ? intro.id : null;
         this.state.current_phase = 'chapter_scene';
+        cpResolveBoundary('group');
+        this.appendEvent('chapter_entered', { chapter_id: chapterId });
         this.autosave();
         this.render();
       },
@@ -639,9 +1506,8 @@
           return;
         }
 
-        for (const aid of choice.grants_artifacts || []) {
-          if (!this.state.inventory.includes(aid)) this.state.inventory.push(aid);
-        }
+        this.appendEvent('choice_selected', { chapter_id: chapterId, choice_id: choice.id });
+        for (const aid of choice.grants_artifacts || []) this.addArtifactToInventory(aid);
 
         this.state.choice_history.push({
           chapter_id: chapterId,
@@ -657,6 +1523,7 @@
           const meta = this.chapterMap[chapterId]?.meta;
           this.state.current_phase = meta?.phase === 'epilogue' ? 'epilogue' : 'hub_return';
           this.state.current_scene_id = null;
+          cpResolveBoundary('file');
         } else {
           this.state.current_scene_id = choice.to_scene_id;
         }
@@ -666,7 +1533,11 @@
       },
 
       markSceneSeen(sceneId) {
-        if (sceneId && !this.state.seen_scenes.includes(sceneId)) this.state.seen_scenes.push(sceneId);
+        if (sceneId && !this.state.seen_scenes.includes(sceneId)) {
+          this.state.seen_scenes.push(sceneId);
+          cpResolveBoundary('record');
+          this.appendEvent('scene_entered', { chapter_id: this.state.current_chapter, scene_id: sceneId });
+        }
       },
 
       renderBoot() {
@@ -691,6 +1562,7 @@ Enter the Prologue and begin reconciliation.`
         } else {
           setStoryActions([
             { label: 'Begin Prologue', action: () => {
+              this.appendEvent('boot_advanced', { boot_index: idx + 1, begin_prologue: true });
               this.state.current_phase = 'chapter_scene';
               this.state.current_chapter = this.prologueId;
               this.state.current_scene_id = this.getIntroScene(this.prologueId)?.id || null;
@@ -699,6 +1571,10 @@ Enter the Prologue and begin reconciliation.`
             } }
           ]);
         }
+        setNarrativeMarker(
+          { heading: `Boot ${idx + 1}`, body_text: cards[idx] },
+          { title: 'Bootstrap', world_theme: 'boot-sequence' }
+        );
       },
 
       renderHub(returned = false) {
@@ -719,6 +1595,10 @@ Enter the Prologue and begin reconciliation.`
         });
 
         setStoryActions(items);
+        setNarrativeMarker(
+          { heading: returned ? 'Hub Return' : 'World Hub', body_text: 'Choose an unlocked chapter node.' },
+          { title: 'World Hub', world_theme: 'hub' }
+        );
         this.autosave();
       },
 
@@ -742,12 +1622,11 @@ Enter the Prologue and begin reconciliation.`
           return;
         }
 
-        for (const aid of scene.grants_artifacts || []) {
-          if (!this.state.inventory.includes(aid)) this.state.inventory.push(aid);
-        }
+        for (const aid of scene.grants_artifacts || []) this.addArtifactToInventory(aid);
 
         setStoryTitle(`${this.chapterMap[chapterId].meta.title} · ${scene.heading}`);
         setStoryBody(scene.body_text);
+        setNarrativeMarker(scene, this.chapterMap[chapterId].meta);
 
         const chapterChoices = this.getRecords(chapterId, 'choice').filter((c) => c.from_scene_id === scene.id);
         const actions = chapterChoices.map((c) => {
@@ -771,9 +1650,16 @@ Enter the Prologue and begin reconciliation.`
           { label: 'Return to Hub', action: () => this.renderHub(true) },
           { label: 'Start New Cycle', action: () => this.startNewGame(0) },
         ]);
+        setNarrativeMarker(
+          { heading: 'Epilogue', body_text: 'Cycle complete. Continue exploring or restart.' },
+          { title: 'Epilogue', world_theme: 'epilogue' }
+        );
       },
 
       render() {
+        sceneFirstMode = this.state.scene_first_mode !== false;
+        applySceneFirstMode();
+        syncMenuRingFromState();
         document.getElementById('pill-phase').textContent = `phase: ${this.state.current_phase}`;
         if (this.state.current_phase === 'boot_cinematic') this.renderBoot();
         else if (this.state.current_phase === 'hub') this.renderHub(false);
@@ -785,7 +1671,41 @@ Enter the Prologue and begin reconciliation.`
         refreshHubSide();
         refreshCodex();
         refreshArtifactCards();
+        syncInventoryArtifactsInScene();
         updateHubGraphState();
+        updateTimelineUI();
+        refreshControlPlaneStatus();
+        syncControlDiagramProjection();
+        syncSemanticArtifactProjection();
+        refreshSemanticInspector();
+        buildRuntimeNodeIndex();
+        if (!uiSelectedNodeId || !getNode(uiSelectedNodeId)) {
+          uiSelectedNodeId = this.state.ui_selected_node_id || currentFrameRootId();
+          if (!getNode(uiSelectedNodeId)) uiSelectedNodeId = currentFrameRootId();
+          this.state.ui_selected_node_id = uiSelectedNodeId;
+        }
+        uiPlaneTab = this.state.ui_plane_tab || uiPlaneTab || 'RS';
+        this.state.ui_plane_tab = uiPlaneTab;
+        const basis = BASIS_OPTIONS.includes(String(this.state.ui_basis || '')) ? String(this.state.ui_basis) : '10';
+        this.state.ui_basis = basis;
+        const basisSpec = resolveBasisSpec(basis, this.state.ui_basis_spec_id || controlPlaneState.basis_spec_id);
+        this.state.ui_basis_spec_id = basisSpec.id;
+        controlPlaneState.basis = basis;
+        controlPlaneState.basis_spec_id = basisSpec.id;
+        if (Object.hasOwn(BASIS_TO_NUMSYS, basis)) controlPlaneState.numsys = BASIS_TO_NUMSYS[basis];
+        const cpNumsysSel = document.getElementById('cp-numsys');
+        if (cpNumsysSel) cpNumsysSel.value = basis;
+        uiExpandedNodeIds = new Set(Array.isArray(this.state.ui_expanded_node_ids) ? this.state.ui_expanded_node_ids : []);
+        if (!uiExpandedNodeIds.size) {
+          uiExpandedNodeIds.add(currentFrameRootId());
+          this.state.ui_expanded_node_ids = Array.from(uiExpandedNodeIds);
+        }
+        refreshNavigator();
+        refreshNodeContext();
+        applyUIFrameVisibility();
+        if (cycleLabelSetText) {
+          cycleLabelSetText(`cycle ${this.state.timeline_index}/${this.state.event_log.length} · ${this.state.current_phase}`);
+        }
       },
     };
 
@@ -811,6 +1731,210 @@ Enter the Prologue and begin reconciliation.`
       const sprite = new THREE.Sprite(material);
       sprite.scale.set(3.2, 0.75, 1);
       return sprite;
+    }
+
+    function makeDynamicLabelSprite(text, opts = {}) {
+      const canvas = document.createElement('canvas');
+      canvas.width = opts.width || 512;
+      canvas.height = opts.height || 120;
+      const ctx = canvas.getContext('2d');
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.minFilter = THREE.LinearFilter;
+      const material = new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false });
+      const sprite = new THREE.Sprite(material);
+      sprite.scale.set(opts.scaleX || 3.2, opts.scaleY || 0.75, 1);
+      const draw = (value) => {
+        const shown = String(value || '').slice(0, opts.maxChars || 34);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = opts.bg || 'rgba(248,252,255,0.88)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = opts.stroke || '#bfd2e2';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
+        ctx.fillStyle = opts.color || '#1a2740';
+        ctx.font = opts.font || '700 32px "Space Grotesk", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(shown, canvas.width / 2, canvas.height / 2);
+        texture.needsUpdate = true;
+      };
+      draw(text);
+      return { sprite, setText: draw };
+    }
+
+    function applySceneFirstMode() {
+      document.body.classList.toggle('scene-first', !!sceneFirstMode);
+      const btn = document.getElementById('btn-toggle-toolbox');
+      if (btn) btn.textContent = sceneFirstMode ? 'Toolbox' : 'Scene';
+    }
+
+    function applyComplexityMode() {
+      const simple = uiComplexityMode !== 'advanced';
+      document.body.classList.toggle('simple-ui', simple);
+      const panelBtn = document.getElementById('btn-toggle-complexity-panel');
+      const stageBtn = document.getElementById('btn-toggle-complexity-stage');
+      const label = simple ? 'Advanced UI' : 'Simple UI';
+      if (panelBtn) panelBtn.textContent = label;
+      if (stageBtn) stageBtn.textContent = label;
+    }
+
+    function createMenuNode(action, label, color, x, z) {
+      const group = new THREE.Group();
+      const mesh = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.72, 0.86, 0.38, 28),
+        new THREE.MeshStandardMaterial({ color, emissive: 0x142431, roughness: 0.42, metalness: 0.2 })
+      );
+      mesh.position.set(0, 0.2, 0);
+      mesh.castShadow = true;
+      mesh.userData.menuAction = action;
+      group.add(mesh);
+      const lbl = makeLabelSprite(label);
+      lbl.scale.set(1.35, 0.35, 1);
+      lbl.position.set(0, 0.86, 0);
+      group.add(lbl);
+      group.position.set(x, 0, z);
+      group.userData.menuAction = action;
+      menuRoot.add(group);
+      menuMeshByAction.set(action, mesh);
+      return group;
+    }
+
+    function parseColorHex(input, fallback = 0x5a7991) {
+      const s = String(input || '').trim();
+      if (!s) return fallback;
+      if (s.startsWith('#')) {
+        const n = Number.parseInt(s.slice(1), 16);
+        return Number.isFinite(n) ? n : fallback;
+      }
+      if (/^0x[0-9a-f]+$/i.test(s)) {
+        const n = Number.parseInt(s.slice(2), 16);
+        return Number.isFinite(n) ? n : fallback;
+      }
+      const n = Number(s);
+      return Number.isFinite(n) ? n : fallback;
+    }
+
+    function parseMenuRingSpec(specText) {
+      const raw = String(specText || '').trim();
+      const items = [];
+      if (!raw) return items;
+      const pushItem = (rec) => {
+        if (!rec?.action) return;
+        items.push({
+          action: String(rec.action),
+          label: String(rec.label || rec.action),
+          color: String(rec.color || '#5a7991'),
+          angle: Number(rec.angle ?? 0),
+          radius: Number(rec.radius ?? 6.2),
+          y: Number(rec.y ?? 0),
+        });
+      };
+      if (raw.startsWith('<')) {
+        const doc = new DOMParser().parseFromString(raw, 'application/xml');
+        if (doc.querySelector('parsererror')) throw new Error('menu XML parse error');
+        for (const el of Array.from(doc.querySelectorAll('item'))) {
+          pushItem({
+            action: el.getAttribute('action'),
+            label: el.getAttribute('label'),
+            color: el.getAttribute('color'),
+            angle: el.getAttribute('angle'),
+            radius: el.getAttribute('radius'),
+            y: el.getAttribute('y'),
+          });
+        }
+        return items;
+      }
+      const lines = raw.split('\n').map((x) => x.trim()).filter(Boolean).filter((x) => !x.startsWith('#'));
+      for (const line of lines) {
+        const m = line.match(/^item\s+([a-z0-9_:-]+)\s+(.+)$/i);
+        if (!m) continue;
+        const action = m[1];
+        const rest = m[2];
+        const kv = {};
+        for (const kvm of rest.matchAll(/\b(color|angle|radius|y)=([#a-z0-9.\-]+)/gi)) {
+          kv[kvm[1].toLowerCase()] = kvm[2];
+        }
+        const label = rest.replace(/\b(color|angle|radius|y)=([#a-z0-9.\-]+)/gi, '').trim() || action;
+        pushItem({ action, label, ...kv });
+      }
+      return items;
+    }
+
+    function normalizeMenuSpecOrDefault(specText) {
+      const items = parseMenuRingSpec(specText);
+      if (items.length) return items;
+      return parseMenuRingSpec(DEFAULT_MENU_RING_SPEC);
+    }
+
+    function build3DMenuArtifacts(specText = DEFAULT_MENU_RING_SPEC) {
+      menuMeshByAction.clear();
+      while (menuRoot.children.length) menuRoot.children.pop().removeFromParent();
+      let items;
+      try {
+        items = normalizeMenuSpecOrDefault(specText);
+      } catch {
+        items = parseMenuRingSpec(DEFAULT_MENU_RING_SPEC);
+      }
+      let cycleX = -0.05;
+      let cycleZ = 5.8;
+      for (const it of items) {
+        const angle = (Number(it.angle) * Math.PI) / 180;
+        const rad = Number(it.radius) || 6.2;
+        const x = Math.cos(angle) * rad;
+        const z = Math.sin(angle) * rad;
+        createMenuNode(it.action, it.label, parseColorHex(it.color), x, z);
+        if (it.action === 'cycle_replay') {
+          cycleX = x;
+          cycleZ = z;
+        }
+      }
+      const cyc = makeDynamicLabelSprite('cycle 0/0', { scaleX: 2.15, scaleY: 0.33, font: '700 26px "IBM Plex Mono", monospace' });
+      cycleLabelSprite = cyc.sprite;
+      cycleLabelSetText = cyc.setText;
+      cycleLabelSprite.position.set(cycleX, 1.12, cycleZ);
+      menuRoot.add(cycleLabelSprite);
+    }
+
+    function triggerMenuAction(action) {
+      if (action === 'toggle_toolbox') {
+        sceneFirstMode = !sceneFirstMode;
+        GameDirector.state.scene_first_mode = sceneFirstMode;
+        applySceneFirstMode();
+        GameDirector.autosave();
+        setStatus(sceneFirstMode ? 'Scene-first mode enabled.' : 'Toolbox expanded.');
+        return;
+      }
+      if (action === 'toggle_mode') {
+        setAppMode(appMode === 'story' ? 'editor' : 'story');
+        GameDirector.autosave();
+        return;
+      }
+      if (action === 'cycle_frame') {
+        const frames = [UI_FRAMES.WORLD, UI_FRAMES.CONTROL, UI_FRAMES.CODEPOINT, UI_FRAMES.AZTEC, UI_FRAMES.SEMANTIC, UI_FRAMES.REPLAY];
+        const now = GameDirector.state.ui_frame || UI_FRAMES.WORLD;
+        const idx = Math.max(0, frames.indexOf(now));
+        setUIFrame(frames[(idx + 1) % frames.length]);
+        return;
+      }
+      if (action === 'cycle_replay') {
+        const total = GameDirector.state.event_log.length;
+        if (total <= 0) return setStatus('No timeline events yet.');
+        GameDirector.state.play_state = 'paused';
+        GameDirector.replayTo((GameDirector.state.timeline_index + 1) % (total + 1));
+      }
+    }
+
+    function syncMenuRingFromState() {
+      const spec = String(GameDirector.state.menu_ring_spec || DEFAULT_MENU_RING_SPEC);
+      if (lastMenuRingSpec === spec) return;
+      lastMenuRingSpec = spec;
+      const area = document.getElementById('menu-ring-spec');
+      if (area) area.value = spec;
+      try {
+        build3DMenuArtifacts(spec);
+      } catch {
+        build3DMenuArtifacts(DEFAULT_MENU_RING_SPEC);
+      }
     }
 
     function showHubGraphForPhase(phase) {
@@ -922,6 +2046,144 @@ Enter the Prologue and begin reconciliation.`
       hubRoot.visible = showHubGraphForPhase(GameDirector.state.current_phase);
     }
 
+    function buildControlAndCodepointFrames() {
+      cpChannelMeshById.clear();
+      while (controlPlaneRoot.children.length) controlPlaneRoot.children.pop().removeFromParent();
+      while (codepointPlaneRoot.children.length) codepointPlaneRoot.children.pop().removeFromParent();
+      while (aztecRoot.children.length) aztecRoot.children.pop().removeFromParent();
+      while (replayRoot.children.length) replayRoot.children.pop().removeFromParent();
+
+      const cpMat = new THREE.MeshStandardMaterial({ color: 0x2f78a6, roughness: 0.42, metalness: 0.18 });
+      const channelDefs = [
+        { id: 'FS', color: 0x225f88, x: -4.5, z: -1.8 },
+        { id: 'GS', color: 0x2f8f73, x: -1.5, z: -1.8 },
+        { id: 'RS', color: 0x9b7f2c, x: 1.5, z: -1.8 },
+        { id: 'US', color: 0x8b4f92, x: 4.5, z: -1.8 },
+      ];
+      for (const ch of channelDefs) {
+        const box = new THREE.Mesh(new THREE.BoxGeometry(2.1, 1.2, 1.1), cpMat.clone());
+        box.material.color.setHex(ch.color);
+        box.position.set(ch.x, 0.8, ch.z);
+        box.userData.channelId = ch.id;
+        controlPlaneRoot.add(box);
+        cpChannelMeshById.set(ch.id, box);
+        const label = makeLabelSprite(ch.id);
+        label.scale.set(1.25, 0.38, 1);
+        label.position.set(ch.x, 1.8, ch.z);
+        controlPlaneRoot.add(label);
+      }
+      const laneRail = new THREE.Mesh(
+        new THREE.BoxGeometry(11.8, 0.15, 0.3),
+        new THREE.MeshStandardMaterial({ color: 0x9cb4c6, roughness: 0.7, metalness: 0.1 })
+      );
+      laneRail.position.set(0, 0.25, 0.95);
+      controlPlaneRoot.add(laneRail);
+      cpLaneMarker = new THREE.Mesh(
+        new THREE.BoxGeometry(0.5, 0.35, 0.5),
+        new THREE.MeshStandardMaterial({ color: 0xf6ba45, emissive: 0x3b2507, roughness: 0.45 })
+      );
+      cpLaneMarker.position.set(-5.5, 0.45, 0.95);
+      controlPlaneRoot.add(cpLaneMarker);
+      cpDiagramRoot = new THREE.Group();
+      cpDiagramRoot.name = 'cp-diagram-root';
+      controlPlaneRoot.add(cpDiagramRoot);
+
+      const cpGrid = new THREE.GridHelper(16, 16, 0x6b89a5, 0x9ab5cc);
+      cpGrid.position.set(0, 0.02, 0);
+      codepointPlaneRoot.add(cpGrid);
+      const cpInfo = makeLabelSprite('Codepoint Plane');
+      cpInfo.position.set(0, 1.6, -3.5);
+      codepointPlaneRoot.add(cpInfo);
+      cpCodepointMarker = new THREE.Mesh(
+        new THREE.SphereGeometry(0.24, 16, 12),
+        new THREE.MeshStandardMaterial({ color: 0xe75b5b, emissive: 0x451010, roughness: 0.35 })
+      );
+      cpCodepointMarker.position.set(-7.5, 0.3, -7.5);
+      codepointPlaneRoot.add(cpCodepointMarker);
+
+      const aztecGrid = new THREE.GridHelper(14, 14, 0x5e8dad, 0xa8c3d6);
+      aztecGrid.position.set(0, 0.02, 0);
+      aztecRoot.add(aztecGrid);
+      for (let i = 0; i < 60; i += 1) {
+        const ring = Math.floor(i / 15) + 1;
+        const idx = i % 15;
+        const ang = (Math.PI * 2 * idx) / 15;
+        const rad = 1.2 + ring * 1.25;
+        const p = new THREE.Mesh(
+          new THREE.SphereGeometry(0.1, 10, 10),
+          new THREE.MeshStandardMaterial({ color: 0x2f8f73, emissive: 0x102834 })
+        );
+        p.position.set(Math.cos(ang) * rad, 0.2, Math.sin(ang) * rad);
+        aztecRoot.add(p);
+      }
+
+      const replayLinePts = [];
+      for (let i = 0; i <= 32; i += 1) replayLinePts.push(new THREE.Vector3(-6 + i * 0.38, 0.3 + Math.sin(i * 0.45) * 0.6, -2 + i * 0.08));
+      const replayGeo = new THREE.BufferGeometry().setFromPoints(replayLinePts);
+      replayRoot.add(new THREE.Line(replayGeo, new THREE.LineBasicMaterial({ color: 0x157057 })));
+      const replayLbl = makeLabelSprite('Replay Orbit-Offset');
+      replayLbl.position.set(0, 1.8, -2.8);
+      replayRoot.add(replayLbl);
+    }
+
+    function cpFormatNumber(n) {
+      const spec = basisSpecById(controlPlaneState.basis_spec_id);
+      const proj = projectValue(n >>> 0, controlPlaneState.channel, spec.id);
+      if (proj.basis === 'mixed') {
+        const coords = proj.rendered?.coords || [];
+        return coords.join(':');
+      }
+      return String(proj.rendered);
+    }
+
+    function refreshControlPlaneStatus() {
+      const scopeText = `[${controlPlaneState.scope_stack.map((s) => s.scope).join(',')}]`;
+      document.getElementById('cp-status').textContent =
+        `mode=${controlPlaneState.mode} scope=${scopeText} basis=${controlPlaneState.basis} spec=${controlPlaneState.basis_spec_id} numsys=${controlPlaneState.numsys} lane=${controlPlaneState.lane} channel=${controlPlaneState.channel}`;
+      document.getElementById('pill-selected').textContent = `selected: ${selected ? `${selected.name} @${cpFormatNumber(Math.round(selected.position.x))},${cpFormatNumber(Math.round(selected.position.z))}` : 'none'}`;
+      for (const [cid, mesh] of cpChannelMeshById.entries()) {
+        mesh.material.emissive.setHex(cid === controlPlaneState.channel ? 0x16495f : 0x0b1116);
+      }
+      if (cpLaneMarker) {
+        cpLaneMarker.position.x = -5.5 + (controlPlaneState.lane / 15) * 11;
+      }
+      if (cpCodepointMarker) {
+        const hex = controlPlaneState.codepoint_hex || '0000';
+        const cp = Number.parseInt(hex, 16);
+        const safe = Number.isFinite(cp) ? Math.max(0, Math.min(0xFFFF, cp)) : 0;
+        const x = -7.5 + ((safe % 256) / 255) * 15;
+        const z = -7.5 + (Math.floor(safe / 256) / 255) * 15;
+        cpCodepointMarker.position.set(x, 0.3, z);
+      }
+    }
+
+    function applyUIFrameVisibility() {
+      const frame = GameDirector.state.ui_frame || UI_FRAMES.WORLD;
+      document.getElementById('pill-frame').textContent = `frame: ${frame}`;
+      worldRoot.visible = frame === UI_FRAMES.WORLD;
+      controlPlaneRoot.visible = frame === UI_FRAMES.CONTROL;
+      codepointPlaneRoot.visible = frame === UI_FRAMES.CODEPOINT;
+      aztecRoot.visible = frame === UI_FRAMES.AZTEC;
+      semanticRoot.visible = frame === UI_FRAMES.SEMANTIC;
+      replayRoot.visible = frame === UI_FRAMES.REPLAY;
+
+      storyUI.classList.toggle('hidden', frame !== UI_FRAMES.WORLD);
+      document.getElementById('artifacts-panel').style.display = frame === UI_FRAMES.WORLD ? '' : 'none';
+      document.getElementById('cp-panel').style.display = frame === UI_FRAMES.CONTROL || frame === UI_FRAMES.CODEPOINT ? '' : 'none';
+      document.getElementById('timeline-panel').style.display = frame === UI_FRAMES.REPLAY ? '' : 'none';
+      document.getElementById('webhook-panel').style.display = frame === UI_FRAMES.REPLAY ? '' : 'none';
+      document.getElementById('semantic-panel').style.display = frame === UI_FRAMES.SEMANTIC ? '' : 'none';
+    }
+
+    function setUIFrame(frame) {
+      if (!Object.values(UI_FRAMES).includes(frame)) return;
+      GameDirector.state.ui_frame = frame;
+      GameDirector.state.ui_subframe = frame === UI_FRAMES.CODEPOINT ? 'codepoint_plane' : null;
+      applyUIFrameVisibility();
+      GameDirector.autosave();
+      setStatus(`UI frame: ${frame}`);
+    }
+
     function setStatus(msg) {
       statusEl.textContent = msg;
     }
@@ -1001,14 +2263,1749 @@ Enter the Prologue and begin reconciliation.`
         m.textContent = `${row.chapter.title}: ${row.scene.heading}\n${excerpt}${row.scene.body_text.length > 90 ? '…' : ''}`;
         box.appendChild(m);
       }
+      if (semanticGraph && Array.isArray(semanticGraph.edges) && semanticGraph.edges.length) {
+        const nodeById = new Map((semanticGraph.nodes || []).map((n) => [n.id, n.label]));
+        const m = document.createElement('div');
+        m.className = 'mini';
+        m.textContent = `Semantic graph\n${semanticGraph.edges.map((e) => `${nodeById.get(e.subject) || e.subject} -> ${e.predicate} -> ${nodeById.get(e.object) || e.object}`).join('\n')}`;
+        box.prepend(m);
+      }
     }
 
+    function refreshSemanticInspector() {
+      const metaEl = document.getElementById('semantic-meta');
+      const listEl = document.getElementById('semantic-list');
+      const artifact = GameDirector.state.semantic_graph_artifact;
+      const meta = GameDirector.state.semantic_artifact_meta || {};
+      if (!artifact) {
+        metaEl.textContent = 'No semantic artifact.';
+        listEl.textContent = '(empty)';
+        return;
+      }
+      const nodes = Array.isArray(artifact.nodes) ? artifact.nodes : [];
+      const edges = Array.isArray(artifact.edges) ? artifact.edges : [];
+      const transitions = Array.isArray(artifact.transitions) ? artifact.transitions : [];
+      const source = meta.source || (meta.document_id ? 'document' : 'scene');
+      metaEl.textContent = `source=${source} nodes=${nodes.length} edges=${edges.length} transitions=${transitions.length}`;
+      const nodeById = new Map(nodes.map((n) => [n.id, n.label || n.id]));
+      const lines = [];
+      lines.push(`scene_id: ${artifact.scene_id || '-'}`);
+      lines.push(`chapter_id: ${artifact.chapter_id || '-'}`);
+      if (meta.document_id) lines.push(`document_id: ${meta.document_id}`);
+      lines.push('--- edges ---');
+      for (const e of edges.slice(0, 28)) {
+        lines.push(`${nodeById.get(e.subject) || e.subject} -> ${e.predicate} -> ${nodeById.get(e.object) || e.object}`);
+      }
+      if (edges.length > 28) lines.push(`... +${edges.length - 28} more`);
+      listEl.textContent = lines.join('\n');
+    }
+
+    function templateNodePrimitive(kind) {
+      const k = String(kind || '').toLowerCase();
+      if (k === 'role') return 'cylinder';
+      if (k === 'place') return 'box';
+      if (k === 'artifact') return 'torus';
+      if (k === 'law') return 'cone';
+      if (k === 'concept') return 'sphere';
+      if (k === 'event') return 'cone';
+      return 'box';
+    }
+
+    function templateNodeColor(kind) {
+      const k = String(kind || '').toLowerCase();
+      if (k === 'role') return 0x2f78a6;
+      if (k === 'place') return 0x2f8f73;
+      if (k === 'artifact') return 0x9b7f2c;
+      if (k === 'law') return 0x8b4f92;
+      if (k === 'concept') return 0x5a7aa3;
+      if (k === 'event') return 0xba5a4a;
+      return 0x6a8198;
+    }
+
+    function refreshTemplatePicker() {
+      const sel = document.getElementById('template-select');
+      if (!sel) return;
+      sel.innerHTML = '';
+      const ids = Array.from(progressionTemplateById.keys());
+      if (!ids.length) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = 'No templates loaded';
+        sel.appendChild(opt);
+        return;
+      }
+      for (const id of ids) {
+        const t = progressionTemplateById.get(id);
+        const opt = document.createElement('option');
+        opt.value = id;
+        opt.textContent = `${t.name} (${id})`;
+        sel.appendChild(opt);
+      }
+    }
+
+    function isValidProgressionTemplate(tpl) {
+      if (!tpl || typeof tpl !== 'object') return false;
+      if (!tpl.id || !tpl.name) return false;
+      if (!Array.isArray(tpl.nodes) || !Array.isArray(tpl.edges) || !Array.isArray(tpl.transitions)) return false;
+      return true;
+    }
+
+    function saveCustomTemplates() {
+      try {
+        const custom = [];
+        for (const [id, tpl] of progressionTemplateById.entries()) {
+          if (builtInTemplateIds.has(id)) continue;
+          custom.push(tpl);
+        }
+        localStorage.setItem(TEMPLATE_STORE_KEY, JSON.stringify({ version: 1, templates: custom }));
+      } catch {
+        // ignore storage failures
+      }
+    }
+
+    function loadCustomTemplates() {
+      try {
+        const raw = localStorage.getItem(TEMPLATE_STORE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        const arr = Array.isArray(parsed.templates) ? parsed.templates : [];
+        return arr.filter(isValidProgressionTemplate);
+      } catch {
+        return [];
+      }
+    }
+
+    function registerTemplate(tpl, opts = { persist: true, markBuiltIn: false }) {
+      if (!isValidProgressionTemplate(tpl)) throw new Error('Invalid template shape');
+      const normalized = cloneState(tpl);
+      progressionTemplateById.set(normalized.id, normalized);
+      if (opts.markBuiltIn) builtInTemplateIds.add(normalized.id);
+      if (opts.persist !== false && !opts.markBuiltIn) saveCustomTemplates();
+      refreshTemplatePicker();
+      return normalized.id;
+    }
+
+    async function loadProgressionTemplates() {
+      try {
+        const res = await fetch('./narrative_data/templates/character_progression_templates.json');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        progressionTemplateBundle = data;
+        progressionTemplateById.clear();
+        builtInTemplateIds.clear();
+        for (const t of data.templates || []) registerTemplate(t, { persist: false, markBuiltIn: true });
+        for (const t of loadCustomTemplates()) registerTemplate(t, { persist: false, markBuiltIn: false });
+        refreshTemplatePicker();
+      } catch {
+        progressionTemplateBundle = null;
+        progressionTemplateById.clear();
+        builtInTemplateIds.clear();
+        for (const t of loadCustomTemplates()) registerTemplate(t, { persist: false, markBuiltIn: false });
+        refreshTemplatePicker();
+      }
+    }
+
+    function templateToSemanticArtifact(tpl) {
+      return {
+        type: 'semantic_graph_artifact',
+        version: 1,
+        id: tpl.id,
+        scene_id: `tpl_scene_${tpl.id}`,
+        chapter_id: `tpl_ch_${tpl.id}`,
+        nodes: (tpl.nodes || []).map((n) => ({ ...n })),
+        edges: (tpl.edges || []).map((e) => ({ ...e, score: 1.0 })),
+        transitions: (tpl.transitions || []).map((x) => ({ ...x })),
+      };
+    }
+
+    function templateToControlDiagramSpec(tpl) {
+      const lines = [];
+      for (const n of tpl.nodes || []) {
+        const ch = n.kind === 'place' ? 'GS' : (n.kind === 'artifact' ? 'US' : 'RS');
+        lines.push(`node ${n.id} ${n.label || n.id} ch=${ch}`);
+      }
+      const byId = new Map((tpl.nodes || []).map((n) => [n.id, n.label || n.id]));
+      for (const e of tpl.edges || []) {
+        const from = byId.get(e.subject) ? e.subject : e.subject;
+        const to = byId.get(e.object) ? e.object : e.object;
+        lines.push(`${from}->${to}:${e.predicate || 'relates_to'}`);
+      }
+      return lines.join('\n');
+    }
+
+    function instantiateTemplateWorldArtifacts(tpl) {
+      const toRemove = placedRoot.children.filter((child) => child.userData?.autoSource === 'template_node');
+      for (const child of toRemove) child.removeFromParent();
+      const nodes = tpl.nodes || [];
+      const count = Math.max(1, nodes.length);
+      const radius = 5.4;
+      for (let i = 0; i < nodes.length; i += 1) {
+        const n = nodes[i];
+        const ang = -Math.PI / 2 + (Math.PI * 2 * i) / count;
+        const point = new THREE.Vector3(Math.cos(ang) * radius, 0, Math.sin(ang) * radius);
+        const item = {
+          id: `tpl_node_${tpl.id}_${n.id}`,
+          name: `${n.label || n.id}`,
+          kind: 'primitive',
+          meta: `template/${tpl.id}/${n.kind || 'entity'}`,
+          payload: {
+            primitive: templateNodePrimitive(n.kind),
+            color: templateNodeColor(n.kind),
+          },
+        };
+        spawnArtifact(item, point);
+        const last = placedRoot.children[placedRoot.children.length - 1];
+        if (last) {
+          last.userData.autoSource = 'template_node';
+          last.userData.templateNodeId = n.id;
+        }
+      }
+    }
+
+    function instantiateProgressionTemplate(templateId, opts = { semantic: true, control: true, world: true }) {
+      const tpl = progressionTemplateById.get(templateId);
+      if (!tpl) {
+        setStatus(`Unknown template: ${templateId}`);
+        return;
+      }
+      if (opts.semantic) {
+        const artifact = templateToSemanticArtifact(tpl);
+        GameDirector.setSemanticArtifact(
+          artifact,
+          { source: 'progression_template', template_id: tpl.id, template_name: tpl.name },
+          { emit: true, source: 'template' }
+        );
+      }
+      if (opts.control) {
+        const spec = templateToControlDiagramSpec(tpl);
+        GameDirector.state.cp_diagram_spec = spec;
+        controlPlaneState.diagram_spec = spec;
+        const area = document.getElementById('cp-diagram-spec');
+        if (area) area.value = spec;
+        renderControlDiagram(spec);
+        lastDiagramSpec = spec;
+      }
+      if (opts.world) {
+        instantiateTemplateWorldArtifacts(tpl);
+      }
+      GameDirector.appendEvent('template_instantiated', {
+        template_id: tpl.id,
+        semantic: !!opts.semantic,
+        control: !!opts.control,
+        world: !!opts.world,
+      });
+      GameDirector.autosave();
+      GameDirector.render();
+      setStatus(`Template instantiated: ${tpl.name}`);
+    }
+
+    function exportTemplate(templateId) {
+      const tpl = progressionTemplateById.get(templateId);
+      if (!tpl) throw new Error(`Unknown template: ${templateId}`);
+      return cloneState(tpl);
+    }
+
+    function importTemplate(input) {
+      const parsed = typeof input === 'string' ? JSON.parse(input) : input;
+      const importedIds = [];
+      if (parsed && Array.isArray(parsed.templates)) {
+        for (const t of parsed.templates) {
+          const id = registerTemplate(t, { persist: true, markBuiltIn: false });
+          importedIds.push(id);
+        }
+      } else {
+        const id = registerTemplate(parsed, { persist: true, markBuiltIn: false });
+        importedIds.push(id);
+      }
+      GameDirector.appendEvent('template_imported', { template_ids: importedIds });
+      GameDirector.autosave();
+      setStatus(`Template imported: ${importedIds.join(', ')}`);
+      return importedIds;
+    }
+
+    function cloneTemplateAsProjection(templateId) {
+      const tpl = progressionTemplateById.get(templateId);
+      if (!tpl) throw new Error(`Unknown template: ${templateId}`);
+      const basePkg = createProjectionPackage();
+      const semanticArtifact = templateToSemanticArtifact(tpl);
+      const controlSpec = templateToControlDiagramSpec(tpl);
+      basePkg.type = 'atomic_projection_package';
+      basePkg.template_clone = {
+        template_id: tpl.id,
+        template_name: tpl.name,
+      };
+      basePkg.ui.frame = UI_FRAMES.WORLD;
+      basePkg.semantic = {
+        artifact: semanticArtifact,
+        meta: { source: 'progression_template', template_id: tpl.id, template_name: tpl.name },
+      };
+      basePkg.control_plane = {
+        ...basePkg.control_plane,
+        diagram_spec: controlSpec,
+      };
+      return basePkg;
+    }
+
+    function makeRuntimeNode(id, label, kind, summary = '', properties = {}, children = [], relations = [], actions = []) {
+      return { id, label, kind, summary, properties, children, relations, actions };
+    }
+
+    function addRuntimeNode(node) {
+      runtimeNodeIndex.set(node.id, node);
+      return node;
+    }
+
+    function currentFrameRootId() {
+      return `root:${GameDirector.state.ui_frame || UI_FRAMES.WORLD}`;
+    }
+
+    function buildRuntimeNodeIndex() {
+      runtimeNodeIndex = new Map();
+      const frame = GameDirector.state.ui_frame || UI_FRAMES.WORLD;
+      const root = addRuntimeNode(makeRuntimeNode(
+        `root:${frame}`,
+        `Frame: ${frame}`,
+        'frame_root',
+        'active frame root',
+        { frame, phase: GameDirector.state.current_phase, mode: appMode },
+        [],
+        [],
+        ['project', 'share']
+      ));
+
+      const tplRoot = addRuntimeNode(makeRuntimeNode(
+        'templates:root',
+        'Progression Templates',
+        'template_root',
+        `${progressionTemplateById.size} templates`,
+        { template_count: progressionTemplateById.size },
+        [],
+        [],
+        ['project', 'share']
+      ));
+      root.children.push(tplRoot.id);
+      for (const [tid, tpl] of progressionTemplateById.entries()) {
+        const tn = addRuntimeNode(makeRuntimeNode(
+          `template:${tid}`,
+          tpl.name,
+          'template',
+          tpl.summary || '',
+          { template_id: tid, node_count: (tpl.nodes || []).length, edge_count: (tpl.edges || []).length },
+          [],
+          [],
+          ['project', 'share', 'replay']
+        ));
+        tplRoot.children.push(tn.id);
+      }
+
+      const basisRoot = addRuntimeNode(makeRuntimeNode(
+        'basis:root',
+        'Basis Specs',
+        'basis_root',
+        `${basisSpecRegistry.size} specs`,
+        { count: basisSpecRegistry.size },
+        [],
+        [],
+        ['project', 'share']
+      ));
+      root.children.push(basisRoot.id);
+      for (const spec of basisSpecRegistry.values()) {
+        const bn = addRuntimeNode(makeRuntimeNode(
+          `basis:${spec.id}`,
+          spec.id,
+          'basis_spec',
+          `${spec.kind}${spec.kind === 'mixed' ? ` [${(spec.radices || []).join(',')}]` : ''}`,
+          cloneState(spec),
+          [],
+          [],
+          ['project', 'share']
+        ));
+        basisRoot.children.push(bn.id);
+      }
+
+      const pkgNode = addRuntimeNode(makeRuntimeNode(
+        'projection:current',
+        'Current Projection Package',
+        'projection_package',
+        'shareable runtime package snapshot',
+        { frame, mode: appMode },
+        [],
+        [],
+        ['share', 'project']
+      ));
+      root.children.push(pkgNode.id);
+
+      if (frame === UI_FRAMES.WORLD) {
+        for (const chapterId of GameDirector.chapterOrder) {
+          const meta = GameDirector.chapterMap[chapterId]?.meta;
+          if (!meta) continue;
+          const chapterNode = addRuntimeNode(makeRuntimeNode(
+            `chapter:${chapterId}`,
+            meta.title,
+            'chapter',
+            `${meta.phase} / order ${meta.order}`,
+            { chapter_id: chapterId, unlocked: GameDirector.isUnlocked(chapterId) },
+            [],
+            [],
+            ['open', 'project', 'share', 'replay']
+          ));
+          root.children.push(chapterNode.id);
+          for (const scene of GameDirector.getRecords(chapterId, 'scene')) {
+            const sceneNode = addRuntimeNode(makeRuntimeNode(
+              `scene:${scene.id}`,
+              scene.heading,
+              'scene',
+              `${meta.title}`,
+              { chapter_id: chapterId, scene_id: scene.id },
+              [],
+              [],
+              ['open', 'project', 'share', 'replay']
+            ));
+            chapterNode.children.push(sceneNode.id);
+          }
+        }
+        for (const aid of GameDirector.state.inventory) {
+          const art = artifactFromId(aid);
+          if (!art) continue;
+          const artNode = addRuntimeNode(makeRuntimeNode(
+            `artifact:${aid}`,
+            art.name,
+            'artifact',
+            'inventory artifact',
+            { artifact_id: aid, chapter_id: art.chapter_id },
+            [],
+            [],
+            ['project', 'share', 'replay']
+          ));
+          root.children.push(artNode.id);
+        }
+      } else if (frame === UI_FRAMES.CONTROL || frame === UI_FRAMES.CODEPOINT) {
+        const cpRoot = addRuntimeNode(makeRuntimeNode(
+          'control:root',
+          'Control Plane',
+          'control_root',
+          `channel=${controlPlaneState.channel} lane=${controlPlaneState.lane} basis=${controlPlaneState.basis}`,
+          cloneState(controlPlaneState),
+          [],
+          [],
+          ['emit', 'project', 'share', 'replay']
+        ));
+        root.children.push(cpRoot.id);
+        for (const ch of ['FS', 'GS', 'RS', 'US']) {
+          const n = addRuntimeNode(makeRuntimeNode(
+            `channel:${ch}`,
+            ch,
+            'channel',
+            `lane ${controlPlaneState.lane}`,
+            { channel: ch },
+            [],
+            [],
+            ['emit', 'project', 'replay']
+          ));
+          cpRoot.children.push(n.id);
+        }
+        const cpn = addRuntimeNode(makeRuntimeNode(
+          `codepoint:${controlPlaneState.codepoint_hex}`,
+          `U+${controlPlaneState.codepoint_hex}`,
+          'codepoint',
+          `plane ${controlPlaneState.codepoint_plane}`,
+          { codepoint: controlPlaneState.codepoint_hex, plane: controlPlaneState.codepoint_plane },
+          [],
+          [],
+          ['emit', 'project', 'share', 'replay']
+        ));
+        cpRoot.children.push(cpn.id);
+      } else if (frame === UI_FRAMES.SEMANTIC) {
+        const art = GameDirector.state.semantic_graph_artifact;
+        const semRoot = addRuntimeNode(makeRuntimeNode(
+          'semantic:root',
+          'Semantic Graph',
+          'semantic_root',
+          art ? `${(art.nodes || []).length} nodes / ${(art.edges || []).length} edges` : 'empty',
+          cloneState(GameDirector.state.semantic_artifact_meta || {}),
+          [],
+          [],
+          ['project', 'share', 'replay']
+        ));
+        root.children.push(semRoot.id);
+        if (art) {
+          for (const n of art.nodes || []) {
+            const nn = addRuntimeNode(makeRuntimeNode(
+              `semnode:${n.id}`,
+              n.label || n.id,
+              n.kind || 'semantic_node',
+              '',
+              cloneState(n),
+              [],
+              [],
+              ['project', 'share', 'replay']
+            ));
+            semRoot.children.push(nn.id);
+          }
+          for (const e of art.edges || []) {
+            const en = addRuntimeNode(makeRuntimeNode(
+              `semedge:${e.id}`,
+              e.predicate || e.id,
+              'semantic_edge',
+              `${e.subject} -> ${e.object}`,
+              cloneState(e),
+              [],
+              [{ type: e.predicate || 'relates_to', target: `semnode:${e.object}` }],
+              ['project', 'share', 'replay', 'link']
+            ));
+            semRoot.children.push(en.id);
+          }
+        }
+      } else if (frame === UI_FRAMES.REPLAY) {
+        for (let i = Math.max(0, GameDirector.state.event_log.length - 40); i < GameDirector.state.event_log.length; i += 1) {
+          const ev = GameDirector.state.event_log[i];
+          const n = addRuntimeNode(makeRuntimeNode(
+            `event:${i}`,
+            `${i}: ${ev.type}`,
+            'event',
+            ev.source || 'local',
+            cloneState(ev),
+            [],
+            [],
+            ['open', 'replay', 'share']
+          ));
+          root.children.push(n.id);
+        }
+      } else if (frame === UI_FRAMES.AZTEC) {
+        const azRoot = addRuntimeNode(makeRuntimeNode(
+          'aztec:root',
+          'Aztec Plane',
+          'aztec_root',
+          '60 canonical placements',
+          { coordinate_count: 60 },
+          [],
+          [],
+          ['project', 'share']
+        ));
+        root.children.push(azRoot.id);
+      }
+    }
+
+    function getNode(id) {
+      return runtimeNodeIndex.get(id) || null;
+    }
+
+    function setSelectedNodeId(nodeId, opts = { persist: true }) {
+      if (!nodeId || !getNode(nodeId)) nodeId = currentFrameRootId();
+      uiSelectedNodeId = nodeId;
+      if (opts.persist !== false) GameDirector.state.ui_selected_node_id = nodeId;
+      refreshNavigator();
+      refreshNodeContext();
+    }
+
+    function nodeEventsForSelected() {
+      const node = getNode(uiSelectedNodeId);
+      if (!node) return [];
+      const matches = [];
+      for (let i = 0; i < GameDirector.state.event_log.length; i += 1) {
+        const ev = GameDirector.state.event_log[i];
+        const payloadText = JSON.stringify(ev.payload || {});
+        if (String(node.id).includes('event:') && node.id === `event:${i}`) matches.push({ i, ev });
+        else if (payloadText.includes(node.label) || payloadText.includes(node.id) || String(ev.scene_id || '') === node.properties?.scene_id) matches.push({ i, ev });
+      }
+      return matches.slice(-20);
+    }
+
+    function performNodeAction(action, node) {
+      if (!node) return;
+      if (action === 'open') {
+        if (node.kind === 'chapter' && node.properties?.chapter_id) GameDirector.enterChapter(node.properties.chapter_id);
+        else if (node.kind === 'scene' && node.properties?.scene_id && node.properties?.chapter_id) {
+          GameDirector.state.current_chapter = node.properties.chapter_id;
+          GameDirector.state.current_scene_id = node.properties.scene_id;
+          GameDirector.state.current_phase = 'chapter_scene';
+          GameDirector.render();
+        } else if (node.kind === 'event') {
+          const idx = Number(String(node.id).split(':')[1] || 0);
+          GameDirector.replayTo(idx);
+          setUIFrame(UI_FRAMES.REPLAY);
+        }
+        return;
+      }
+      if (action === 'project') {
+        if (node.kind.startsWith('sem') || node.kind.includes('semantic')) setUIFrame(UI_FRAMES.SEMANTIC);
+        else if (node.kind === 'channel' || node.kind === 'codepoint' || node.kind.includes('control')) setUIFrame(UI_FRAMES.CONTROL);
+        else if (node.kind === 'event') setUIFrame(UI_FRAMES.REPLAY);
+        else setUIFrame(UI_FRAMES.WORLD);
+        return;
+      }
+      if (action === 'emit') {
+        if (node.kind === 'channel') {
+          document.getElementById('cp-channel').value = String(node.properties?.channel || 'FS');
+          cpApplyFrameFromUI();
+        } else if (node.kind === 'codepoint') {
+          cpEmitCodepoint();
+        } else setStatus('Emit is supported for control/codepoint nodes.');
+        return;
+      }
+      if (action === 'replay') {
+        const events = nodeEventsForSelected();
+        if (!events.length) return setStatus('No replay events mapped for node.');
+        GameDirector.replayTo(events[events.length - 1].i + 1);
+        setUIFrame(UI_FRAMES.REPLAY);
+        return;
+      }
+      if (action === 'share') {
+        const pkg = createProjectionPackage();
+        navigator.clipboard?.writeText(JSON.stringify(pkg, null, 2))
+          .then(() => setStatus('Node share payload copied (projection package).'))
+          .catch(() => setStatus('Clipboard blocked; use Export Projection.'));
+        return;
+      }
+      if (action === 'link') {
+        setStatus(`Link action placeholder for ${node.label}`);
+      }
+    }
+
+    function planeItem(id, label, kind = 'plane_item', summary = '', properties = {}) {
+      return { id: id || null, label, kind, summary, properties };
+    }
+
+    function ensurePlaneNode(item, plane, sourceNodeId) {
+      if (!item) return null;
+      const existing = typeof item.id === 'string' && getNode(item.id) ? item.id : null;
+      if (existing) return existing;
+      const fallbackId = `plane:${plane}:${sid(`${sourceNodeId}|${item.label}|${JSON.stringify(item.properties || {})}`)}`;
+      const node = makeRuntimeNode(
+        fallbackId,
+        item.label || fallbackId,
+        item.kind || 'plane_probe',
+        item.summary || '',
+        cloneState(item.properties || {}),
+        [],
+        [],
+        ['project', 'share', 'replay']
+      );
+      addRuntimeNode(node);
+      return node.id;
+    }
+
+    function linkedNodeIdForValue(v) {
+      if (typeof v !== 'string') return null;
+      if (getNode(v)) return v;
+      const candidates = [
+        `scene:${v}`,
+        `chapter:${v}`,
+        `artifact:${v}`,
+        `template:${v}`,
+        `semnode:${v}`,
+        `semedge:${v}`,
+      ];
+      for (const c of candidates) if (getNode(c)) return c;
+      return null;
+    }
+
+    function findParentNodeRefs(targetId) {
+      const out = [];
+      for (const node of runtimeNodeIndex.values()) {
+        if ((node.children || []).includes(targetId)) out.push(node);
+      }
+      return out;
+    }
+
+    function findIncomingRelationRefs(targetId) {
+      const out = [];
+      for (const node of runtimeNodeIndex.values()) {
+        for (const rel of (node.relations || [])) {
+          if (rel.target === targetId) out.push({ node, rel });
+        }
+      }
+      return out;
+    }
+
+    function getContextView(node) {
+      const out = [];
+      for (const p of findParentNodeRefs(node.id)) {
+        out.push(planeItem(p.id, `${p.label}`, p.kind, `parent context · ${p.kind}`));
+      }
+      const rootId = currentFrameRootId();
+      if (node.id !== rootId && getNode(rootId)) {
+        const root = getNode(rootId);
+        out.push(planeItem(root.id, `${root.label}`, root.kind, 'active frame root'));
+      }
+      if (!out.length) out.push(planeItem(node.id, `${node.label}`, node.kind, 'root context'));
+      return out;
+    }
+
+    function getGroupView(node) {
+      const out = [];
+      for (const id of (node.children || [])) {
+        const n = getNode(id);
+        out.push(planeItem(id, n ? n.label : id, n?.kind || 'node_ref', 'child node'));
+      }
+      for (const r of (node.relations || [])) {
+        const target = getNode(r.target);
+        out.push(planeItem(r.target, `${r.type}: ${target?.label || r.target}`, target?.kind || 'relation_target', 'outgoing relation'));
+      }
+      for (const row of findIncomingRelationRefs(node.id)) {
+        out.push(planeItem(row.node.id, `${row.rel.type} <- ${row.node.label}`, row.node.kind, 'incoming relation'));
+      }
+      if (!out.length) out.push(planeItem(node.id, '(no group links)', 'empty_group', 'no children or relations'));
+      return out;
+    }
+
+    function getRecordView(node) {
+      return {
+        id: node.id,
+        label: node.label,
+        kind: node.kind,
+        summary: node.summary,
+        properties: node.properties || {},
+        actions: node.actions || [],
+      };
+    }
+
+    function getUnitView(node) {
+      const out = [];
+      for (const [k, v] of Object.entries(node.properties || {})) {
+        const linked = linkedNodeIdForValue(v);
+        out.push(planeItem(linked, `${k}: ${String(v)}`, linked ? 'linked_property' : 'property_unit', 'unit property', { key: k, value: v }));
+      }
+      for (const action of (node.actions || [])) {
+        out.push(planeItem(node.id, `action: ${action}`, 'action_unit', 'record action'));
+      }
+      if (!out.length) out.push(planeItem(node.id, '(no units)', 'empty_unit', 'no properties/actions'));
+      return out;
+    }
+
+    function projectArtifact(node, plane = 'RS') {
+      if (!node) return null;
+      if (plane === 'FS') return getContextView(node);
+      if (plane === 'GS') return getGroupView(node);
+      if (plane === 'US') return getUnitView(node);
+      return getRecordView(node);
+    }
+
+    function renderPlaneSection(items, plane, sourceNodeId) {
+      const wrap = document.createElement('div');
+      wrap.className = 'nav-list';
+      if (!Array.isArray(items) || !items.length) {
+        const empty = document.createElement('div');
+        empty.className = 'mini';
+        empty.textContent = '(none)';
+        wrap.appendChild(empty);
+        return wrap;
+      }
+      for (const item of items) {
+        const row = document.createElement('div');
+        row.className = 'node-item';
+        row.textContent = `${item.label}${item.summary ? `\n${item.summary}` : ''}`;
+        row.addEventListener('click', () => {
+          const id = ensurePlaneNode(item, plane, sourceNodeId);
+          if (id) setSelectedNodeId(id, { persist: false });
+        });
+        wrap.appendChild(row);
+      }
+      return wrap;
+    }
+
+    function refreshNodeContext() {
+      const node = getNode(uiSelectedNodeId);
+      const view = document.getElementById('ctx-view');
+      const actions = document.getElementById('ctx-actions');
+      applyPlaneConvergenceUI();
+      for (const tabBtn of document.querySelectorAll('[data-plane-tab]')) {
+        const plane = tabBtn.getAttribute('data-plane-tab') || '';
+        tabBtn.classList.toggle('good', plane === (uiPlaneTab || 'RS'));
+      }
+      actions.innerHTML = '';
+      if (!node) {
+        view.textContent = '(no node selected)';
+        return;
+      }
+      for (const a of node.actions || []) {
+        const btn = document.createElement('button');
+        btn.textContent = a.toUpperCase();
+        btn.addEventListener('click', () => performNodeAction(a, node));
+        actions.appendChild(btn);
+      }
+      const plane = uiPlaneTab || 'RS';
+      const projection = projectArtifact(node, plane);
+      view.innerHTML = '';
+      if (plane === 'RS') {
+        view.textContent = JSON.stringify(projection, null, 2);
+      } else {
+        view.appendChild(renderPlaneSection(projection, plane, node.id));
+      }
+    }
+
+    function setUIPlaneTab(plane = 'RS') {
+      const next = ['FS', 'GS', 'RS', 'US'].includes(plane) ? plane : 'RS';
+      uiPlaneTab = next;
+      GameDirector.state.ui_plane_tab = next;
+      refreshNodeContext();
+    }
+
+    function setUIBasis(basis = '10', basisSpecId = null) {
+      const next = BASIS_OPTIONS.includes(String(basis)) ? String(basis) : '10';
+      const spec = resolveBasisSpec(next, basisSpecId || GameDirector.state.ui_basis_spec_id || controlPlaneState.basis_spec_id);
+      GameDirector.state.ui_basis = next;
+      GameDirector.state.ui_basis_spec_id = spec.id;
+      controlPlaneState.basis = next;
+      controlPlaneState.basis_spec_id = spec.id;
+      if (Object.hasOwn(BASIS_TO_NUMSYS, next)) {
+        controlPlaneState.numsys = BASIS_TO_NUMSYS[next];
+      }
+      const sel = document.getElementById('cp-numsys');
+      if (sel) sel.value = next;
+      refreshControlPlaneStatus();
+      refreshNodeContext();
+    }
+
+    function applyPlaneConvergenceUI() {
+      const plane = uiPlaneTab || 'RS';
+      const pill = document.getElementById('pill-plane');
+      if (pill) pill.textContent = `plane: ${plane}`;
+      const basisPill = document.getElementById('pill-basis');
+      if (basisPill) basisPill.textContent = `basis: ${controlPlaneState.basis || '10'}:${controlPlaneState.basis_spec_id || 'dec_v1'}`;
+      for (const el of document.querySelectorAll('[data-plane-scope]')) {
+        const raw = el.getAttribute('data-plane-scope') || '';
+        const scopes = raw.split(',').map((x) => x.trim()).filter(Boolean);
+        const visible = !scopes.length || scopes.includes(plane);
+        el.classList.toggle('hidden', !visible);
+      }
+      for (const btn of document.querySelectorAll('#btn-global-plane-fs,#btn-global-plane-gs,#btn-global-plane-rs,#btn-global-plane-us')) {
+        const id = btn.id || '';
+        const btnPlane = id.slice(-2).toUpperCase();
+        btn.classList.toggle('good', btnPlane === plane);
+      }
+      for (const btn of document.querySelectorAll('#btn-global-basis-2,#btn-global-basis-10,#btn-global-basis-16,#btn-global-basis-codepoint,#btn-global-basis-mixed')) {
+        const id = btn.id || '';
+        const token = id.replace('btn-global-basis-', '');
+        btn.classList.toggle('good', token === String(controlPlaneState.basis || '10'));
+      }
+    }
+
+    function refreshNavigator() {
+      const box = document.getElementById('node-nav-list');
+      if (!box) return;
+      box.innerHTML = '';
+      const root = getNode(currentFrameRootId());
+      if (!root) return;
+
+      const renderNode = (nodeId, depth = 0) => {
+        const node = getNode(nodeId);
+        if (!node) return;
+        const row = document.createElement('div');
+        row.className = `node-item${uiSelectedNodeId === node.id ? ' active' : ''}`;
+        row.style.marginLeft = `${depth * 12}px`;
+        const hasChildren = Array.isArray(node.children) && node.children.length > 0;
+        const expanded = uiExpandedNodeIds.has(node.id);
+        const prefix = hasChildren ? (expanded ? '▾ ' : '▸ ') : '· ';
+        row.textContent = `${prefix}${node.label} [${node.kind}]${node.summary ? `\n${node.summary}` : ''}`;
+        row.addEventListener('click', (ev) => {
+          if (hasChildren && ev.altKey) {
+            if (expanded) uiExpandedNodeIds.delete(node.id);
+            else uiExpandedNodeIds.add(node.id);
+            GameDirector.state.ui_expanded_node_ids = Array.from(uiExpandedNodeIds);
+            refreshNavigator();
+            return;
+          }
+          setSelectedNodeId(node.id);
+        });
+        row.addEventListener('dblclick', () => {
+          if (!hasChildren) return;
+          if (uiExpandedNodeIds.has(node.id)) uiExpandedNodeIds.delete(node.id);
+          else uiExpandedNodeIds.add(node.id);
+          GameDirector.state.ui_expanded_node_ids = Array.from(uiExpandedNodeIds);
+          refreshNavigator();
+        });
+        box.appendChild(row);
+        if (hasChildren && expanded) {
+          for (const childId of node.children) renderNode(childId, depth + 1);
+        }
+      };
+
+      if (!uiExpandedNodeIds.has(root.id)) uiExpandedNodeIds.add(root.id);
+      GameDirector.state.ui_expanded_node_ids = Array.from(uiExpandedNodeIds);
+      renderNode(root.id, 0);
+    }
+
+    function themeColorHex(theme) {
+      const hash = Array.from(theme || 'theme').reduce((acc, ch) => ((acc * 31) + ch.charCodeAt(0)) >>> 0, 7);
+      const hue = hash % 360;
+      const color = new THREE.Color();
+      color.setHSL(hue / 360, 0.46, 0.45);
+      return color.getHex();
+    }
+
+    function setNarrativeMarker(sceneRecord, chapterMeta) {
+      if (narrativeMarker) narrativeMarker.removeFromParent();
+      narrativeMarker = null;
+      if (!sceneRecord || !chapterMeta || appMode !== 'story') return;
+
+      const group = new THREE.Group();
+      const colorHex = themeColorHex(chapterMeta.world_theme || chapterMeta.title || 'narrative');
+      const core = new THREE.Mesh(
+        new THREE.IcosahedronGeometry(0.62, 0),
+        new THREE.MeshStandardMaterial({ color: colorHex, emissive: 0x132434, roughness: 0.3, metalness: 0.35 })
+      );
+      core.position.set(0, 1.6, 0);
+      core.castShadow = true;
+      group.add(core);
+
+      const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(1.25, 0.08, 12, 48),
+        new THREE.MeshStandardMaterial({ color: 0xbfd2e2, emissive: 0x10202b, roughness: 0.55, metalness: 0.15 })
+      );
+      ring.rotation.x = Math.PI / 2;
+      ring.position.y = 1.6;
+      group.add(ring);
+
+      const label = makeLabelSprite(`${chapterMeta.title}: ${sceneRecord.heading}`);
+      label.position.set(0, 2.7, 0);
+      group.add(label);
+
+      group.userData.narrativeRing = ring;
+      group.userData.narrativeCore = core;
+      narrativeRoot.add(group);
+      narrativeMarker = group;
+      ensureSceneSemanticArtifact(sceneRecord, chapterMeta);
+      renderSceneNounVisuals(sceneRecord, chapterMeta);
+    }
+
+    function clearSemanticGraph() {
+      while (semanticRoot.children.length) {
+        const n = semanticRoot.children.pop();
+        n.removeFromParent();
+      }
+      semanticGraph = null;
+    }
+
+    function sceneSemanticTriples(sceneRecord, chapterMeta) {
+      if (!sceneRecord || !chapterMeta) return [];
+      const sentenceText = `${sceneRecord.heading || ''}. ${sceneRecord.body_text || ''}`;
+      if (window.WNNLP && typeof window.WNNLP.extractTriples === 'function') {
+        const wnTriples = window.WNNLP.extractTriples(sentenceText);
+        if (Array.isArray(wnTriples) && wnTriples.length) {
+          const triples = wnTriples.slice(0, 12).map((t) => [t[0], t[1], t[2]]);
+          const subject = triples[0]?.[0] || (sceneRecord.heading || 'Scene');
+          for (const req of sceneRecord.requires_artifacts || []) triples.push([subject, 'requires', req]);
+          for (const g of sceneRecord.grants_artifacts || []) triples.push([subject, 'grants', g]);
+          return triples.slice(0, 12);
+        }
+      }
+      const sceneName = sceneRecord.heading || 'Scene';
+      const entities = extractEntityNouns(sceneRecord, chapterMeta).map((e) => e.display);
+      const triples = [];
+      const sentences = sentenceText.split(/[.!?]\s+/).map((s) => s.trim()).filter(Boolean);
+
+      const pickPredicate = (sentence) => {
+        const words = sentence.match(/[A-Za-z][A-Za-z'-]{2,}/g) || [];
+        for (const w of words) {
+          if (isLikelyVerb(w)) return w.toLowerCase();
+        }
+        return 'relates_to';
+      };
+
+      for (const s of sentences) {
+        const present = entities.filter((n) => new RegExp(`\\b${n}\\b`, 'i').test(s));
+        if (present.length >= 2) {
+          triples.push([present[0], pickPredicate(s), present[1]]);
+        }
+      }
+
+      if (!triples.length) {
+        if (entities.length >= 2) triples.push([entities[0], 'relates_to', entities[1]]);
+        else if (entities.length === 1) triples.push([entities[0], 'appears_in', sceneName]);
+      }
+
+      for (const req of sceneRecord.requires_artifacts || []) {
+        const subj = entities[0] || sceneName;
+        triples.push([subj, 'requires', req]);
+      }
+      for (const g of sceneRecord.grants_artifacts || []) {
+        const subj = entities[0] || sceneName;
+        triples.push([subj, 'grants', g]);
+      }
+
+      return triples.slice(0, 10);
+    }
+
+    function semNodeKindFromEntity(entity) {
+      const k = (entity?.kind || '').toLowerCase();
+      if (k === 'person') return 'role';
+      if (k === 'place') return 'place';
+      if (k === 'thing') return 'artifact';
+      if (SEM_NODE_KINDS.has(k)) return k;
+      return 'entity';
+    }
+
+    function semEdgeKind(pred) {
+      const p = String(pred || '').toLowerCase().replace(/\s+/g, '_');
+      if (SEM_EDGE_KINDS.has(p)) return p;
+      if (p.endsWith('s') && SEM_EDGE_KINDS.has(p.slice(0, -1))) return p.slice(0, -1);
+      return 'relates_to';
+    }
+
+    function buildSemanticGraphArtifact(sceneRecord, chapterMeta, triples) {
+      const entities = extractEntityNouns(sceneRecord, chapterMeta);
+      const entityByLabel = new Map(entities.map((e) => [e.display.toLowerCase(), e]));
+      const nodeMap = new Map();
+      const nodes = [];
+      const edges = [];
+      const transitions = [];
+
+      const ensureNode = (label) => {
+        const key = String(label || '').trim();
+        if (!key) return null;
+        const lower = key.toLowerCase();
+        if (nodeMap.has(lower)) return nodeMap.get(lower);
+        const found = entityByLabel.get(lower);
+        const kind = semNodeKindFromEntity(found);
+        const node = {
+          id: `n_${slug(key)}_${sid(`${sceneRecord?.id || 'scene'}:${key}`, 'k').slice(-6)}`,
+          label: key,
+          kind,
+          synset: window.WNNLP?.lookupLemma ? (window.WNNLP.lookupLemma(found?.noun || lower)?.synset || null) : null,
+        };
+        nodeMap.set(lower, node);
+        nodes.push(node);
+        transitions.push({ op: 'add_node', node: node.id });
+        return node;
+      };
+
+      for (const [subj, pred, obj] of triples) {
+        const s = ensureNode(subj);
+        const o = ensureNode(obj);
+        if (!s || !o) continue;
+        const edge = {
+          id: `e_${sid(`${sceneRecord?.id || 'scene'}:${s.id}:${pred}:${o.id}`, 'r').slice(-10)}`,
+          subject: s.id,
+          predicate: semEdgeKind(pred),
+          object: o.id,
+          score: 1.0,
+        };
+        edges.push(edge);
+        transitions.push({ op: 'add_edge', edge: edge.id });
+      }
+
+      return {
+        version: 1,
+        scene_id: sceneRecord?.id || null,
+        chapter_id: sceneRecord?.chapter_id || chapterMeta?.id || null,
+        nodes,
+        edges,
+        transitions,
+      };
+    }
+
+    function materializeSemanticGraphFromText(documentId, text, source = 'imported') {
+      const fakeScene = {
+        id: `doc_scene_${slug(documentId)}`,
+        chapter_id: `doc_${slug(documentId)}`,
+        heading: `Document ${documentId}`,
+        body_text: text || '',
+        requires_artifacts: [],
+        grants_artifacts: [],
+      };
+      const fakeMeta = {
+        id: `doc_${slug(documentId)}`,
+        title: `Document ${documentId}`,
+        world_theme: 'document-analysis',
+      };
+      const triples = sceneSemanticTriples(fakeScene, fakeMeta);
+      const graph = buildSemanticGraphArtifact(fakeScene, fakeMeta, triples);
+      return {
+        type: 'semantic_graph_artifact',
+        document_id: documentId,
+        source,
+        ...graph,
+      };
+    }
+
+    function parseSectionRange(spec, totalParagraphs) {
+      if (!Array.isArray(spec) || spec.length !== 2) return [0, Math.max(0, totalParagraphs - 1)];
+      const parseIdx = (value) => {
+        const m = String(value || '').match(/paragraph_(\d+)/i);
+        if (!m) return null;
+        return Math.max(1, Number(m[1])) - 1;
+      };
+      const a = parseIdx(spec[0]);
+      const b = parseIdx(spec[1]);
+      if (a === null || b === null) return [0, Math.max(0, totalParagraphs - 1)];
+      const lo = Math.max(0, Math.min(a, b));
+      const hi = Math.min(Math.max(0, totalParagraphs - 1), Math.max(a, b));
+      return [lo, hi];
+    }
+
+    function registerSemanticDocument(documentId, text, source = 'uploaded') {
+      const docId = String(documentId || '').trim();
+      if (!docId) throw new Error('document_id required');
+      const raw = String(text || '');
+      const paragraphs = raw.split(/\n\s*\n/g).map((x) => x.trim()).filter(Boolean);
+      semanticDocuments.set(docId, {
+        source,
+        document_id: docId,
+        text: raw,
+        paragraphs,
+        paragraph_count: paragraphs.length,
+      });
+      GameDirector.appendEvent('semantic_event', { action: 'document_registered', document_id: docId, source });
+      return docId;
+    }
+
+    function analyzeSemanticDocument(request) {
+      const req = request || {};
+      const docId = String(req.document_id || '');
+      const doc = semanticDocuments.get(docId);
+      if (!doc) throw new Error(`unknown document_id: ${docId}`);
+      const [start, end] = parseSectionRange(req.section_range, doc.paragraph_count || 1);
+      const selected = (doc.paragraphs || []).slice(start, end + 1);
+      const text = selected.join('\n\n');
+
+      const entities = extractEntityNouns(
+        { heading: `Document ${docId}`, body_text: text },
+        { title: docId, world_theme: 'document-analysis' }
+      );
+      const triples = window.WNNLP?.extractTriples
+        ? window.WNNLP.extractTriples(text)
+        : sceneSemanticTriples(
+            { heading: `Document ${docId}`, body_text: text, requires_artifacts: [], grants_artifacts: [] },
+            { title: docId, world_theme: 'document-analysis' }
+          );
+      const artifact = materializeSemanticGraphFromText(docId, text, doc.source);
+      GameDirector.setSemanticArtifact(
+        artifact,
+        { source: 'document', document_id: docId, section_range: [start + 1, end + 1] },
+        { emit: true, source: 'semantic' }
+      );
+
+      GameDirector.appendEvent('semantic_event', {
+        action: 'scene_semantics_extracted',
+        document_id: docId,
+        extract_mode: req.extract_mode || 'all',
+        semantic_filter: req.semantic_filter || ['person', 'place', 'thing', 'predicate'],
+      });
+      GameDirector.appendEvent('semantic_event', {
+        action: 'landscape_projection_built',
+        document_id: docId,
+        node_count: artifact.nodes.length,
+        edge_count: artifact.edges.length,
+      });
+      GameDirector.render();
+      return {
+        request: req,
+        selected_paragraphs: [start + 1, end + 1],
+        entities,
+        triples,
+        artifact,
+      };
+    }
+
+    function drawSemanticGraphArtifact(artifact) {
+      clearSemanticGraph();
+      if (!artifact || !Array.isArray(artifact.nodes) || !artifact.nodes.length) return;
+      const nodes = artifact.nodes || [];
+      const edges = artifact.edges || [];
+      const nodePos = new Map();
+      const radius = 2.7;
+      const base = new THREE.Vector3(0, 0.35, -3.8);
+
+      for (let i = 0; i < nodes.length; i += 1) {
+        const nodeRec = nodes[i];
+        const angle = (Math.PI * 2 * i) / Math.max(1, nodes.length);
+        const pos = new THREE.Vector3(
+          base.x + Math.cos(angle) * radius,
+          base.y + 0.6 + (i % 2) * 0.4,
+          base.z + Math.sin(angle) * radius
+        );
+        nodePos.set(nodeRec.id, pos);
+        const node = new THREE.Mesh(
+          new THREE.SphereGeometry(0.22, 16, 12),
+          new THREE.MeshStandardMaterial({ color: 0x5e8dad, emissive: 0x173344, roughness: 0.45, metalness: 0.2 })
+        );
+        node.position.copy(pos);
+        semanticRoot.add(node);
+        const label = makeLabelSprite(nodeRec.label || nodeRec.id);
+        label.position.set(pos.x, pos.y + 0.5, pos.z);
+        label.scale.set(1.7, 0.4, 1);
+        semanticRoot.add(label);
+      }
+
+      for (const edgeRec of edges) {
+        const a = nodePos.get(edgeRec.subject);
+        const b = nodePos.get(edgeRec.object);
+        if (!a || !b) continue;
+        const mid = a.clone().lerp(b, 0.5).add(new THREE.Vector3(0, 0.28, 0));
+        const curve = new THREE.QuadraticBezierCurve3(a, mid, b);
+        const pts = curve.getPoints(18);
+        const geo = new THREE.BufferGeometry().setFromPoints(pts);
+        const line = new THREE.Line(
+          geo,
+          new THREE.LineBasicMaterial({ color: 0x85b5cf, transparent: true, opacity: 0.9 })
+        );
+        semanticRoot.add(line);
+        const tag = makeLabelSprite(edgeRec.predicate || 'relates_to');
+        tag.position.copy(mid);
+        tag.scale.set(1.2, 0.32, 1);
+        semanticRoot.add(tag);
+      }
+      semanticGraph = cloneState(artifact);
+    }
+
+    function syncSemanticArtifactProjection() {
+      const artifact = GameDirector.state.semantic_graph_artifact;
+      if (!artifact && !semanticGraph) return;
+      const prevId = semanticGraph?.id || semanticGraph?.scene_id || semanticGraph?.document_id || null;
+      const nextId = artifact?.id || artifact?.scene_id || artifact?.document_id || null;
+      const prevEdges = Array.isArray(semanticGraph?.edges) ? semanticGraph.edges.length : 0;
+      const nextEdges = Array.isArray(artifact?.edges) ? artifact.edges.length : 0;
+      const prevNodes = Array.isArray(semanticGraph?.nodes) ? semanticGraph.nodes.length : 0;
+      const nextNodes = Array.isArray(artifact?.nodes) ? artifact.nodes.length : 0;
+      if (prevId === nextId && prevEdges === nextEdges && prevNodes === nextNodes) return;
+      drawSemanticGraphArtifact(artifact);
+    }
+
+    function ensureSceneSemanticArtifact(sceneRecord, chapterMeta) {
+      if (!sceneRecord || !chapterMeta || appMode !== 'story') return;
+      if (isReplaying) return;
+      const existing = GameDirector.state.semantic_graph_artifact;
+      const meta = GameDirector.state.semantic_artifact_meta || {};
+      if (existing && existing.scene_id === sceneRecord.id && meta.source === 'scene') return;
+      const triples = sceneSemanticTriples(sceneRecord, chapterMeta);
+      const artifact = buildSemanticGraphArtifact(sceneRecord, chapterMeta, triples);
+      artifact.id = `sg_${sid(`${sceneRecord.id}:${chapterMeta.id}`, 's').slice(-10)}`;
+      GameDirector.setSemanticArtifact(
+        artifact,
+        { source: 'scene', scene_id: sceneRecord.id, chapter_id: chapterMeta.id },
+        { emit: !isReplaying, source: 'semantic' }
+      );
+    }
+
+    function updateTimelineUI() {
+      const slider = document.getElementById('timeline-slider');
+      const meta = document.getElementById('timeline-meta');
+      const total = GameDirector.state.event_log.length;
+      const idx = Math.max(0, Math.min(GameDirector.state.timeline_index, total));
+      slider.max = String(total);
+      slider.value = String(idx);
+      meta.textContent = `timeline: ${idx}/${total} · ${GameDirector.state.play_state} · x${GameDirector.state.play_speed}`;
+    }
+
+    async function emitOutboundWebhook(event) {
+      const endpoint = document.getElementById('outbound-url').value.trim();
+      if (!endpoint) return;
+      try {
+        await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ channel: 'outbound', event }),
+        });
+      } catch {
+        setStatus('Outbound webhook failed.');
+      }
+    }
+
+    function applyInboundProposal(msg) {
+      GameDirector.appendEvent('webhook_received', { message: msg }, 'webhook');
+      if (!msg || typeof msg !== 'object') return;
+      if (msg.type === 'spawn_artifact' && msg.artifact) {
+        extraArtifacts.unshift(msg.artifact);
+        refreshArtifactCards();
+      } else if (msg.type === 'narrative_annotation' && msg.text) {
+        const codex = document.getElementById('codex-list');
+        const note = document.createElement('div');
+        note.className = 'mini';
+        note.textContent = `Webhook note: ${msg.text}`;
+        codex.prepend(note);
+      } else if (msg.type === 'grant_artifact' && msg.artifact_id) {
+        GameDirector.grantArtifact(msg.artifact_id);
+      }
+    }
+
+    function cpPushScope(scope, previous) {
+      controlPlaneState.scope_stack.push({ scope, previous });
+    }
+
+    function cpPopScope() {
+      const top = controlPlaneState.scope_stack.pop();
+      if (!top) return false;
+      controlPlaneState.numsys = top.previous.numsys;
+      if (top.previous.basis) controlPlaneState.basis = top.previous.basis;
+      if (top.previous.basis_spec_id) controlPlaneState.basis_spec_id = top.previous.basis_spec_id;
+      controlPlaneState.channel = top.previous.channel;
+      controlPlaneState.lane = top.previous.lane;
+      controlPlaneState.mode = 'DATA';
+      return true;
+    }
+
+    function cpResolveBoundary(boundary) {
+      const closeMap = {
+        unit: ['next-unit'],
+        record: ['next-record', 'next-unit'],
+        group: ['next-group', 'next-record', 'next-unit'],
+        file: ['next-file', 'next-group', 'next-record', 'next-unit'],
+      };
+      const toClose = closeMap[boundary] || [];
+      const rest = [];
+      for (const scope of controlPlaneState.scope_stack) {
+        if (toClose.includes(scope.scope)) {
+          controlPlaneState.numsys = scope.previous.numsys;
+          if (scope.previous.basis) controlPlaneState.basis = scope.previous.basis;
+          if (scope.previous.basis_spec_id) controlPlaneState.basis_spec_id = scope.previous.basis_spec_id;
+          controlPlaneState.channel = scope.previous.channel;
+          controlPlaneState.lane = scope.previous.lane;
+        } else rest.push(scope);
+      }
+      controlPlaneState.scope_stack = rest;
+      if (!controlPlaneState.scope_stack.length) controlPlaneState.mode = 'DATA';
+      refreshControlPlaneStatus();
+    }
+
+    function cpReadUI() {
+      const rawBasis = String(document.getElementById('cp-numsys').value || '10');
+      const basis = BASIS_OPTIONS.includes(rawBasis) ? rawBasis : '10';
+      const basisSpec = resolveBasisSpec(basis, controlPlaneState.basis_spec_id);
+      return {
+        channel: document.getElementById('cp-channel').value,
+        lane: Math.max(0, Math.min(15, Number(document.getElementById('cp-lane').value || 0))),
+        basis,
+        basis_spec_id: basisSpec.id,
+        numsys: Object.hasOwn(BASIS_TO_NUMSYS, basis) ? BASIS_TO_NUMSYS[basis] : 10,
+        scope: document.getElementById('cp-scope').value,
+        plane: Math.max(0, Math.min(16, Number(document.getElementById('cp-plane').value || 0))),
+        codepointHex: String(document.getElementById('cp-codepoint').value || '0041').replace(/^0x/i, '').toUpperCase(),
+      };
+    }
+
+    function channelColor(channel) {
+      if (channel === 'FS') return 0x225f88;
+      if (channel === 'GS') return 0x2f8f73;
+      if (channel === 'RS') return 0x9b7f2c;
+      if (channel === 'US') return 0x8b4f92;
+      return 0x58788f;
+    }
+
+    function parseControlDiagramSpec(specText) {
+      const raw = String(specText || '').trim();
+      const nodes = [];
+      const edges = [];
+      const nodeById = new Map();
+      const ensureNode = (id, label = null, channel = null) => {
+        const safeId = String(id || '').trim();
+        if (!safeId) return null;
+        if (nodeById.has(safeId)) return nodeById.get(safeId);
+        const node = { id: safeId, label: label || safeId, channel: channel || null };
+        nodeById.set(safeId, node);
+        nodes.push(node);
+        return node;
+      };
+
+      if (!raw) return { nodes, edges };
+      if (raw.startsWith('<')) {
+        const doc = new DOMParser().parseFromString(raw, 'application/xml');
+        if (doc.querySelector('parsererror')) throw new Error('XML parse error');
+        for (const el of Array.from(doc.querySelectorAll('node'))) {
+          ensureNode(el.getAttribute('id'), el.getAttribute('label'), el.getAttribute('channel'));
+        }
+        for (const el of Array.from(doc.querySelectorAll('edge'))) {
+          const from = String(el.getAttribute('from') || '').trim();
+          const to = String(el.getAttribute('to') || '').trim();
+          if (!from || !to) continue;
+          ensureNode(from);
+          ensureNode(to);
+          edges.push({ from, to, label: el.getAttribute('label') || 'relates' });
+        }
+        return { nodes, edges };
+      }
+
+      const lines = raw.split('\n').map((x) => x.trim()).filter(Boolean).filter((x) => !x.startsWith('#'));
+      for (const line of lines) {
+        let m = line.match(/^node\s+([A-Za-z0-9_-]+)(?:\s+([A-Za-z0-9 _-]+))?(?:\s+ch=(FS|GS|RS|US))?$/i);
+        if (m) {
+          ensureNode(m[1], m[2] ? m[2].trim() : m[1], m[3] ? m[3].toUpperCase() : null);
+          continue;
+        }
+        m = line.match(/^(?:edge\s+)?([A-Za-z0-9_-]+)\s*->\s*([A-Za-z0-9_-]+)(?:\s*:\s*(.+))?$/i);
+        if (m) {
+          const from = m[1];
+          const to = m[2];
+          ensureNode(from);
+          ensureNode(to);
+          edges.push({ from, to, label: (m[3] || 'relates').trim() });
+        }
+      }
+      return { nodes, edges };
+    }
+
+    function renderControlDiagram(specText) {
+      if (!cpDiagramRoot) return;
+      while (cpDiagramRoot.children.length) cpDiagramRoot.children.pop().removeFromParent();
+      const parsed = parseControlDiagramSpec(specText);
+      if (!parsed.nodes.length) return;
+      const nodePos = new Map();
+      const radius = 4.2 + Math.min(2.2, parsed.nodes.length * 0.08);
+      for (let i = 0; i < parsed.nodes.length; i += 1) {
+        const rec = parsed.nodes[i];
+        const angle = -Math.PI / 2 + (Math.PI * 2 * i) / Math.max(1, parsed.nodes.length);
+        const x = Math.cos(angle) * radius;
+        const z = 3.8 + Math.sin(angle) * radius;
+        const h = 0.9 + ((i % 3) * 0.18);
+        const mesh = new THREE.Mesh(
+          new THREE.BoxGeometry(1.1, h, 1.1),
+          new THREE.MeshStandardMaterial({
+            color: channelColor(rec.channel),
+            emissive: 0x152232,
+            roughness: 0.42,
+            metalness: 0.18,
+          })
+        );
+        mesh.position.set(x, h * 0.5, z);
+        cpDiagramRoot.add(mesh);
+        const label = makeLabelSprite(rec.label || rec.id);
+        label.scale.set(1.25, 0.34, 1);
+        label.position.set(x, h + 0.5, z);
+        cpDiagramRoot.add(label);
+        nodePos.set(rec.id, mesh.position.clone());
+      }
+      for (const e of parsed.edges) {
+        const a = nodePos.get(e.from);
+        const b = nodePos.get(e.to);
+        if (!a || !b) continue;
+        const mid = a.clone().lerp(b, 0.5).add(new THREE.Vector3(0, 0.45, 0));
+        const curve = new THREE.QuadraticBezierCurve3(a, mid, b);
+        const pts = curve.getPoints(20);
+        const geo = new THREE.BufferGeometry().setFromPoints(pts);
+        const line = new THREE.Line(
+          geo,
+          new THREE.LineBasicMaterial({ color: 0xbfd2e2, transparent: true, opacity: 0.9 })
+        );
+        cpDiagramRoot.add(line);
+        const tag = makeLabelSprite(e.label || 'relates');
+        tag.scale.set(0.95, 0.28, 1);
+        tag.position.copy(mid);
+        cpDiagramRoot.add(tag);
+      }
+    }
+
+    function syncControlDiagramProjection() {
+      const spec = String(GameDirector.state.cp_diagram_spec || '');
+      if (lastDiagramSpec === spec) return;
+      lastDiagramSpec = spec;
+      controlPlaneState.diagram_spec = spec;
+      document.getElementById('cp-diagram-spec').value = spec;
+      renderControlDiagram(spec);
+    }
+
+    function cpRenderDiagramFromUI() {
+      const spec = String(document.getElementById('cp-diagram-spec').value || '').trim();
+      try {
+        parseControlDiagramSpec(spec);
+      } catch (err) {
+        setStatus(`Diagram parse error: ${err?.message || 'invalid spec'}`);
+        return;
+      }
+      GameDirector.state.cp_diagram_spec = spec;
+      controlPlaneState.diagram_spec = spec;
+      renderControlDiagram(spec);
+      lastDiagramSpec = spec;
+      GameDirector.appendEvent('control_plane', { action: 'uml_render', spec });
+      GameDirector.autosave();
+      setStatus('Control-plane UML/XML projection rendered.');
+    }
+
+    function cpClearDiagram() {
+      GameDirector.state.cp_diagram_spec = '';
+      controlPlaneState.diagram_spec = '';
+      lastDiagramSpec = '';
+      document.getElementById('cp-diagram-spec').value = '';
+      renderControlDiagram('');
+      GameDirector.appendEvent('control_plane', { action: 'uml_clear' });
+      GameDirector.autosave();
+      setStatus('Control-plane UML/XML projection cleared.');
+    }
+
+    function cpApplyFrameFromUI() {
+      const ui = cpReadUI();
+      if (controlPlaneState.mode !== 'ESCAPE_PENDING' && controlPlaneState.mode !== 'CONTROL') {
+        setStatus('Control rejected: enter ESC first for lawful transition.');
+        return;
+      }
+      const prev = {
+        numsys: controlPlaneState.numsys,
+        basis: controlPlaneState.basis,
+        basis_spec_id: controlPlaneState.basis_spec_id,
+        channel: controlPlaneState.channel,
+        lane: controlPlaneState.lane,
+      };
+      controlPlaneState.channel = ui.channel;
+      controlPlaneState.lane = ui.lane;
+      controlPlaneState.basis = ui.basis;
+      controlPlaneState.basis_spec_id = ui.basis_spec_id;
+      controlPlaneState.numsys = ui.numsys;
+      GameDirector.state.ui_basis = ui.basis;
+      GameDirector.state.ui_basis_spec_id = ui.basis_spec_id;
+      controlPlaneState.mode = 'CONTROL';
+      if (ui.scope !== 'quoted-literal' && ui.scope !== 'structural-region') cpPushScope(ui.scope, prev);
+      GameDirector.appendEvent('control_plane', {
+        action: 'set_frame',
+        channel: ui.channel,
+        lane: ui.lane,
+        basis: ui.basis,
+        basis_spec_id: ui.basis_spec_id,
+        numsys: ui.numsys,
+        scope: ui.scope,
+      });
+      refreshControlPlaneStatus();
+      setStatus(`Control frame applied: ${ui.channel}/lane${ui.lane}/basis:${ui.basis} (${ui.scope})`);
+      if (ui.scope === 'next-unit') cpResolveBoundary('unit');
+    }
+
+    function cpEmitEsc() {
+      controlPlaneState.mode = 'ESCAPE_PENDING';
+      controlPlaneState.escape_pending = true;
+      GameDirector.appendEvent('control_plane', { action: 'esc_open' });
+      refreshControlPlaneStatus();
+    }
+
+    function cpEmitLiteralEsc() {
+      if (controlPlaneState.mode !== 'ESCAPE_PENDING') {
+        setStatus('Literal ESC rejected: ESC pending required.');
+        return;
+      }
+      controlPlaneState.mode = 'DATA';
+      controlPlaneState.escape_pending = false;
+      GameDirector.appendEvent('control_plane', { action: 'esc_literal' });
+      refreshControlPlaneStatus();
+      setStatus('ESC ESC -> literal ESC');
+    }
+
+    function cpEmitCodepoint() {
+      const ui = cpReadUI();
+      const parsed = Number.parseInt(ui.codepointHex, 16);
+      if (!Number.isFinite(parsed) || parsed < 0 || parsed > 0xFFFF) {
+        setStatus('Invalid codepoint hex.');
+        return;
+      }
+      const cp = (ui.plane << 16) | parsed;
+      controlPlaneState.codepoint_plane = ui.plane;
+      controlPlaneState.codepoint_hex = ui.codepointHex;
+      controlPlaneState.last_emitted_codepoint = cp;
+      GameDirector.appendEvent('control_plane', {
+        action: 'emit_codepoint',
+        plane: ui.plane,
+        basis: controlPlaneState.basis,
+        basis_spec_id: controlPlaneState.basis_spec_id,
+        codepoint: `U+${ui.codepointHex}`
+      });
+      refreshControlPlaneStatus();
+      setStatus(`Codepoint emitted: plane ${ui.plane}, U+${ui.codepointHex} (${controlPlaneState.basis})`);
+    }
     function artifactFromId(aid) {
       for (const ch of Object.values(GameDirector.chapterMap)) {
         const a = ch.records.find((r) => r.type === 'artifact' && r.id === aid);
         if (a) return a;
       }
       return null;
+    }
+
+    function hashWord(word) {
+      let h = 2166136261;
+      for (const ch of word) {
+        h ^= ch.charCodeAt(0);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    }
+
+    function primitiveForWord(word) {
+      const options = ['box', 'sphere', 'cone', 'cylinder', 'torus'];
+      return options[hashWord(word) % options.length];
+    }
+
+    function colorForWord(word) {
+      const h = hashWord(word);
+      const hue = (h % 360) / 360;
+      const sat = 0.48 + ((h >> 8) % 20) / 100;
+      const lum = 0.40 + ((h >> 16) % 18) / 100;
+      return new THREE.Color().setHSL(hue, Math.min(0.76, sat), Math.min(0.66, lum)).getHex();
+    }
+
+    function titleCase(word) {
+      if (!word) return '';
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }
+
+    function entityKind(noun) {
+      const w = noun.toLowerCase();
+      const personWords = new Set([
+        'watcher','operator','witness','tribe','sage','judge','king','queen','child','elder','prophet','scribe',
+        'guardian','pilgrim','messenger','teacher','lawgiver','seer','covenantor'
+      ]);
+      const placeWords = new Set([
+        'city','gate','garden','river','desert','mountain','plain','temple','house','world','hub','archive','tower',
+        'valley','sanctuary','court','kingdom','island','sea','wilderness'
+      ]);
+      if (personWords.has(w)) return 'person';
+      if (placeWords.has(w)) return 'place';
+      return 'thing';
+    }
+
+    function isLikelyVerb(word) {
+      const w = word.toLowerCase();
+      const verbWords = new Set([
+        'is','are','was','were','be','been','being','have','has','had','do','does','did','enter','enters','entered',
+        'unlock','unlocks','unlocked','reveal','reveals','revealed','collect','collects','collected','begin','begins',
+        'began','return','returns','returned','continue','continues','continued','align','aligns','aligned','conquer',
+        'conquers','conquered','open','opens','opened','rise','rises','rose','risen','answer','answers','answered',
+        'seek','seeks','sought','know','knows','knew','known'
+      ]);
+      if (verbWords.has(w)) return true;
+      if (w.endsWith('ing') || w.endsWith('ed')) return true;
+      return false;
+    }
+
+    function extractEntityNouns(sceneRecord, chapterMeta) {
+      const title = chapterMeta?.title || '';
+      const heading = sceneRecord?.heading || '';
+      const body = sceneRecord?.body_text || '';
+      const text = `${title}. ${heading}. ${body}`;
+
+      if (window.WNNLP && typeof window.WNNLP.extractEntities === 'function') {
+        const wnEntities = window.WNNLP.extractEntities(text);
+        if (Array.isArray(wnEntities) && wnEntities.length) {
+          return wnEntities.slice(0, 12).map((e) => ({
+            noun: (e.noun || '').toLowerCase(),
+            display: e.display || titleCase(e.noun || ''),
+            kind: e.kind || entityKind(e.noun || ''),
+          }));
+        }
+      }
+
+      const stop = new Set([
+        'the','and','for','with','that','this','from','into','your','you','are','was','were','have','has','had',
+        'not','but','all','can','will','shall','their','there','they','them','our','out','one','two','three','four',
+        'when','where','which','what','who','why','how','begin','return','continue','story','chapter','scene','phase',
+        'through','across','before','after','under','over','between','within','without','about','upon','also','more',
+        'most','many','some','each','other','than','then','because','while','whose','those','these','lawful'
+      ]);
+
+      const score = new Map();
+      const push = (raw, weight = 1) => {
+        const word = raw.replace(/[^A-Za-z-]/g, '').toLowerCase();
+        if (!word || word.length < 3) return;
+        if (stop.has(word)) return;
+        if (isLikelyVerb(word)) return;
+        score.set(word, (score.get(word) || 0) + weight);
+      };
+
+      // Proper entities: capitalized sequences (people/places/titles)
+      const proper = text.match(/\b([A-Z][a-z]+(?:[- ][A-Z][a-z]+)*)\b/g) || [];
+      for (const p of proper) {
+        for (const part of p.split(/[- ]+/)) push(part, 3);
+      }
+
+      // Determiner-led noun candidates: "the gate", "a city", "the witness"
+      const detPattern = /\b(?:the|a|an|this|that|these|those|our|their)\s+([A-Za-z-]{3,})\b/gi;
+      let m;
+      while ((m = detPattern.exec(text)) !== null) push(m[1], 2);
+
+      // General noun-like fallback
+      const words = text.match(/[A-Za-z][A-Za-z'-]{2,}/g) || [];
+      for (const w of words) push(w, 1);
+
+      return Array.from(score.entries())
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+        .slice(0, 12)
+        .map(([noun]) => ({
+          noun,
+          display: titleCase(noun),
+          kind: entityKind(noun),
+        }));
+    }
+
+    function buildSceneNounArtifacts(sceneRecord, chapterMeta) {
+      const entities = extractEntityNouns(sceneRecord, chapterMeta);
+      const sid = sceneRecord?.id || 'scene';
+      return entities.map((entity) => ({
+        id: `noun_${sid}_${entity.noun}`,
+        name: `${entity.kind}: ${entity.display}`,
+        kind: 'primitive',
+        meta: `story-noun/${entity.kind}`,
+        payload: {
+          primitive: primitiveForWord(entity.noun),
+          color: colorForWord(entity.noun),
+          noun: entity.noun,
+          entityKind: entity.kind,
+        },
+      }));
+    }
+
+    function clearSceneNounVisuals() {
+      const toRemove = placedRoot.children.filter((child) => child.userData?.autoSource === 'narrative_noun');
+      for (const child of toRemove) child.removeFromParent();
+      sceneNounArtifacts = [];
+    }
+
+    function renderSceneNounVisuals(sceneRecord, chapterMeta) {
+      clearSceneNounVisuals();
+      sceneNounArtifacts = buildSceneNounArtifacts(sceneRecord, chapterMeta);
+      if (!sceneNounArtifacts.length) return;
+      const count = sceneNounArtifacts.length;
+      const radius = 4.8;
+      const baseY = 0;
+      for (let i = 0; i < count; i += 1) {
+        const item = sceneNounArtifacts[i];
+        const ang = -Math.PI / 2 + ((Math.PI * 2) * i) / count;
+        const point = new THREE.Vector3(Math.cos(ang) * radius, baseY, Math.sin(ang) * radius);
+        spawnArtifact(item, point);
+        const last = placedRoot.children[placedRoot.children.length - 1];
+        if (last) {
+          last.userData.autoSource = 'narrative_noun';
+          last.userData.storyNoun = item.payload.noun;
+        }
+      }
+      setSelected(null);
+    }
+
+    function inventoryArtifactCardForId(aid) {
+      const art = artifactFromId(aid);
+      if (!art) return null;
+      return {
+        id: `inv_${aid}`,
+        name: art.name,
+        kind: art.model_ref?.type === 'primitive' ? 'primitive' : 'primitive',
+        meta: `inventory/${art.chapter_id}`,
+        payload: {
+          primitive: art.model_ref?.primitive || 'box',
+          color: art.model_ref?.color || 0x4f8db1,
+        },
+      };
+    }
+
+    function hasSceneArtifact(aid) {
+      return placedRoot.children.some((child) => child.userData?.storyArtifactId === aid);
+    }
+
+    function ensureInventoryArtifactInScene(aid) {
+      if (hasSceneArtifact(aid)) return;
+      const item = inventoryArtifactCardForId(aid);
+      if (!item) return;
+      const index = Math.max(0, GameDirector.state.inventory.indexOf(aid));
+      const angle = (index * Math.PI * 0.62) % (Math.PI * 2);
+      const radius = 3.2 + ((index % 4) * 0.95);
+      const point = new THREE.Vector3(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
+      spawnArtifact(item, point.clone());
+      const last = placedRoot.children[placedRoot.children.length - 1];
+      if (last) {
+        last.userData.storyArtifactId = aid;
+        last.userData.autoSource = 'inventory_artifact';
+      }
+    }
+
+    function syncInventoryArtifactsInScene() {
+      const toRemove = placedRoot.children.filter((child) => {
+        const sid = child.userData?.storyArtifactId;
+        return sid && child.userData?.autoSource === 'inventory_artifact' && !GameDirector.state.inventory.includes(sid);
+      });
+      for (const child of toRemove) child.removeFromParent();
+      for (const aid of GameDirector.state.inventory) ensureInventoryArtifactInScene(aid);
     }
 
     function runtimeArtifactCards() {
@@ -1064,6 +4061,7 @@ Enter the Prologue and begin reconciliation.`
         });
       }
 
+      for (const item of sceneNounArtifacts) base.push(item);
       for (const x of extraArtifacts) base.push(x);
       return base;
     }
@@ -1087,10 +4085,11 @@ Enter the Prologue and begin reconciliation.`
     function setAppMode(mode) {
       appMode = mode;
       document.getElementById('pill-mode').textContent = `mode: ${mode}`;
-      storyUI.classList.toggle('hidden', mode !== 'story');
+      narrativeRoot.visible = mode === 'story';
       document.getElementById('btn-story-mode').disabled = mode === 'story';
       document.getElementById('btn-editor-mode').disabled = mode === 'editor';
       updateHubGraphState();
+      applyUIFrameVisibility();
       setStatus(`App mode: ${mode}`);
     }
 
@@ -1100,6 +4099,8 @@ Enter the Prologue and begin reconciliation.`
       else transformControls.detach();
       document.getElementById('pill-selected').textContent = `selected: ${selected ? selected.name : 'none'}`;
       document.getElementById('pill-objects').textContent = `objects: ${placedRoot.children.length}`;
+      if (selected?.userData?.storyArtifactId) setSelectedNodeId(`artifact:${selected.userData.storyArtifactId}`);
+      else if (selected?.userData?.storyNoun) setSelectedNodeId(`semnode:${selected.userData.storyNoun}`);
     }
 
     function snapEnabled() { return document.getElementById('snap-enable').checked; }
@@ -1149,7 +4150,12 @@ Enter the Prologue and begin reconciliation.`
     }
 
     function spawnPrimitive(item, point, savedTransform = null) {
-      const geo = new THREE.BoxGeometry(1, 1, 1);
+      const primitive = item.payload?.primitive || 'box';
+      let geo = new THREE.BoxGeometry(1, 1, 1);
+      if (primitive === 'sphere') geo = new THREE.SphereGeometry(0.7, 20, 16);
+      else if (primitive === 'cone') geo = new THREE.ConeGeometry(0.72, 1.28, 20);
+      else if (primitive === 'cylinder') geo = new THREE.CylinderGeometry(0.56, 0.56, 1.2, 20);
+      else if (primitive === 'torus') geo = new THREE.TorusGeometry(0.65, 0.22, 14, 26);
       const mat = new THREE.MeshStandardMaterial({
         color: item.payload?.color || 0x2f78a6,
         roughness: 0.4,
@@ -1229,6 +4235,7 @@ Enter the Prologue and begin reconciliation.`
         const c = placedRoot.children.pop();
         c.removeFromParent();
       }
+      GameDirector.appendEvent('layout_changed', { kind: 'clear_scene_objects' });
       setSelected(null);
     }
 
@@ -1244,6 +4251,7 @@ Enter the Prologue and begin reconciliation.`
       };
       layoutText.value = JSON.stringify(layout, null, 2);
       GameDirector.state.layout = layout;
+      GameDirector.appendEvent('layout_changed', { kind: 'save_layout', object_count: layout.objects.length });
       GameDirector.autosave();
       setStatus(`Layout saved with ${layout.objects.length} objects.`);
     }
@@ -1279,6 +4287,7 @@ Enter the Prologue and begin reconciliation.`
         spawnArtifact(item, new THREE.Vector3(0, 0, 0), row.transform);
       }
       refreshArtifactCards();
+      GameDirector.appendEvent('layout_changed', { kind: 'load_layout', object_count: objs.length });
       setStatus(`Layout loaded with ${objs.length} objects.`);
     }
 
@@ -1303,6 +4312,162 @@ Enter the Prologue and begin reconciliation.`
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
+    }
+
+    function createProjectionPackage() {
+      const layout = {
+        version: 1,
+        camera: {
+          position: [camera.position.x, camera.position.y, camera.position.z],
+          target: [controls.target.x, controls.target.y, controls.target.z],
+        },
+        extraArtifacts,
+        objects: placedRoot.children.map(sceneLayoutObject),
+      };
+      return {
+        type: 'atomic_projection_package',
+        version: 1,
+        created_at: new Date().toISOString(),
+        ui: {
+          app_mode: appMode,
+          frame: GameDirector.state.ui_frame,
+          subframe: GameDirector.state.ui_subframe,
+          selected_node_id: GameDirector.state.ui_selected_node_id,
+          plane_tab: GameDirector.state.ui_plane_tab || uiPlaneTab || 'RS',
+          basis: GameDirector.state.ui_basis || controlPlaneState.basis || '10',
+          basis_spec_id: GameDirector.state.ui_basis_spec_id || controlPlaneState.basis_spec_id || 'dec_v1',
+          expanded_node_ids: Array.from(uiExpandedNodeIds),
+          scene_first_mode: sceneFirstMode,
+          menu_ring_spec: GameDirector.state.menu_ring_spec || DEFAULT_MENU_RING_SPEC,
+        },
+        basis_specs: Array.from(basisSpecRegistry.values()).map((x) => cloneState(x)),
+        control_plane: cloneState(controlPlaneState),
+        semantic: {
+          artifact: GameDirector.state.semantic_graph_artifact ? cloneState(GameDirector.state.semantic_graph_artifact) : null,
+          meta: GameDirector.state.semantic_artifact_meta ? cloneState(GameDirector.state.semantic_artifact_meta) : null,
+        },
+        layout,
+      };
+    }
+
+    function applyProjectionPackage(pkg) {
+      if (!pkg || typeof pkg !== 'object' || pkg.type !== 'atomic_projection_package') {
+        throw new Error('Invalid projection package type');
+      }
+      if (pkg.ui?.app_mode === 'story' || pkg.ui?.app_mode === 'editor') {
+        setAppMode(pkg.ui.app_mode);
+      }
+      if (pkg.ui?.frame && Object.values(UI_FRAMES).includes(pkg.ui.frame)) {
+        GameDirector.state.ui_frame = pkg.ui.frame;
+      }
+      GameDirector.state.ui_subframe = pkg.ui?.subframe || null;
+      GameDirector.state.ui_selected_node_id = typeof pkg.ui?.selected_node_id === 'string' ? pkg.ui.selected_node_id : null;
+      GameDirector.state.ui_plane_tab = ['FS', 'GS', 'RS', 'US'].includes(pkg.ui?.plane_tab)
+        ? pkg.ui.plane_tab
+        : (['FS', 'GS', 'RS', 'US'].includes(pkg.ui?.context_tab) ? pkg.ui.context_tab : 'RS');
+      GameDirector.state.ui_basis = BASIS_OPTIONS.includes(String(pkg.ui?.basis || '')) ? String(pkg.ui.basis) : '10';
+      GameDirector.state.ui_basis_spec_id = typeof pkg.ui?.basis_spec_id === 'string' ? pkg.ui.basis_spec_id : null;
+      GameDirector.state.ui_expanded_node_ids = Array.isArray(pkg.ui?.expanded_node_ids)
+        ? pkg.ui.expanded_node_ids.filter((x) => typeof x === 'string')
+        : [];
+      if (Array.isArray(pkg.basis_specs)) {
+        for (const spec of pkg.basis_specs) {
+          try {
+            registerBasisSpec(spec, { persist: false });
+          } catch {
+            // ignore invalid external basis specs
+          }
+        }
+      }
+      GameDirector.state.scene_first_mode = pkg.ui?.scene_first_mode !== false;
+      GameDirector.state.menu_ring_spec = typeof pkg.ui?.menu_ring_spec === 'string'
+        ? pkg.ui.menu_ring_spec : DEFAULT_MENU_RING_SPEC;
+      if (pkg.control_plane && typeof pkg.control_plane === 'object') {
+        controlPlaneState.mode = pkg.control_plane.mode || controlPlaneState.mode;
+        controlPlaneState.channel = pkg.control_plane.channel || controlPlaneState.channel;
+        controlPlaneState.lane = Math.max(0, Math.min(15, Number(pkg.control_plane.lane ?? controlPlaneState.lane)));
+        controlPlaneState.numsys = Number(pkg.control_plane.numsys || controlPlaneState.numsys);
+        controlPlaneState.basis = BASIS_OPTIONS.includes(String(pkg.control_plane.basis || ''))
+          ? String(pkg.control_plane.basis)
+          : (GameDirector.state.ui_basis || controlPlaneState.basis || '10');
+        controlPlaneState.basis_spec_id = (typeof pkg.control_plane.basis_spec_id === 'string' && basisSpecRegistry.has(pkg.control_plane.basis_spec_id))
+          ? pkg.control_plane.basis_spec_id
+          : (GameDirector.state.ui_basis_spec_id || controlPlaneState.basis_spec_id || 'dec_v1');
+        controlPlaneState.scope_stack = Array.isArray(pkg.control_plane.scope_stack) ? pkg.control_plane.scope_stack : [];
+        controlPlaneState.codepoint_plane = Number(pkg.control_plane.codepoint_plane || 0);
+        controlPlaneState.codepoint_hex = String(pkg.control_plane.codepoint_hex || '0041').toUpperCase();
+        controlPlaneState.last_emitted_codepoint = pkg.control_plane.last_emitted_codepoint || null;
+        controlPlaneState.diagram_spec = String(pkg.control_plane.diagram_spec || '');
+        document.getElementById('cp-channel').value = controlPlaneState.channel;
+        document.getElementById('cp-lane').value = String(controlPlaneState.lane);
+        document.getElementById('cp-numsys').value = String(controlPlaneState.basis);
+        document.getElementById('cp-plane').value = String(controlPlaneState.codepoint_plane);
+        document.getElementById('cp-codepoint').value = controlPlaneState.codepoint_hex;
+      }
+      if (pkg.layout) loadLayoutFromObject(pkg.layout);
+      if (pkg.semantic?.artifact) {
+        GameDirector.setSemanticArtifact(
+          pkg.semantic.artifact,
+          pkg.semantic.meta || { source: 'projection_share' },
+          { emit: true, source: 'share' }
+        );
+      }
+      GameDirector.state.cp_diagram_spec = String(pkg.control_plane?.diagram_spec || GameDirector.state.cp_diagram_spec || '');
+      setUIBasis(GameDirector.state.ui_basis || controlPlaneState.basis || '10', GameDirector.state.ui_basis_spec_id || controlPlaneState.basis_spec_id);
+      refreshControlPlaneStatus();
+      GameDirector.autosave();
+      GameDirector.render();
+    }
+
+    async function exportProjectionAsAztecPng() {
+      const projection = createProjectionPackage();
+      const carrier = await createArtifactPackageV1('projection_package', projection);
+      const carrierText = stableStringify(carrier);
+      const bwipjs = await loadBwipJs();
+      const canvas = document.createElement('canvas');
+      bwipjs.toCanvas(canvas, {
+        bcid: 'azteccode',
+        text: carrierText,
+        scale: 4,
+        includetext: false,
+        paddingwidth: 8,
+        paddingheight: 8,
+      });
+      const blob = await new Promise((resolve, reject) => {
+        canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('PNG encode failed'))), 'image/png');
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `artifact-package-projection-aztec-${new Date().toISOString().replace(/[:.]/g, '-')}.png`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      GameDirector.appendEvent('artifact_carrier', { action: 'export_aztec_png', artifact_kind: 'projection_package' }, 'share');
+      setStatus('Aztec PNG carrier exported (artifact_package.v1).');
+    }
+
+    async function decodeArtifactPackageFromAztecImageFile(file) {
+      const zxing = await loadZxing();
+      const reader = new zxing.BrowserAztecCodeReader();
+      const img = document.createElement('img');
+      const objectUrl = URL.createObjectURL(file);
+      try {
+        await new Promise((resolve, reject) => {
+          img.onload = () => resolve();
+          img.onerror = () => reject(new Error('image load failed'));
+          img.src = objectUrl;
+        });
+        const result = await reader.decodeFromImageElement(img);
+        const raw = result?.getText?.() || result?.text || '';
+        if (!raw) throw new Error('empty Aztec payload');
+        const pkg = JSON.parse(raw);
+        const verified = await verifyArtifactPackageV1(pkg);
+        return { pkg, payload: verified.payload };
+      } finally {
+        URL.revokeObjectURL(objectUrl);
+      }
     }
 
     function deleteSelectedObject() {
@@ -1348,6 +4513,14 @@ Enter the Prologue and begin reconciliation.`
       mouse.y = -((ev.clientY - rect.top) / rect.height) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
 
+      const menuHits = raycaster.intersectObjects(Array.from(menuMeshByAction.values()), false);
+      if (menuHits.length) {
+        const action = menuHits[0].object.userData.menuAction;
+        triggerMenuAction(action);
+        setSelected(null);
+        return;
+      }
+
       if (hubRoot.visible && appMode === 'story') {
         const nodeHits = raycaster.intersectObjects(hubNodeMeshes, false);
         if (nodeHits.length) {
@@ -1373,12 +4546,19 @@ Enter the Prologue and begin reconciliation.`
     // Controls
     document.getElementById('btn-story-mode').addEventListener('click', () => setAppMode('story'));
     document.getElementById('btn-editor-mode').addEventListener('click', () => setAppMode('editor'));
+    document.getElementById('btn-frame-world').addEventListener('click', () => setUIFrame(UI_FRAMES.WORLD));
+    document.getElementById('btn-frame-control').addEventListener('click', () => setUIFrame(UI_FRAMES.CONTROL));
+    document.getElementById('btn-frame-codepoint').addEventListener('click', () => setUIFrame(UI_FRAMES.CODEPOINT));
+    document.getElementById('btn-frame-aztec').addEventListener('click', () => setUIFrame(UI_FRAMES.AZTEC));
+    document.getElementById('btn-frame-semantic').addEventListener('click', () => setUIFrame(UI_FRAMES.SEMANTIC));
+    document.getElementById('btn-frame-replay').addEventListener('click', () => setUIFrame(UI_FRAMES.REPLAY));
 
     document.getElementById('btn-new-game').addEventListener('click', () => GameDirector.startNewGame(0));
     document.getElementById('btn-slot-1').addEventListener('click', () => GameDirector.loadGame(0));
     document.getElementById('btn-slot-2').addEventListener('click', () => GameDirector.loadGame(1));
     document.getElementById('btn-slot-3').addEventListener('click', () => GameDirector.loadGame(2));
     document.getElementById('btn-save-current').addEventListener('click', () => GameDirector.saveGame(activeSlot));
+    document.getElementById('btn-toggle-toolbox').addEventListener('click', () => triggerMenuAction('toggle_toolbox'));
 
     document.getElementById('btn-reset-camera').addEventListener('click', () => {
       camera.position.set(7, 6, 9);
@@ -1398,8 +4578,179 @@ Enter the Prologue and begin reconciliation.`
     document.getElementById('btn-story-next').addEventListener('click', () => {
       if (GameDirector.state.current_phase === 'boot_cinematic') {
         GameDirector.state.boot_index = (GameDirector.state.boot_index || 0) + 1;
+        GameDirector.appendEvent('boot_advanced', { boot_index: GameDirector.state.boot_index });
       }
       GameDirector.render();
+    });
+    document.getElementById('btn-cp-esc').addEventListener('click', cpEmitEsc);
+    document.getElementById('btn-cp-literal').addEventListener('click', cpEmitLiteralEsc);
+    document.getElementById('btn-cp-apply').addEventListener('click', cpApplyFrameFromUI);
+    document.getElementById('btn-cp-render-diagram').addEventListener('click', cpRenderDiagramFromUI);
+    document.getElementById('btn-cp-clear-diagram').addEventListener('click', cpClearDiagram);
+    document.getElementById('btn-template-instantiate').addEventListener('click', () => {
+      const id = String(document.getElementById('template-select').value || '');
+      instantiateProgressionTemplate(id, { semantic: true, control: true, world: true });
+    });
+    document.getElementById('btn-template-import').addEventListener('click', () => {
+      templateImportInput.click();
+    });
+    document.getElementById('btn-template-export').addEventListener('click', () => {
+      const id = String(document.getElementById('template-select').value || '');
+      if (!id) return setStatus('No template selected.');
+      try {
+        const tpl = exportTemplate(id);
+        const raw = JSON.stringify(tpl, null, 2);
+        const blob = new Blob([raw], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `progression-template-${id}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        setStatus(`Template exported: ${id}`);
+      } catch (err) {
+        setStatus(`Template export failed: ${err?.message || 'error'}`);
+      }
+    });
+    document.getElementById('btn-template-clonepkg').addEventListener('click', () => {
+      const id = String(document.getElementById('template-select').value || '');
+      if (!id) return setStatus('No template selected.');
+      try {
+        const pkg = cloneTemplateAsProjection(id);
+        const raw = JSON.stringify(pkg, null, 2);
+        const blob = new Blob([raw], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `projection-from-template-${id}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        setStatus(`Projection package cloned from template: ${id}`);
+      } catch (err) {
+        setStatus(`Clone package failed: ${err?.message || 'error'}`);
+      }
+    });
+    document.getElementById('btn-template-semantic').addEventListener('click', () => {
+      const id = String(document.getElementById('template-select').value || '');
+      instantiateProgressionTemplate(id, { semantic: true, control: false, world: false });
+      setUIFrame(UI_FRAMES.SEMANTIC);
+    });
+    document.getElementById('btn-template-control').addEventListener('click', () => {
+      const id = String(document.getElementById('template-select').value || '');
+      instantiateProgressionTemplate(id, { semantic: false, control: true, world: false });
+      setUIFrame(UI_FRAMES.CONTROL);
+    });
+    document.getElementById('btn-template-world').addEventListener('click', () => {
+      const id = String(document.getElementById('template-select').value || '');
+      instantiateProgressionTemplate(id, { semantic: false, control: false, world: true });
+      setUIFrame(UI_FRAMES.WORLD);
+    });
+    document.getElementById('btn-menu-render').addEventListener('click', () => {
+      const spec = String(document.getElementById('menu-ring-spec').value || '').trim();
+      try {
+        normalizeMenuSpecOrDefault(spec);
+      } catch (err) {
+        setStatus(`Menu spec parse error: ${err?.message || 'invalid spec'}`);
+        return;
+      }
+      GameDirector.state.menu_ring_spec = spec || DEFAULT_MENU_RING_SPEC;
+      lastMenuRingSpec = null;
+      syncMenuRingFromState();
+      GameDirector.appendEvent('menu_ring_updated', { spec: GameDirector.state.menu_ring_spec });
+      GameDirector.autosave();
+      setStatus('Menu ring rendered from spec.');
+    });
+    document.getElementById('btn-menu-reset').addEventListener('click', () => {
+      GameDirector.state.menu_ring_spec = DEFAULT_MENU_RING_SPEC;
+      lastMenuRingSpec = null;
+      syncMenuRingFromState();
+      GameDirector.appendEvent('menu_ring_updated', { spec: DEFAULT_MENU_RING_SPEC, reset: true });
+      GameDirector.autosave();
+      setStatus('Menu ring reset to default.');
+    });
+    document.getElementById('btn-cp-close').addEventListener('click', () => {
+      if (!cpPopScope()) setStatus('No open scope to close.');
+      else setStatus('Scope closed.');
+      refreshControlPlaneStatus();
+      GameDirector.appendEvent('control_plane', { action: 'close_scope' });
+    });
+    document.getElementById('btn-cp-codepoint').addEventListener('click', cpEmitCodepoint);
+    for (const tabBtn of document.querySelectorAll('[data-plane-tab]')) {
+      tabBtn.addEventListener('click', () => {
+        setUIPlaneTab(tabBtn.getAttribute('data-plane-tab') || 'RS');
+      });
+    }
+    document.getElementById('btn-global-plane-fs').addEventListener('click', () => setUIPlaneTab('FS'));
+    document.getElementById('btn-global-plane-gs').addEventListener('click', () => setUIPlaneTab('GS'));
+    document.getElementById('btn-global-plane-rs').addEventListener('click', () => setUIPlaneTab('RS'));
+    document.getElementById('btn-global-plane-us').addEventListener('click', () => setUIPlaneTab('US'));
+    document.getElementById('btn-global-basis-2').addEventListener('click', () => setUIBasis('2'));
+    document.getElementById('btn-global-basis-10').addEventListener('click', () => setUIBasis('10'));
+    document.getElementById('btn-global-basis-16').addEventListener('click', () => setUIBasis('16'));
+    document.getElementById('btn-global-basis-codepoint').addEventListener('click', () => setUIBasis('codepoint'));
+    document.getElementById('btn-global-basis-mixed').addEventListener('click', () => setUIBasis('mixed'));
+    document.getElementById('cp-numsys').addEventListener('change', (ev) => {
+      setUIBasis(String(ev.target?.value || '10'));
+    });
+
+    document.getElementById('timeline-slider').addEventListener('input', (ev) => {
+      const target = Number(ev.target.value || 0);
+      GameDirector.state.play_state = 'paused';
+      GameDirector.replayTo(target);
+    });
+    document.getElementById('btn-timeline-back').addEventListener('click', () => {
+      GameDirector.state.play_state = 'paused';
+      GameDirector.replayTo(GameDirector.state.timeline_index - 1);
+    });
+    document.getElementById('btn-timeline-forward').addEventListener('click', () => {
+      GameDirector.state.play_state = 'paused';
+      GameDirector.replayTo(GameDirector.state.timeline_index + 1);
+    });
+    document.getElementById('btn-timeline-play').addEventListener('click', () => {
+      GameDirector.state.play_state = 'playing';
+      updateTimelineUI();
+    });
+    document.getElementById('btn-timeline-pause').addEventListener('click', () => {
+      GameDirector.state.play_state = 'paused';
+      updateTimelineUI();
+    });
+    document.getElementById('btn-timeline-rewind').addEventListener('click', () => {
+      GameDirector.state.play_state = 'rewinding';
+      updateTimelineUI();
+    });
+    document.getElementById('btn-export-events').addEventListener('click', () => {
+      const blob = new Blob([GameDirector.state.event_log.map((e) => JSON.stringify(e)).join('\n') + '\n'], { type: 'application/x-ndjson' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `atomic-story-events-slot-${activeSlot + 1}.ndjson`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+    document.getElementById('btn-webhook-ping').addEventListener('click', () => {
+      GameDirector.appendEvent('webhook_emitted', { kind: 'ping' }, 'webhook');
+      setStatus('Webhook ping event emitted.');
+      updateTimelineUI();
+    });
+    document.getElementById('btn-webhook-poll').addEventListener('click', async () => {
+      const endpoint = document.getElementById('inbound-url').value.trim();
+      if (!endpoint) return setStatus('Inbound webhook URL missing.');
+      try {
+        const res = await fetch(endpoint);
+        const payload = await res.json();
+        if (Array.isArray(payload)) payload.forEach(applyInboundProposal);
+        else applyInboundProposal(payload);
+        setStatus('Inbound webhook processed.');
+        GameDirector.render();
+      } catch {
+        setStatus('Inbound webhook poll failed.');
+      }
     });
 
     function applySnapSettings() {
@@ -1462,6 +4813,87 @@ Enter the Prologue and begin reconciliation.`
       reader.readAsText(file);
     });
 
+    const projectionImportInput = document.createElement('input');
+    projectionImportInput.type = 'file';
+    projectionImportInput.accept = 'application/json,.json';
+    projectionImportInput.style.display = 'none';
+    document.body.appendChild(projectionImportInput);
+    projectionImportInput.addEventListener('change', () => {
+      const file = projectionImportInput.files && projectionImportInput.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const pkg = JSON.parse(String(reader.result));
+          applyProjectionPackage(pkg);
+          setStatus('Projection package imported.');
+        } catch {
+          setStatus('Projection package JSON invalid.');
+        } finally {
+          projectionImportInput.value = '';
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    const aztecImportInput = document.createElement('input');
+    aztecImportInput.type = 'file';
+    aztecImportInput.accept = 'image/png,.png,image/*';
+    aztecImportInput.style.display = 'none';
+    document.body.appendChild(aztecImportInput);
+    aztecImportInput.addEventListener('change', async () => {
+      const file = aztecImportInput.files && aztecImportInput.files[0];
+      if (!file) return;
+      try {
+        const { pkg, payload } = await decodeArtifactPackageFromAztecImageFile(file);
+        if (pkg.artifact_kind === 'projection_package') {
+          applyProjectionPackage(payload);
+        } else if (pkg.artifact_kind === 'semantic_graph_artifact') {
+          GameDirector.setSemanticArtifact(payload, { source: 'artifact_package' }, { emit: true, source: 'share' });
+          setUIFrame(UI_FRAMES.SEMANTIC);
+          GameDirector.render();
+        } else if (pkg.artifact_kind === 'progression_template') {
+          importTemplate(payload);
+        } else if (pkg.artifact_kind === 'control_diagram_artifact') {
+          GameDirector.state.cp_diagram_spec = String(payload?.diagram_spec || '');
+          controlPlaneState.diagram_spec = GameDirector.state.cp_diagram_spec;
+          renderControlDiagram(GameDirector.state.cp_diagram_spec);
+          GameDirector.appendEvent('control_plane', { action: 'uml_render', spec: GameDirector.state.cp_diagram_spec }, 'share');
+          setUIFrame(UI_FRAMES.CONTROL);
+          GameDirector.render();
+        } else {
+          throw new Error(`unsupported artifact kind: ${pkg.artifact_kind}`);
+        }
+        GameDirector.appendEvent('artifact_carrier', { action: 'import_aztec_png', artifact_kind: pkg.artifact_kind }, 'share');
+        setStatus('Aztec PNG carrier imported and verified.');
+      } catch (err) {
+        setStatus(`Aztec import failed: ${err?.message || 'decode/verify error'}`);
+      } finally {
+        aztecImportInput.value = '';
+      }
+    });
+
+    const templateImportInput = document.createElement('input');
+    templateImportInput.type = 'file';
+    templateImportInput.accept = 'application/json,.json';
+    templateImportInput.style.display = 'none';
+    document.body.appendChild(templateImportInput);
+    templateImportInput.addEventListener('change', () => {
+      const file = templateImportInput.files && templateImportInput.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          importTemplate(String(reader.result));
+        } catch {
+          setStatus('Template JSON invalid.');
+        } finally {
+          templateImportInput.value = '';
+        }
+      };
+      reader.readAsText(file);
+    });
+
     document.getElementById('btn-export-save').addEventListener('click', () => {
       const data = GameDirector.exportState();
       const blob = new Blob([data], { type: 'application/json' });
@@ -1478,6 +4910,47 @@ Enter the Prologue and begin reconciliation.`
 
     document.getElementById('btn-import-save').addEventListener('click', () => {
       saveExportInput.click();
+    });
+
+    document.getElementById('btn-export-projection').addEventListener('click', () => {
+      const pkg = createProjectionPackage();
+      const raw = JSON.stringify(pkg, null, 2);
+      const blob = new Blob([raw], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `atomic-projection-${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setStatus('Projection package exported.');
+    });
+
+    document.getElementById('btn-import-projection').addEventListener('click', () => {
+      projectionImportInput.click();
+    });
+
+    document.getElementById('btn-export-aztec').addEventListener('click', async () => {
+      try {
+        await exportProjectionAsAztecPng();
+      } catch (err) {
+        setStatus(`Aztec export failed: ${err?.message || 'encode error'}`);
+      }
+    });
+
+    document.getElementById('btn-import-aztec').addEventListener('click', () => {
+      aztecImportInput.click();
+    });
+
+    document.getElementById('btn-copy-projection').addEventListener('click', async () => {
+      const raw = JSON.stringify(createProjectionPackage(), null, 2);
+      try {
+        await navigator.clipboard.writeText(raw);
+        setStatus('Projection package copied to clipboard.');
+      } catch {
+        setStatus('Clipboard copy blocked. Use Export Projection.');
+      }
     });
 
     window.addEventListener('keydown', (ev) => {
@@ -1510,9 +4983,64 @@ Enter the Prologue and begin reconciliation.`
     window.saveGame = (slot = 0) => GameDirector.saveGame(slot);
     window.jumpToChapter = (chapterId) => GameDirector.jumpToChapter(chapterId);
     window.grantArtifact = (artifactId) => GameDirector.grantArtifact(artifactId);
+    window.jumpToEvent = (index = 0) => GameDirector.replayTo(Number(index) || 0);
+    window.exportEventLog = () => GameDirector.state.event_log.slice();
+    window.exportSemanticGraph = () => GameDirector.state.semantic_graph_artifact
+      ? cloneState(GameDirector.state.semantic_graph_artifact) : null;
+    window.registerDocument = (documentId, text, source = 'uploaded') => registerSemanticDocument(documentId, text, source);
+    window.listDocuments = () => Array.from(semanticDocuments.values()).map((d) => ({ document_id: d.document_id, source: d.source, paragraph_count: d.paragraph_count }));
+    window.analyzeDocument = (request) => analyzeSemanticDocument(request || {});
+    window.exportProjection = () => createProjectionPackage();
+    window.importProjection = (pkg) => applyProjectionPackage(pkg);
+    window.listProgressionTemplates = () => Array.from(progressionTemplateById.values()).map((t) => ({ id: t.id, name: t.name, summary: t.summary }));
+    window.instantiateTemplate = (id, opts = { semantic: true, control: true, world: true }) => instantiateProgressionTemplate(id, opts);
+    window.importTemplate = (rawOrObj) => importTemplate(rawOrObj);
+    window.exportTemplate = (id) => exportTemplate(id);
+    window.cloneTemplateAsProjection = (id) => cloneTemplateAsProjection(id);
+    window.listBasisSpecs = () => Array.from(basisSpecRegistry.values()).map((x) => cloneState(x));
+    window.registerBasisSpec = (spec) => {
+      const id = registerBasisSpec(spec, { persist: true });
+      GameDirector.appendEvent('basis_spec_registered', { basis_spec_id: id });
+      GameDirector.autosave();
+      GameDirector.render();
+      return id;
+    };
+    window.projectValue = (value, plane = 'RS', basisSpecId = null) => {
+      const resolved = basisSpecById(basisSpecId || controlPlaneState.basis_spec_id || 'dec_v1');
+      return cloneState(projectValue(Number(value) >>> 0, String(plane || 'RS').toUpperCase(), resolved.id));
+    };
+    window.interpretValue = (representation, plane = 'RS', basisSpecId = null) => {
+      const resolved = basisSpecById(basisSpecId || controlPlaneState.basis_spec_id || 'dec_v1');
+      return interpretValue(representation, String(plane || 'RS').toUpperCase(), resolved.id);
+    };
+    window.getNode = (id) => cloneState(getNode(id) || null);
+    window.exportArtifactPackage = async (artifactKind = 'projection_package', payload = null) => {
+      const body = payload || createProjectionPackage();
+      return createArtifactPackageV1(artifactKind, body);
+    };
+    window.verifyArtifactPackage = async (pkg) => {
+      const verified = await verifyArtifactPackageV1(pkg);
+      return { payload: verified.payload };
+    };
+    window.projectArtifact = (idOrNode, plane = 'RS') => {
+      const node = typeof idOrNode === 'string' ? getNode(idOrNode) : idOrNode;
+      return cloneState(projectArtifact(node, plane));
+    };
+    window.selectNode = (id) => setSelectedNodeId(id);
+    window.setUIPlaneTab = (plane = 'RS') => setUIPlaneTab(String(plane || 'RS').toUpperCase());
+    window.setUIBasis = (basis = '10') => setUIBasis(String(basis || '10'));
+    window.setPlaySpeed = (speed = 1) => {
+      GameDirector.state.play_speed = Math.max(0.25, Number(speed) || 1);
+      updateTimelineUI();
+    };
+    window.setUIFrame = (frame) => setUIFrame(frame);
 
     applySnapSettings();
+    loadBasisSpecs();
     buildHubGraph();
+    buildControlAndCodepointFrames();
+    build3DMenuArtifacts();
+    loadProgressionTemplates();
     setAppMode('story');
 
     if (localStorage.getItem(AUTOSAVE_KEY)) {
@@ -1530,6 +5058,28 @@ Enter the Prologue and begin reconciliation.`
     const clock = new THREE.Clock();
     function animate() {
       const dt = clock.getDelta();
+      playAccumulator += dt;
+      if (GameDirector.state.play_state === 'playing') {
+        const stepEvery = 0.55 / Math.max(0.25, GameDirector.state.play_speed || 1);
+        if (playAccumulator >= stepEvery) {
+          playAccumulator = 0;
+          if (GameDirector.state.timeline_index >= GameDirector.state.event_log.length) {
+            GameDirector.state.play_state = 'paused';
+          } else {
+            GameDirector.replayTo(GameDirector.state.timeline_index + 1);
+          }
+        }
+      } else if (GameDirector.state.play_state === 'rewinding') {
+        const stepEvery = 0.35 / Math.max(0.25, GameDirector.state.play_speed || 1);
+        if (playAccumulator >= stepEvery) {
+          playAccumulator = 0;
+          if (GameDirector.state.timeline_index <= 0) {
+            GameDirector.state.play_state = 'paused';
+          } else {
+            GameDirector.replayTo(GameDirector.state.timeline_index - 1);
+          }
+        }
+      }
       controls.update(dt);
       const t = clock.elapsedTime;
       if (hubRoot.visible) {
@@ -1541,6 +5091,16 @@ Enter the Prologue and begin reconciliation.`
             mesh.userData.ring.rotation.z += dt * 0.35;
           }
         }
+      }
+      if (narrativeMarker && narrativeRoot.visible) {
+        const core = narrativeMarker.userData.narrativeCore;
+        const ring = narrativeMarker.userData.narrativeRing;
+        if (core) {
+          const s = 1 + Math.sin(t * 2.1) * 0.08;
+          core.scale.setScalar(s);
+          core.rotation.y += dt * 0.6;
+        }
+        if (ring) ring.rotation.z += dt * 0.5;
       }
       renderer.render(scene, camera);
       requestAnimationFrame(animate);

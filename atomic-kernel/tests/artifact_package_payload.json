@@ -1,0 +1,1 @@
+{"control_plane":{"basis":"10","basis_spec_id":"dec_v1","channel":"FS","lane":0,"numsys":10},"layout":{"camera":{"position":[7,6,9],"target":[0,1.2,0]},"extraArtifacts":[],"objects":[],"version":1},"semantic":{"artifact":null,"meta":null},"type":"atomic_projection_package","ui":{"basis":"10","basis_spec_id":"dec_v1","frame":"world","plane_tab":"RS"},"version":1}

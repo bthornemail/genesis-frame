@@ -1,0 +1,88 @@
+{
+  "type": "character_progression_template_bundle",
+  "version": 1,
+  "description": "Reusable story progression diagrams encoded as canonical semantic artifact templates.",
+  "templates": [
+    {
+      "id": "tpl_watcher_bootstrap_loop_v1",
+      "name": "Watcher Bootstrap Loop",
+      "kind": "semantic_graph_artifact_template",
+      "summary": "Boot -> alignment -> chapter traversal -> hub return.",
+      "nodes": [
+        { "id": "n_watcher", "label": "Watcher", "kind": "role" },
+        { "id": "n_boot", "label": "Bootstrap", "kind": "event" },
+        { "id": "n_hub", "label": "Hub", "kind": "place" },
+        { "id": "n_chapter", "label": "Chapter", "kind": "place" },
+        { "id": "n_artifact", "label": "Artifact", "kind": "artifact" }
+      ],
+      "edges": [
+        { "id": "e1", "subject": "n_watcher", "predicate": "enters", "object": "n_boot" },
+        { "id": "e2", "subject": "n_boot", "predicate": "reveals", "object": "n_hub" },
+        { "id": "e3", "subject": "n_watcher", "predicate": "enters", "object": "n_chapter" },
+        { "id": "e4", "subject": "n_chapter", "predicate": "grants", "object": "n_artifact" },
+        { "id": "e5", "subject": "n_artifact", "predicate": "unlocks", "object": "n_hub" }
+      ],
+      "transitions": [
+        { "id": "t1", "op": "add_edge", "target_id": "e1" },
+        { "id": "t2", "op": "add_edge", "target_id": "e2" },
+        { "id": "t3", "op": "add_edge", "target_id": "e3" },
+        { "id": "t4", "op": "add_edge", "target_id": "e4" },
+        { "id": "t5", "op": "add_edge", "target_id": "e5" }
+      ]
+    },
+    {
+      "id": "tpl_witness_gate_city_v1",
+      "name": "Witness Gate City",
+      "kind": "semantic_graph_artifact_template",
+      "summary": "Witness acquires measure to pass gate into city.",
+      "nodes": [
+        { "id": "n_witness", "label": "Witness", "kind": "role" },
+        { "id": "n_measure", "label": "Measure", "kind": "artifact" },
+        { "id": "n_gate", "label": "Gate", "kind": "place" },
+        { "id": "n_city", "label": "City", "kind": "place" },
+        { "id": "n_law", "label": "Law", "kind": "law" }
+      ],
+      "edges": [
+        { "id": "e1", "subject": "n_witness", "predicate": "seeks", "object": "n_measure" },
+        { "id": "e2", "subject": "n_gate", "predicate": "requires", "object": "n_measure" },
+        { "id": "e3", "subject": "n_measure", "predicate": "unlocks", "object": "n_gate" },
+        { "id": "e4", "subject": "n_witness", "predicate": "enters", "object": "n_city" },
+        { "id": "e5", "subject": "n_law", "predicate": "binds", "object": "n_city" }
+      ],
+      "transitions": [
+        { "id": "t1", "op": "add_edge", "target_id": "e1" },
+        { "id": "t2", "op": "add_edge", "target_id": "e2" },
+        { "id": "t3", "op": "add_edge", "target_id": "e3" },
+        { "id": "t4", "op": "add_edge", "target_id": "e4" },
+        { "id": "t5", "op": "add_edge", "target_id": "e5" }
+      ]
+    },
+    {
+      "id": "tpl_tribe_reconciliation_arc_v1",
+      "name": "Tribe Reconciliation Arc",
+      "kind": "semantic_graph_artifact_template",
+      "summary": "Conflict transitions toward reconciliation through covenant and memory.",
+      "nodes": [
+        { "id": "n_tribe", "label": "Tribe", "kind": "role" },
+        { "id": "n_conflict", "label": "Conflict", "kind": "event" },
+        { "id": "n_covenant", "label": "Covenant", "kind": "law" },
+        { "id": "n_memory", "label": "Memory", "kind": "concept" },
+        { "id": "n_reconciliation", "label": "Reconciliation", "kind": "concept" }
+      ],
+      "edges": [
+        { "id": "e1", "subject": "n_tribe", "predicate": "opposes", "object": "n_conflict" },
+        { "id": "e2", "subject": "n_covenant", "predicate": "binds", "object": "n_tribe" },
+        { "id": "e3", "subject": "n_memory", "predicate": "reveals", "object": "n_covenant" },
+        { "id": "e4", "subject": "n_tribe", "predicate": "seeks", "object": "n_reconciliation" },
+        { "id": "e5", "subject": "n_reconciliation", "predicate": "causes", "object": "n_conflict" }
+      ],
+      "transitions": [
+        { "id": "t1", "op": "add_edge", "target_id": "e1" },
+        { "id": "t2", "op": "add_edge", "target_id": "e2" },
+        { "id": "t3", "op": "add_edge", "target_id": "e3" },
+        { "id": "t4", "op": "add_edge", "target_id": "e4" },
+        { "id": "t5", "op": "add_edge", "target_id": "e5" }
+      ]
+    }
+  ]
+}

@@ -3,6 +3,10 @@
 A deterministic timing and identity substrate.
 Everything in the world observes the crystal. Nothing adds to it.
 
+Mission:
+
+> Build a navigable artifact map so collaborators can co-create worlds that evolve independently yet interoperate at any shared replay step in time.
+
 ## What this is
 
 A CPU crystal doesn't compute anything — it oscillates and everything
@@ -15,6 +19,15 @@ From that one crystal, every object in the world gets:
 
 No wall-clock time. No random numbers. No network needed.
 Same seed + same tick = identical output on any machine, always.
+
+## Decentralized Collaboration Bridge
+
+Decentralized collaboration in this system means:
+
+- no central authority required to declare truth,
+- truth anchored in canonical, replay-verifiable artifacts,
+- contributors can join at any shared timeline index,
+- projections can differ while canonical state law remains shared.
 
 ## Files
 
@@ -40,6 +53,10 @@ python3 tests/test_all.py
 python3 tools/build_narrative_ndjson.py --write
 python3 tools/build_narrative_ndjson.py --verify
 
+# Build WordNet 5WN browser index + winkNLP bundle
+npm run build:nlp
+npm run verify:wordnet
+
 # Open the live world viewer
 open world.html          # macOS
 xdg-open world.html      # Linux
@@ -51,12 +68,96 @@ xdg-open world.html      # Linux
 - `Story Mode`: playable bootstrap sequence (`boot_cinematic -> hub -> chapter_scene`) with cross-world artifact gates.
 - `Editor Mode`: drag/drop artifact toolkit (primitive + starter GLB + starter SVG + dropped GLB/SVG files).
 - Save system: 3 slots + autosave + JSON import/export backup.
+- Timeline replay: event log scrubber with step/play/pause/rewind and NDJSON export.
+- Webhook lanes: outbound event POST + inbound JSON polling for bounded proposals.
+- Semantic projection: scene triples rendered as in-scene node/edge graph in story mode.
+- Semantic artifacts are first-class runtime state: saved/exported, event-logged (`semantic_graph_materialized`), replay-rebuilt, and inspectable in the Semantic frame.
+- Projection sharing: export/import/copy projection packages (JSON) including frame, control-plane state, semantic artifact, and scene layout.
+- Aztec carrier sharing: projection packages can be wrapped as `artifact_package.v1` and exported/imported as Aztec-encoded lossless PNG carriers (no extra optimization pass) with fingerprint verification.
+- Allowed carrier `artifact_kind` values are explicit and fail-closed:
+  - `projection_package`
+  - `semantic_graph_artifact`
+  - `progression_template`
+  - `control_diagram_artifact`
+- Canonical package schema: `docs/ARTIFACT_PACKAGE_SCHEMA.md`.
+- Control-plane UML/XML builder: XML-style or line-style node/edge specs extruded into 3D control-plane geometry.
+- Recursive 4-plane node GUI: every selected artifact is projected through exactly `FS`/`GS`/`RS`/`US`.
+- Frame pairing law: active reference frame is `frame = (plane, basis)`.
+- Plane meanings are fixed:
+  - `FS` context/frame
+  - `GS` grouping/relations
+  - `RS` single selected record (identity view)
+  - `US` units (properties/actions)
+- Basis selector is bounded and projection-only: `2`, `10`, `16`, `codepoint`, `mixed`.
+- Basis is algorithmic via explicit `basis_spec` artifacts (shareable in projection packages).
+- Canonical pair: `project(value, plane, basis_spec)` / `interpret(representation, plane, basis_spec)`.
+- Basis proof checks are part of the test suite: canonicalization stability and reversibility for default specs.
+- Recursion rule: selecting an item inside any plane re-selects that artifact and recomputes the same four planes.
+- Global plane rail in stage header keeps FS/GS/RS/US switching available even in simple mode.
+- Panel convergence (same law across tools):
+  - `FS`: mode/saves, timeline replay, webhook lanes
+  - `GS`: artifact catalog, navigator graph, semantic/template registry
+  - `RS`: control-plane record editors (UML/XML + frame controls)
+  - `US`: transform/snap/layout unit actions
+- Scene-first onboarding: starts with scene visible and toolbox collapsed; core menus are in-world 3D artifacts (`Toolbox`, `Mode`, `Frame`, `Cycle`) with live cycle label.
+- Menu ring is configurable from spec (XML or line mode) and rendered as in-world 3D menu nodes.
+- NLP bridge: winkNLP + WordNet 5WN Prolog-derived noun index (`nlp/wordnet_5wn_index.json`) for person/place/thing extraction and SPO hints.
+- Frame switcher (projection-only): `World`, `Control`, `Codepoint`, `Aztec`, `Semantic`, `Replay` views over the same canonical state.
+- Semantic schema doc: `docs/SEMANTIC_GRAPH_SCHEMA.md` (node kinds, edge kinds, transitions, runtime artifact shape).
+- Narrative build emits semantic records per scene: `semantic_node`, `semantic_edge`, `semantic_transition`.
+- Character progression templates are artifact-encoded and reusable: `narrative_data/templates/character_progression_templates.json`.
+- Companion diagram doc: `docs/CHARACTER_PROGRESSION_TEMPLATES.md`.
+- Runtime template picker can instantiate one template into Semantic, Control/UML, and World projections.
+- Templates are first-class share units: import/export JSON and clone as projection package.
 - Debug API in browser console:
   - `startNewGame(slot)`
   - `loadGame(slot)`
   - `saveGame(slot)`
   - `jumpToChapter(chapterId)`
   - `grantArtifact(artifactId)`
+  - `jumpToEvent(index)`
+  - `exportEventLog()`
+  - `exportSemanticGraph()`
+  - `registerDocument(documentId, text, source='uploaded')`
+  - `listDocuments()`
+  - `analyzeDocument(request)`
+  - `exportProjection()`
+  - `importProjection(pkg)`
+  - `exportArtifactPackage(artifactKind, payload?)`
+  - `verifyArtifactPackage(pkg)`
+  - `listProgressionTemplates()`
+  - `instantiateTemplate(id, opts)`
+  - `importTemplate(rawOrObj)`
+  - `exportTemplate(id)`
+  - `cloneTemplateAsProjection(id)`
+  - `projectArtifact(idOrNode, plane)`
+  - `setUIPlaneTab(plane)`
+  - `setUIBasis(basis)`
+  - `listBasisSpecs()`
+  - `registerBasisSpec(spec)`
+  - `projectValue(value, plane, basisSpecId?)`
+  - `interpretValue(representation, plane, basisSpecId?)`
+  - `setPlaySpeed(speed)`
+  - `setUIFrame(frame)`
+
+## Truth boundary
+
+Not every generated output is authoritative.
+
+An artifact is authoritative only if it is canonicalized, deterministic for identical inputs, replay-reconstructible, and independently verifiable.
+
+Practical split:
+- Foundational: kernel law, bounded control/escape law, canonical artifacts.
+- Projection/advisory: frame visuals, NLP extraction, WordNet typing, transient scene objects.
+
+Formal reduction spec:
+- Normative core: `dev-docs/ATOMIC_KERNEL_NORMATIVE_CORE_v1_2.md`
+- Proof notes: `dev-docs/ATOMIC_KERNEL_PROOF_NOTES_v1_2.md`
+- Combined draft: `dev-docs/ATOMIC_KERNEL_REDUCTION_SPEC_v1_2.md`
+- Law/code traceability: `dev-docs/LAW_TO_CODE_TRACEABILITY.md`
+
+Recommended reading path:
+- Read the Normative Core first, then the Proof Notes, then the Combined Draft only if full derivational context is needed.
 
 ## The algorithm
 

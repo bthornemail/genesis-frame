@@ -2,6 +2,10 @@
 
 **Genesis Frame** is the first public frame of the Atomic Kernel: a playable narrative world, artifact toolkit, and deterministic substrate packaged as a starting environment people can open, explore, test, and build on.
 
+Mission:
+
+> We build a navigable artifact map so collaborators can co-create worlds that evolve independently yet interoperate at any shared replay step in time.
+
 This repository is a framed distribution built from my `atomic-kernel` work and expanded into a usable entrypoint for others. It combines:
 
 - a deterministic replay/kernel layer
@@ -9,6 +13,16 @@ This repository is a framed distribution built from my `atomic-kernel` work and 
 - a Three.js world interface
 - a narrative chapter system compiled from markdown into NDJSON
 - local save slots, editor mode, and story mode in one page
+
+## Decentralized Collaboration Bridge
+
+The bridge this repository provides is:
+
+- shared law (kernel + bounded control law),
+- independent local artifact creation,
+- independent replay verification,
+- shareable projection/artifact packages,
+- interoperability at any shared deterministic timeline index.
 
 ---
 
@@ -69,6 +83,50 @@ Important paths:
 * transform controls for move / rotate / scale
 * layout save/load JSON
 
+### Projection Sharing
+
+* export/import shareable projection packages (JSON)
+* package includes UI frame, control-plane state, semantic artifact, and scene layout
+* clipboard copy for quick sharing between users
+* Aztec PNG carrier mode (`artifact_package.v1`) for share/packing transport with payload fingerprint verification
+* explicit allowed package kinds with fail-closed import; schema documented in `atomic-kernel/docs/ARTIFACT_PACKAGE_SCHEMA.md`
+
+### Recursive Node GUI
+
+* unified node model across frames (`id`, `kind`, `properties`, `children`, `relations`, `actions`)
+* navigator pane + 4 canonical projection planes: `FS` / `GS` / `RS` / `US`
+* frame pairing law: `frame = (plane, basis)`
+* fixed plane law:
+  * `FS` = context/frame
+  * `GS` = grouping/relations
+  * `RS` = single selected artifact record
+  * `US` = atomic units (properties/actions)
+* bounded basis selector: `2`, `10`, `16`, `codepoint`, `mixed`
+* basis interpretation is explicit and shareable via `basis_spec` artifacts
+* canonical transform pair: `project(value, plane, basis_spec)` and `interpret(representation, plane, basis_spec)`
+* test suite now enforces basis-spec canonicalization stability + projection/interpret reversibility
+* recursive navigation: selecting any plane item promotes it to the next selected artifact and recomputes FS/GS/RS/US
+* global plane rail in stage header keeps plane switching available in both simple and advanced UI
+* side tools converge to same planes:
+  * `FS` mode/saves/timeline/webhooks
+  * `GS` artifact/template/document grouping + semantic registry
+  * `RS` record builders/editors (control/UML)
+  * `US` transform/snap/layout unit operations
+* same command grammar on selected nodes: open / project / link / emit / share / replay
+
+### Control-Plane UML/XML Builder
+
+* control-plane panel accepts XML-style or line-style diagram specs
+* node/edge specs are extruded into 3D control-plane geometry
+* render/clear actions are replay-compatible via control-plane events
+
+### Scene-First Onboarding
+
+* starts in scene-first mode (toolbox collapsed)
+* 3D menu artifacts in-world: Toolbox / Mode / Frame / Cycle
+* cycle label updates from replay timeline and current phase
+* menu ring is data-driven via XML/line spec and can be shared in projection packages
+
 ### Narrative Build Pipeline
 
 * reads markdown corpus from `narrative-series/...`
@@ -96,8 +154,52 @@ Record types include:
 * `choice`
 * `artifact`
 * `gate`
+* `semantic_node`
+* `semantic_edge`
+* `semantic_transition`
 
 This allows the markdown corpus to compile into a stable runtime representation while keeping the original prose corpus readable and editable.
+
+Character progression diagram templates (artifact-encoded) are provided at:
+
+- `atomic-kernel/narrative_data/templates/character_progression_templates.json`
+- `atomic-kernel/docs/CHARACTER_PROGRESSION_TEMPLATES.md`
+
+Runtime can instantiate these templates directly into:
+- Semantic frame (graph artifact),
+- Control frame (UML/control diagram spec),
+- World frame (spawned template node artifacts).
+
+---
+
+## Truth boundary
+
+The repository does **not** treat every generated output as truth.
+
+An artifact is authoritative only if it is:
+
+* canonicalized
+* deterministic for identical inputs
+* replay-reconstructible
+* independently verifiable
+
+Practical split:
+
+* **Foundational:** kernel law, bounded control/escape law, canonical artifacts
+* **Projection/advisory:** UI frames, NLP extraction, WordNet typing, transient visuals
+
+Normative sentence:
+
+> An artifact is authoritative only if it is canonicalized, deterministic, replay-reconstructible, and independently verifiable; all other representations are projections.
+
+Formal reduction spec:
+- Normative core: `atomic-kernel/dev-docs/ATOMIC_KERNEL_NORMATIVE_CORE_v1_2.md`
+- Proof notes: `atomic-kernel/dev-docs/ATOMIC_KERNEL_PROOF_NOTES_v1_2.md`
+- Combined draft: `atomic-kernel/dev-docs/ATOMIC_KERNEL_REDUCTION_SPEC_v1_2.md`
+- Law/code traceability: `atomic-kernel/dev-docs/LAW_TO_CODE_TRACEABILITY.md`
+
+Recommended reading path:
+- Read the Normative Core first, then the Proof Notes, then the Combined Draft only if full derivational context is needed.
 
 ---
 
@@ -168,6 +270,9 @@ The save schema includes:
 * `seen_scenes[]`
 * `choice_history[]`
 * optional scene `layout`
+* `event_log[]` and `timeline_index`
+* `ui_frame` and `ui_subframe`
+* `semantic_graph_artifact` and `semantic_artifact_meta`
 
 ---
 
@@ -181,6 +286,30 @@ loadGame(slot)
 saveGame(slot)
 jumpToChapter(chapterId)
 grantArtifact(artifactId)
+jumpToEvent(index)
+exportEventLog()
+exportSemanticGraph()
+registerDocument(documentId, text, source)
+listDocuments()
+analyzeDocument(request)
+exportProjection()
+importProjection(pkg)
+exportArtifactPackage(artifactKind, payload?)
+verifyArtifactPackage(pkg)
+listProgressionTemplates()
+instantiateTemplate(id, opts)
+importTemplate(rawOrObj)
+exportTemplate(id)
+cloneTemplateAsProjection(id)
+projectArtifact(idOrNode, plane)
+setUIPlaneTab(plane)
+setUIBasis(basis)
+listBasisSpecs()
+registerBasisSpec(spec)
+projectValue(value, plane, basisSpecId?)
+interpretValue(representation, plane, basisSpecId?)
+setPlaySpeed(speed)
+setUIFrame(frame)
 ```
 
 ---

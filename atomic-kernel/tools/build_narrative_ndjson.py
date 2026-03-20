@@ -27,6 +27,22 @@ WORLD_THEMES = [
     "city-of-measure",
     "witness-plain",
 ]
+STOPWORDS = {
+    "the", "and", "for", "with", "that", "this", "from", "into", "your", "you", "are", "was", "were",
+    "have", "has", "had", "not", "but", "all", "can", "will", "shall", "their", "there", "they", "them",
+    "our", "out", "one", "two", "three", "four", "when", "where", "which", "what", "who", "why", "how",
+    "begin", "return", "continue", "story", "world", "chapter", "scene", "phase", "through", "across",
+    "before", "after", "under", "over", "between", "within", "without", "about", "upon", "also", "more",
+    "most", "many", "some", "each", "other", "than", "then", "because", "while", "whose", "those", "these",
+}
+VERBS = {
+    "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "do", "does", "did", "enter",
+    "enters", "entered", "unlock", "unlocks", "unlocked", "reveal", "reveals", "revealed", "collect",
+    "collects", "collected", "begin", "begins", "began", "return", "returns", "returned", "continue",
+    "continues", "continued", "align", "aligns", "aligned", "conquer", "conquers", "conquered", "open",
+    "opens", "opened", "rise", "rises", "rose", "risen", "answer", "answers", "answered", "seek", "seeks",
+    "sought", "know", "knows", "knew", "known",
+}
 
 
 def sid(value: str, prefix: str) -> str:
@@ -110,6 +126,72 @@ def chapter_phase(path: Path) -> str:
     return "aside"
 
 
+def guess_kind(noun: str) -> str:
+    n = noun.lower()
+    if n in {"watcher", "operator", "witness", "tribe", "sage", "judge", "king", "queen", "child", "elder", "prophet", "scribe"}:
+        return "role"
+    if n in {"city", "gate", "garden", "river", "desert", "mountain", "plain", "temple", "house", "world", "hub", "archive", "tower", "valley"}:
+        return "place"
+    if n in {"law", "covenant", "measure", "judgment", "truth", "wisdom", "memory", "reconciliation"}:
+        return "law"
+    if n.endswith("tion") or n.endswith("ness"):
+        return "concept"
+    return "entity"
+
+
+def extract_entities(text: str, limit: int = 8) -> list[str]:
+    score: dict[str, int] = {}
+    proper = re.findall(r"\b([A-Z][a-z]+(?:[- ][A-Z][a-z]+)*)\b", text)
+    for p in proper:
+        for part in p.split():
+            k = part.lower()
+            if k in STOPWORDS or k in VERBS or len(k) < 3:
+                continue
+            score[k] = score.get(k, 0) + 3
+
+    det = re.findall(r"\b(?:the|a|an|this|that|these|those|our|their)\s+([A-Za-z-]{3,})\b", text, flags=re.I)
+    for w in det:
+        k = w.lower()
+        if k in STOPWORDS or k in VERBS:
+            continue
+        score[k] = score.get(k, 0) + 2
+
+    for w in re.findall(r"[A-Za-z][A-Za-z'-]{2,}", text):
+        k = w.lower()
+        if k in STOPWORDS or k in VERBS:
+            continue
+        score[k] = score.get(k, 0) + 1
+
+    return [w for w, _ in sorted(score.items(), key=lambda kv: (-kv[1], kv[0]))[:limit]]
+
+
+def extract_scene_triples(heading: str, body: str) -> list[tuple[str, str, str]]:
+    text = f"{heading}. {body}"
+    entities = extract_entities(text, limit=10)
+    sent = [s.strip() for s in re.split(r"[.!?]\s+", text) if s.strip()]
+
+    def pick_pred(sentence: str) -> str:
+        words = re.findall(r"[A-Za-z][A-Za-z'-]{2,}", sentence)
+        for w in words:
+            lw = w.lower()
+            if lw in VERBS:
+                return lw
+        return "relates_to"
+
+    triples: list[tuple[str, str, str]] = []
+    for s in sent:
+        present = [e for e in entities if re.search(rf"\b{re.escape(e)}\b", s, flags=re.I)]
+        if len(present) >= 2:
+            triples.append((present[0], pick_pred(s), present[1]))
+
+    if not triples:
+        if len(entities) >= 2:
+            triples.append((entities[0], "relates_to", entities[1]))
+        elif len(entities) == 1:
+            triples.append((entities[0], "appears_in", heading.lower() or "scene"))
+    return triples[:10]
+
+
 def build_records_for_chapter(path: Path, order: int, req_artifacts: list[str]) -> dict[str, Any]:
     rel = path.relative_to(ROOT).as_posix()
     chapter_id = sid(rel, "ch")
@@ -134,6 +216,9 @@ def build_records_for_chapter(path: Path, order: int, req_artifacts: list[str]) 
 
     scenes: list[dict[str, Any]] = []
     choices: list[dict[str, Any]] = []
+    semantic_nodes: list[dict[str, Any]] = []
+    semantic_edges: list[dict[str, Any]] = []
+    semantic_transitions: list[dict[str, Any]] = []
 
     for idx, chunk in enumerate(chunks):
         scene_id = sid(f"{rel}:{idx}:{slug(chunk.heading)}", "sc")
@@ -151,6 +236,60 @@ def build_records_for_chapter(path: Path, order: int, req_artifacts: list[str]) 
                 "requires_artifacts": requires,
             }
         )
+
+        triples = extract_scene_triples(chunk.heading, chunk.body)
+        node_ids: dict[str, str] = {}
+        seen_edge_ids: set[str] = set()
+        for subj, pred, obj in triples:
+            for term in (subj, obj):
+                if term in node_ids:
+                    continue
+                nid = sid(f"{scene_id}:node:{term}", "sn")
+                node_ids[term] = nid
+                semantic_nodes.append(
+                    {
+                        "type": "semantic_node",
+                        "id": nid,
+                        "scene_id": scene_id,
+                        "chapter_id": chapter_id,
+                        "label": term,
+                        "kind": guess_kind(term),
+                    }
+                )
+                semantic_transitions.append(
+                    {
+                        "type": "semantic_transition",
+                        "id": sid(f"{scene_id}:tx:add-node:{nid}", "stx"),
+                        "scene_id": scene_id,
+                        "op": "add_node",
+                        "target_id": nid,
+                    }
+                )
+            eid = sid(f"{scene_id}:edge:{subj}:{pred}:{obj}", "se")
+            if eid in seen_edge_ids:
+                continue
+            seen_edge_ids.add(eid)
+            semantic_edges.append(
+                {
+                    "type": "semantic_edge",
+                    "id": eid,
+                    "scene_id": scene_id,
+                    "chapter_id": chapter_id,
+                    "subject": node_ids[subj],
+                    "predicate": pred,
+                    "object": node_ids[obj],
+                    "weight": 1.0,
+                }
+            )
+            semantic_transitions.append(
+                {
+                    "type": "semantic_transition",
+                    "id": sid(f"{scene_id}:tx:add-edge:{eid}", "stx"),
+                    "scene_id": scene_id,
+                    "op": "add_edge",
+                    "target_id": eid,
+                }
+            )
 
     for idx, scene in enumerate(scenes):
         if idx < len(scenes) - 1:
@@ -194,7 +333,7 @@ def build_records_for_chapter(path: Path, order: int, req_artifacts: list[str]) 
         "unlock_text": "Path opens. Enter chapter.",
     }
 
-    records = [meta, artifact, *scenes, *choices]
+    records = [meta, artifact, *scenes, *choices, *semantic_nodes, *semantic_edges, *semantic_transitions]
     return {
         "chapter_id": chapter_id,
         "records": records,

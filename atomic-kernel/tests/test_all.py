@@ -22,6 +22,17 @@ from artifact import (
     verify_reference,
 )
 from aztec_geometry import coordinates_for, validate_coordinate_table
+from artifact_package import ALLOWED_ARTIFACT_KINDS, create_artifact_package, verify_artifact_package
+from basis_spec import (
+    basis_spec_fingerprint,
+    canonical_basis_spec_json,
+    default_basis_specs,
+    interpret_value,
+    mixed_decode,
+    mixed_encode,
+    normalize_basis_spec,
+    project_value,
+)
 from control_plane import ControlPlaneError, cobs_decode, cobs_encode, encode_control, parse_control_stream
 from crystal import tick, position_at, read, state_at, run, W, T, B, MASK
 from identity import clock, sid, sid_for_object, oid_step, ObjectChain, replay_chain, GENESIS_STATE as GENESIS
@@ -31,6 +42,8 @@ from world import frame, trace
 
 PASS = 0
 FAIL = 0
+repo_root = Path(os.path.dirname(os.path.dirname(__file__))).parent
+node = shutil.which("node")
 
 
 def check(name, condition):
@@ -230,9 +243,101 @@ check("15 lanes per channel",            summary['per_channel_15'] is True)
 spot = coordinates_for(3, 15)
 check("FS lane15 spot check",            (spot.x, spot.y, spot.r) == (14, 2, 11))
 
+# ── Basis specs: canonicalization + proof roundtrips ─────────────
+print("\nBasis specs:")
+specs = default_basis_specs()
+check("default basis specs non-empty", len(specs) >= 6)
+check("basis spec ids unique", len({s.id for s in specs}) == len(specs))
+stable_json_ok = True
+stable_fp_ok = True
+roundtrip_ok = True
+mixed_pair_ok = True
+
+samples = [0, 1, 7, 11, 27, 36, 83, 255, 1024, 65535]
+for spec in specs:
+    try:
+        normalized = normalize_basis_spec(spec)
+        j1 = canonical_basis_spec_json(normalized)
+        j2 = canonical_basis_spec_json(normalized)
+        if j1 != j2:
+            stable_json_ok = False
+        f1 = basis_spec_fingerprint(normalized)
+        f2 = basis_spec_fingerprint(normalized)
+        if f1 != f2:
+            stable_fp_ok = False
+        for v in samples:
+            p = project_value(v, "RS", normalized)
+            out = interpret_value(p["rendered"], "RS", normalized)
+            if out != v:
+                roundtrip_ok = False
+                break
+        if normalized.kind == "mixed":
+            coords = mixed_encode(83, normalized.radices)
+            back = mixed_decode(coords, normalized.radices)
+            if back != 83:
+                mixed_pair_ok = False
+    except Exception:
+        stable_json_ok = False
+        stable_fp_ok = False
+        roundtrip_ok = False
+        mixed_pair_ok = False
+
+check("basis canonical JSON stable", stable_json_ok)
+check("basis fingerprint stable", stable_fp_ok)
+check("project/interpret roundtrip", roundtrip_ok)
+check("mixed encode/decode roundtrip", mixed_pair_ok)
+
+# ── Artifact package carrier fixtures ─────────────────────────────
+print("\nArtifact package carrier:")
+carrier_payload = {
+    "type": "atomic_projection_package",
+    "version": 1,
+    "ui": {"frame": "world", "plane_tab": "RS", "basis": "10", "basis_spec_id": "dec_v1"},
+}
+carrier_pkg = create_artifact_package("projection_package", carrier_payload, created_at="2026-03-19T00:00:00Z")
+ok_pkg = True
+try:
+    ok, dec = verify_artifact_package(carrier_pkg)
+    ok_pkg = bool(ok and dec == carrier_payload)
+except Exception:
+    ok_pkg = False
+check("artifact_package create/verify", ok_pkg)
+check("artifact kinds allowlist", set(ALLOWED_ARTIFACT_KINDS) == {
+    "projection_package",
+    "semantic_graph_artifact",
+    "progression_template",
+    "control_diagram_artifact",
+})
+
+pkg_fixture_builder = repo_root / "atomic-kernel" / "tools" / "build_artifact_package_fixture.py"
+pkg_fixture_verify = subprocess.run(
+    [sys.executable, str(pkg_fixture_builder), "--verify"],
+    capture_output=True,
+    text=True,
+)
+if pkg_fixture_verify.stdout.strip():
+    print(pkg_fixture_verify.stdout.strip())
+if pkg_fixture_verify.stderr.strip():
+    print(pkg_fixture_verify.stderr.strip())
+check("artifact package fixture verify", pkg_fixture_verify.returncode == 0)
+
+png_fixture_builder = repo_root / "atomic-kernel" / "tools" / "build_artifact_package_png_fixture.mjs"
+if node is None:
+    check("artifact aztec png fixture verify", False)
+else:
+    png_fixture_verify = subprocess.run(
+        [node, str(png_fixture_builder), "--verify"],
+        capture_output=True,
+        text=True,
+    )
+    if png_fixture_verify.stdout.strip():
+        print(png_fixture_verify.stdout.strip())
+    if png_fixture_verify.stderr.strip():
+        print(png_fixture_verify.stderr.strip())
+    check("artifact aztec png fixture verify", png_fixture_verify.returncode == 0)
+
 # ── Independent JS runtime parity ─────────────────────────────────
 print("\nSecond runtime parity (JavaScript):")
-node = shutil.which("node")
 if node is None:
     check("node runtime available", False)
 else:
@@ -248,10 +353,10 @@ else:
 
 # ── Narrative pipeline + NDJSON validation ────────────────────────
 print("\nNarrative pipeline:")
-repo_root = Path(os.path.dirname(os.path.dirname(__file__))).parent
 builder = repo_root / "atomic-kernel" / "tools" / "build_narrative_ndjson.py"
 narr_source = repo_root / "narrative-series" / "When Wisdom, Law, and the Tribe Sat Down Together"
 narr_bundle = repo_root / "atomic-kernel" / "narrative_data" / "narrative_bundle.js"
+progression_templates = repo_root / "atomic-kernel" / "narrative_data" / "templates" / "character_progression_templates.json"
 
 build_verify = subprocess.run(
     [sys.executable, str(builder), "--verify"],
@@ -298,6 +403,9 @@ if bundle_ok:
             "scene": {"id", "chapter_id", "heading", "body_text", "world_node", "grants_artifacts", "requires_artifacts"},
             "choice": {"id", "from_scene_id", "label", "to_scene_id", "requires_artifacts", "grants_artifacts"},
             "artifact": {"id", "name", "description", "model_ref", "cross_world_tags"},
+            "semantic_node": {"id", "scene_id", "chapter_id", "label", "kind"},
+            "semantic_edge": {"id", "scene_id", "chapter_id", "subject", "predicate", "object", "weight"},
+            "semantic_transition": {"id", "scene_id", "op", "target_id"},
         }
         for ch in chapters.values():
             recs = ch.get("records", [])
@@ -320,6 +428,40 @@ if bundle_ok:
     check("every markdown file maps to chapter data", chapter_count_ok)
     check("ndjson runtime schema coverage", schema_ok)
     check("deterministic id uniqueness in bundle", id_uniqueness_ok)
+
+templates_ok = progression_templates.exists()
+schema_ok = False
+if templates_ok:
+    try:
+        bundle = json.loads(progression_templates.read_text(encoding="utf-8"))
+        templates = bundle.get("templates", [])
+        schema_ok = bool(templates) and all(
+            {"id", "name", "kind", "nodes", "edges", "transitions"}.issubset(set(t.keys()))
+            for t in templates
+        )
+    except Exception:
+        schema_ok = False
+check("character progression templates exist", templates_ok)
+check("character progression template schema", schema_ok)
+
+# ── WordNet 5WN browser NLP bridge ────────────────────────────────
+print("\nWordNet 5WN NLP bridge:")
+wordnet_builder = repo_root / "atomic-kernel" / "tools" / "build_wordnet_5wn_index.py"
+wordnet_index = repo_root / "atomic-kernel" / "nlp" / "wordnet_5wn_index.json"
+wordnet_bundle = repo_root / "atomic-kernel" / "nlp" / "bundle.js"
+
+wn_verify = subprocess.run(
+    [sys.executable, str(wordnet_builder), "--verify"],
+    capture_output=True,
+    text=True,
+)
+if wn_verify.stdout.strip():
+    print(wn_verify.stdout.strip())
+if wn_verify.stderr.strip():
+    print(wn_verify.stderr.strip())
+check("wordnet index deterministic verify", wn_verify.returncode == 0)
+check("wordnet index exists", wordnet_index.exists())
+check("nlp browser bundle exists", wordnet_bundle.exists())
 
 # ── Final ─────────────────────────────────────────────────────────
 print()
