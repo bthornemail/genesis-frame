@@ -35,6 +35,17 @@ from basis_spec import (
 )
 from control_plane import ControlPlaneError, cobs_decode, cobs_encode, encode_control, parse_control_stream
 from crystal import tick, position_at, read, state_at, run, W, T, B, MASK
+from incidence_projection import (
+    FANO_LINES,
+    classify_entity,
+    continuation_surface,
+    fano_triplet,
+    frame_at_tick,
+    is_collapsed,
+    projection_vector,
+    select_continuation,
+    step_projection,
+)
 from identity import clock, sid, sid_for_object, oid_step, ObjectChain, replay_chain, GENESIS_STATE as GENESIS
 from kernel import delta, replay, SUPPORTED_WIDTHS, check_parity
 from observer import observe, SEEDS
@@ -286,6 +297,23 @@ check("basis canonical JSON stable", stable_json_ok)
 check("basis fingerprint stable", stable_fp_ok)
 check("project/interpret roundtrip", roundtrip_ok)
 check("mixed encode/decode roundtrip", mixed_pair_ok)
+
+# ── Deterministic incidence projection law ────────────────────────
+print("\nIncidence projection:")
+frame16 = frame_at_tick(16, {"type": "basis_spec", "id": "dec_v1", "kind": "10"})
+pv = projection_vector({"entity": "watcher", "seed": 1}, frame16)
+surf = continuation_surface({"entity": "watcher", "seed": 1}, frame16)
+step_out = step_projection({"entity": "watcher", "seed": 1}, 16, {"type": "basis_spec", "id": "dec_v1", "kind": "10"})
+check("fano lines fixed x7", len(FANO_LINES) == 7)
+check("fano triplet cycles mod 7", fano_triplet(0) == fano_triplet(7))
+check("frame carries deterministic triplet", frame16["triplet"] == fano_triplet(16))
+check("projection vector has four planes", len(pv) == 4)
+check("projection deterministic same input", pv == projection_vector({"entity": "watcher", "seed": 1}, frame16))
+check("collapsed iff all projections equal", is_collapsed(pv) == all(p == pv[0] for p in pv))
+check("continuation surface non-empty", len(surf) >= 1)
+check("continuation deterministic select", select_continuation(surf, 5) == surf[5 % len(surf)])
+check("classification is collapsed or divergent", classify_entity({"entity": "watcher", "seed": 1}, frame16) in {"collapsed", "divergent"})
+check("step projection kind valid", step_out["kind"] in {"collapsed", "divergent"})
 
 # ── Artifact package carrier fixtures ─────────────────────────────
 print("\nArtifact package carrier:")

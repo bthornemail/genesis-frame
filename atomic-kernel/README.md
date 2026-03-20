@@ -37,6 +37,7 @@ atomic-kernel/
   identity.py     — CLOCK + SID + OID (deterministic identity)
   observer.py     — one object reading the crystal
   world.py        — 16 observers sharing one crystal
+  incidence_projection.py — deterministic Fano-triplet projection law
   world.html      — open in any browser, no server needed
   tests/
     test_all.py   — run this to verify everything works
@@ -66,9 +67,14 @@ xdg-open world.html      # Linux
 ## World.html modes
 
 - `Story Mode`: playable bootstrap sequence (`boot_cinematic -> hub -> chapter_scene`) with cross-world artifact gates.
-- `Editor Mode`: drag/drop artifact toolkit (primitive + starter GLB + starter SVG + dropped GLB/SVG files).
+- `Editor Mode`: drag/drop artifact toolkit (primitive + city kit components + one-click city presets: starter/downtown/walled/low-rise + starter GLB/SVG + dropped GLB/SVG + remote GLB URL import).
 - Save system: 3 slots + autosave + JSON import/export backup.
 - Timeline replay: event log scrubber with step/play/pause/rewind and NDJSON export.
+- Future workflow is explicit and bounded:
+  - `Preview Future` computes forecast projection from current timeline + pending branch events.
+  - `Inject Branch` queues typed future-directed events (artifact grant, chapter enter, control codepoint, control basis).
+  - `Materialize Fork` preserves queued branch events as `fork_artifact.v1`; mainline canonical replay is unchanged.
+- City presets are projection helpers that emit canonical `artifact_emitted` events (`source: city_preset`) and then replay; geometry is rendered from emitted artifacts.
 - Webhook lanes: outbound event POST + inbound JSON polling for bounded proposals.
 - Semantic projection: scene triples rendered as in-scene node/edge graph in story mode.
 - Semantic artifacts are first-class runtime state: saved/exported, event-logged (`semantic_graph_materialized`), replay-rebuilt, and inspectable in the Semantic frame.
@@ -92,6 +98,7 @@ xdg-open world.html      # Linux
 - Basis is algorithmic via explicit `basis_spec` artifacts (shareable in projection packages).
 - Canonical pair: `project(value, plane, basis_spec)` / `interpret(representation, plane, basis_spec)`.
 - Basis proof checks are part of the test suite: canonicalization stability and reversibility for default specs.
+- Incidence projection checks are part of the test suite: deterministic Fano triplet schedule + collapse/divergence continuation surface.
 - Recursion rule: selecting an item inside any plane re-selects that artifact and recomputes the same four planes.
 - Global plane rail in stage header keeps FS/GS/RS/US switching available even in simple mode.
 - Panel convergence (same law across tools):
@@ -117,6 +124,13 @@ xdg-open world.html      # Linux
   - `grantArtifact(artifactId)`
   - `jumpToEvent(index)`
   - `exportEventLog()`
+  - `previewFuture(horizon)`
+  - `injectFuture(kind, value)`
+  - `clearFutureBranch()`
+  - `acceptFutureBranch()` (alias of fork materialization)
+  - `materializeFutureFork()`
+  - `listForkArtifacts()`
+  - `loadForkIntoBranch(forkId)`
   - `exportSemanticGraph()`
   - `registerDocument(documentId, text, source='uploaded')`
   - `listDocuments()`
@@ -151,6 +165,8 @@ Practical split:
 - Projection/advisory: frame visuals, NLP extraction, WordNet typing, transient scene objects.
 
 Formal reduction spec:
+- HTML formal view: `docs/formal_spec.html`
+- Pure algorithms (single-file minimal form): `dev-docs/PURE_ALGORITHMS.md`
 - Normative core: `dev-docs/ATOMIC_KERNEL_NORMATIVE_CORE_v1_2.md`
 - Proof notes: `dev-docs/ATOMIC_KERNEL_PROOF_NOTES_v1_2.md`
 - Combined draft: `dev-docs/ATOMIC_KERNEL_REDUCTION_SPEC_v1_2.md`

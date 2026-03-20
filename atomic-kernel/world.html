@@ -423,6 +423,19 @@
       <div id="artifacts-panel" data-plane-scope="GS">
         <div class="section-title">Scene Artifacts</div>
         <div id="artifact-list" class="artifact-list"></div>
+        <div class="row" style="margin-top:6px;">
+          <select id="city-preset-select" class="field">
+            <option value="starter_district_v1">Starter District</option>
+            <option value="dense_downtown_v1">Dense Downtown</option>
+            <option value="walled_gate_city_v1">Walled Gate City</option>
+            <option value="lowrise_river_v1">Low-Rise River Quarter</option>
+          </select>
+          <button id="btn-city-preset" class="primary">City Preset</button>
+        </div>
+        <div class="row" style="margin-top:6px;">
+          <input id="city-glb-url" class="field" type="text" placeholder="Paste GLB URL (https://... .glb)">
+          <button id="btn-add-city-url">Add URL</button>
+        </div>
       </div>
 
       <div id="navigator-panel" class="hint advanced-only" data-plane-scope="GS">
@@ -454,6 +467,27 @@
           <button id="btn-export-events">Export Log</button>
         </div>
         <div id="timeline-meta" class="sub" style="margin-top:6px;">timeline: 0/0 · paused</div>
+        <div class="section-title" style="margin-top:8px;">Future Branch</div>
+        <div class="row" style="margin-top:6px;">
+          <input id="future-horizon" class="field" type="number" min="1" max="4096" value="24" placeholder="horizon">
+          <button id="btn-future-preview">Preview Future</button>
+        </div>
+        <div id="future-preview-meta" class="mono-note" style="margin-top:6px;">forecast: (none)</div>
+        <div class="row" style="margin-top:6px;">
+          <select id="future-inject-kind" class="field">
+            <option value="artifact_granted">inject: artifact_granted</option>
+            <option value="control_emit_codepoint">inject: control emit_codepoint</option>
+            <option value="chapter_entered">inject: chapter_entered</option>
+            <option value="control_set_basis">inject: control set_basis</option>
+          </select>
+          <input id="future-inject-value" class="field" type="text" placeholder="value">
+        </div>
+        <div class="row" style="margin-top:6px;">
+          <button id="btn-future-inject">Inject Branch</button>
+          <button id="btn-future-clear">Clear Branch</button>
+          <button id="btn-future-accept" class="good">Materialize Fork</button>
+        </div>
+        <div id="future-branch-meta" class="mono-note" style="margin-top:6px;">branch: 0 pending events</div>
       </div>
 
       <div id="webhook-panel" class="hint advanced-only" data-plane-scope="FS">
@@ -531,18 +565,23 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
 
       <div id="semantic-panel" class="hint advanced-only" data-plane-scope="GS">
         <div class="section-title">Semantic Inspector</div>
+        <div class="row" style="margin-top:4px;">
+          <button id="btn-sem-attention-narrow" class="good">Narrow</button>
+          <button id="btn-sem-attention-expanded">Expand</button>
+          <button id="btn-sem-more">More</button>
+        </div>
         <div id="semantic-meta" class="mono-note">No semantic artifact.</div>
         <div id="semantic-list" class="semantic-list mini" style="margin-top:6px;">(empty)</div>
-        <div class="row" style="margin-top:8px;">
+        <div class="row semantic-extra" style="margin-top:8px;">
           <select id="template-select" class="field"></select>
           <button id="btn-template-instantiate" class="good">Instantiate</button>
         </div>
-        <div class="row" style="margin-top:6px;">
+        <div class="row semantic-extra" style="margin-top:6px;">
           <button id="btn-template-import">Import Template</button>
           <button id="btn-template-export">Export Template</button>
           <button id="btn-template-clonepkg">Template -> Package</button>
         </div>
-        <div class="row" style="margin-top:6px;">
+        <div class="row semantic-extra" style="margin-top:6px;">
           <button id="btn-template-semantic">-> Semantic</button>
           <button id="btn-template-control">-> Control UML</button>
           <button id="btn-template-world">-> World</button>
@@ -573,16 +612,23 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         <div>
           <strong>Three.js Narrative Bootstrap</strong>
           <div class="sub">Phase flow: boot cinematic -> hub -> chapter scene -> hub return -> epilogue.</div>
-          <div class="row" style="margin-top:6px;" data-plane-scope="FS">
+          <div class="row" style="margin-top:6px;" data-plane-scope="FS,GS,RS,US">
             <button id="btn-toggle-complexity-stage">Advanced UI</button>
           </div>
-          <div class="row" style="margin-top:6px;" data-plane-scope="FS">
+          <div class="row" style="margin-top:6px;" data-plane-scope="FS,GS,RS,US">
             <button id="btn-frame-world" class="good">World</button>
             <button id="btn-frame-control">Control</button>
             <button id="btn-frame-codepoint">Codepoint</button>
             <button id="btn-frame-aztec">Aztec</button>
             <button id="btn-frame-semantic">Semantic</button>
             <button id="btn-frame-replay">Replay</button>
+          </div>
+          <div class="row" style="margin-top:6px;" data-plane-scope="FS,GS,RS,US">
+            <button id="btn-quick-mode">Mode</button>
+            <button id="btn-quick-frame">Frame</button>
+            <button id="btn-quick-city">City</button>
+            <button id="btn-quick-fork">Fork</button>
+            <button id="btn-quick-advanced">Advanced</button>
           </div>
           <div class="row" style="margin-top:6px;">
             <div class="plane-rail">
@@ -662,6 +708,8 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
     const statusEl = document.getElementById('status');
     const layoutText = document.getElementById('layout-json');
     const storyUI = document.getElementById('story-ui');
+    const cityGlbUrlInput = document.getElementById('city-glb-url');
+    const cityPresetSelect = document.getElementById('city-preset-select');
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -681,13 +729,45 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
     };
     const SEM_NODE_KINDS = new Set(['entity', 'place', 'artifact', 'law', 'concept', 'event', 'role']);
     const SEM_EDGE_KINDS = new Set(['seeks', 'binds', 'enters', 'reveals', 'opposes', 'unlocks', 'remembers', 'causes', 'requires', 'grants', 'relates_to']);
+    const SEMANTIC_COMPACTION_DEFAULT = Object.freeze({
+      min_score: 0.62,
+      max_edges_total: 10,
+      max_edges_per_node: 3,
+      predicate_whitelist: ['requires', 'grants', 'unlocks', 'enters', 'binds', 'seeks', 'reveals', 'causes', 'relates_to'],
+    });
+    const SEMANTIC_ATTENTION_PRESETS = Object.freeze({
+      narrow: Object.freeze({
+        min_score: 0.7,
+        max_edges_total: 6,
+        max_edges_per_node: 2,
+        predicate_whitelist: ['requires', 'grants', 'unlocks', 'enters', 'binds', 'seeks', 'reveals', 'causes'],
+      }),
+      expanded: Object.freeze({
+        min_score: 0.45,
+        max_edges_total: 18,
+        max_edges_per_node: 5,
+        predicate_whitelist: ['requires', 'grants', 'unlocks', 'enters', 'binds', 'seeks', 'reveals', 'causes', 'relates_to'],
+      }),
+    });
+    const SEMANTIC_PREDICATE_ALIAS = Object.freeze({
+      appears_in: 'relates_to',
+      contains: 'relates_to',
+      include: 'relates_to',
+      includes: 'relates_to',
+      linked_to: 'relates_to',
+      connected_to: 'relates_to',
+    });
 
+    const CAMERA_DEFAULT = {
+      position: [10, 8, 14],
+      target: [0, 1.4, 0],
+    };
     const camera = new THREE.PerspectiveCamera(52, stage.clientWidth / stage.clientHeight, 0.1, 220);
-    camera.position.set(7, 6, 9);
+    camera.position.set(...CAMERA_DEFAULT.position);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.target.set(0, 1.2, 0);
+    controls.target.set(...CAMERA_DEFAULT.target);
 
     const transformControls = new TransformControls(camera, renderer.domElement);
     transformControls.setMode('translate');
@@ -785,6 +865,10 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
     let cycleLabelSprite = null;
     let cycleLabelSetText = null;
     const semanticDocuments = new Map();
+    let semanticCompactionConfig = cloneState(SEMANTIC_COMPACTION_DEFAULT);
+    let semanticAttentionMode = 'narrow';
+    let semanticProjectionSignature = '';
+    let semanticPanelExpanded = false;
 
     const SAVE_VERSION = 2;
     const TEMPLATE_STORE_KEY = "ak_progression_templates_custom_v1";
@@ -833,6 +917,10 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
       codepoint_hex: '0041',
       last_emitted_codepoint: null,
       diagram_spec: '',
+    };
+    const futureBranchState = {
+      events: [],
+      preview: null,
     };
 
     function cloneState(state) {
@@ -1081,6 +1169,8 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         unlocked_chapters: prologueId ? [prologueId] : [],
         seen_scenes: [],
         choice_history: [],
+        emitted_artifacts: [],
+        fork_artifacts: [],
         completed_chapters: [],
         layout: null,
         boot_index: 0,
@@ -1101,6 +1191,8 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         cp_diagram_spec: '',
         semantic_graph_artifact: null,
         semantic_artifact_meta: null,
+        semantic_compaction: cloneState(SEMANTIC_COMPACTION_DEFAULT),
+        semantic_attention_mode: 'narrow',
       };
     }
 
@@ -1161,6 +1253,8 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
             unlocked_chapters: Array.isArray(parsed.unlocked_chapters) ? parsed.unlocked_chapters : [this.prologueId],
             seen_scenes: Array.isArray(parsed.seen_scenes) ? parsed.seen_scenes : [],
             choice_history: Array.isArray(parsed.choice_history) ? parsed.choice_history : [],
+            emitted_artifacts: Array.isArray(parsed.emitted_artifacts) ? parsed.emitted_artifacts : [],
+            fork_artifacts: Array.isArray(parsed.fork_artifacts) ? parsed.fork_artifacts : [],
             completed_chapters: Array.isArray(parsed.completed_chapters) ? parsed.completed_chapters : [],
             layout: parsed.layout || null,
             boot_index: Number.isInteger(parsed.boot_index) ? parsed.boot_index : 0,
@@ -1185,6 +1279,8 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
               ? cloneState(parsed.semantic_graph_artifact) : null,
             semantic_artifact_meta: parsed.semantic_artifact_meta && typeof parsed.semantic_artifact_meta === 'object'
               ? cloneState(parsed.semantic_artifact_meta) : null,
+            semantic_compaction: normalizeSemanticCompactionConfig(parsed.semantic_compaction),
+            semantic_attention_mode: parsed.semantic_attention_mode === 'expanded' ? 'expanded' : 'narrow',
           };
           this.render();
           setStatus(`Loaded slot ${slotIndex + 1}`);
@@ -1255,6 +1351,8 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
           unlocked_chapters: Array.isArray(parsed.unlocked_chapters) ? parsed.unlocked_chapters : [this.prologueId],
           seen_scenes: Array.isArray(parsed.seen_scenes) ? parsed.seen_scenes : [],
           choice_history: Array.isArray(parsed.choice_history) ? parsed.choice_history : [],
+          emitted_artifacts: Array.isArray(parsed.emitted_artifacts) ? parsed.emitted_artifacts : [],
+          fork_artifacts: Array.isArray(parsed.fork_artifacts) ? parsed.fork_artifacts : [],
           completed_chapters: Array.isArray(parsed.completed_chapters) ? parsed.completed_chapters : [],
           layout: parsed.layout || null,
           boot_index: Number.isInteger(parsed.boot_index) ? parsed.boot_index : 0,
@@ -1279,6 +1377,8 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
             ? cloneState(parsed.semantic_graph_artifact) : null,
           semantic_artifact_meta: parsed.semantic_artifact_meta && typeof parsed.semantic_artifact_meta === 'object'
             ? cloneState(parsed.semantic_artifact_meta) : null,
+          semantic_compaction: normalizeSemanticCompactionConfig(parsed.semantic_compaction),
+          semantic_attention_mode: parsed.semantic_attention_mode === 'expanded' ? 'expanded' : 'narrow',
         };
         this.saveGame(slotIndex);
         this.autosave();
@@ -1369,6 +1469,23 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         if (event.type === 'artifact_granted') {
           const aid = payload.artifact_id;
           if (aid && !this.state.inventory.includes(aid)) this.state.inventory.push(aid);
+          return;
+        }
+        if (event.type === 'artifact_emitted') {
+          const emitted = payload.artifact && typeof payload.artifact === 'object' ? cloneState(payload.artifact) : null;
+          const emittedId = String(payload.emitted_id || emitted?.id || sid(JSON.stringify(payload), 'emit'));
+          if (!emitted) return;
+          if (!Array.isArray(this.state.emitted_artifacts)) this.state.emitted_artifacts = [];
+          if (this.state.emitted_artifacts.some((x) => String(x.id) === emittedId)) return;
+          const rec = {
+            id: emittedId,
+            artifact: emitted,
+            position: Array.isArray(payload.position) && payload.position.length === 3 ? payload.position.map((n) => Number(n) || 0) : [0, 0, 0],
+            scale: Number(payload.scale) > 0 ? Number(payload.scale) : 1,
+            source: String(payload.source || 'artifact_emit'),
+            preset: payload.preset ? String(payload.preset) : null,
+          };
+          this.state.emitted_artifacts.push(rec);
           return;
         }
         if (event.type === 'chapter_unlocked') {
@@ -1659,6 +1776,13 @@ Enter the Prologue and begin reconciliation.`
       render() {
         sceneFirstMode = this.state.scene_first_mode !== false;
         applySceneFirstMode();
+        uiComplexityMode = this.state.ui_complexity_mode === 'advanced' ? 'advanced' : 'simple';
+        applyComplexityMode();
+        semanticCompactionConfig = normalizeSemanticCompactionConfig(this.state.semantic_compaction);
+        this.state.semantic_compaction = cloneState(semanticCompactionConfig);
+        semanticAttentionMode = this.state.semantic_attention_mode === 'expanded' ? 'expanded' : 'narrow';
+        this.state.semantic_attention_mode = semanticAttentionMode;
+        refreshSemanticAttentionButtons();
         syncMenuRingFromState();
         document.getElementById('pill-phase').textContent = `phase: ${this.state.current_phase}`;
         if (this.state.current_phase === 'boot_cinematic') this.renderBoot();
@@ -1672,6 +1796,7 @@ Enter the Prologue and begin reconciliation.`
         refreshCodex();
         refreshArtifactCards();
         syncInventoryArtifactsInScene();
+        ensureEmittedArtifactsInScene();
         updateHubGraphState();
         updateTimelineUI();
         refreshControlPlaneStatus();
@@ -2284,19 +2409,28 @@ Enter the Prologue and begin reconciliation.`
       }
       const nodes = Array.isArray(artifact.nodes) ? artifact.nodes : [];
       const edges = Array.isArray(artifact.edges) ? artifact.edges : [];
+      const projected = projectSemanticForAttention(artifact);
+      const viewNodes = Array.isArray(projected.nodes) ? projected.nodes : [];
+      const viewEdges = Array.isArray(projected.edges) ? projected.edges : [];
       const transitions = Array.isArray(artifact.transitions) ? artifact.transitions : [];
+      const compaction = artifact.compaction && typeof artifact.compaction === 'object' ? artifact.compaction : null;
       const source = meta.source || (meta.document_id ? 'document' : 'scene');
-      metaEl.textContent = `source=${source} nodes=${nodes.length} edges=${edges.length} transitions=${transitions.length}`;
+      metaEl.textContent = `source=${source} nodes=${viewNodes.length}/${nodes.length} edges=${viewEdges.length}/${edges.length} transitions=${transitions.length} attention=${semanticAttentionMode}`;
       const nodeById = new Map(nodes.map((n) => [n.id, n.label || n.id]));
       const lines = [];
       lines.push(`scene_id: ${artifact.scene_id || '-'}`);
       lines.push(`chapter_id: ${artifact.chapter_id || '-'}`);
       if (meta.document_id) lines.push(`document_id: ${meta.document_id}`);
+      lines.push(`attention: ${semanticAttentionMode}`);
+      const activeCompaction = projected.compaction || compaction;
+      if (activeCompaction) {
+        lines.push(`compaction: kept ${activeCompaction.kept_edges || viewEdges.length}/${activeCompaction.candidate_edges || edges.length} · min=${activeCompaction.min_score ?? '-'} · per_node=${activeCompaction.max_edges_per_node ?? '-'} · total=${activeCompaction.max_edges_total ?? '-'}`);
+      }
       lines.push('--- edges ---');
-      for (const e of edges.slice(0, 28)) {
+      for (const e of viewEdges.slice(0, 28)) {
         lines.push(`${nodeById.get(e.subject) || e.subject} -> ${e.predicate} -> ${nodeById.get(e.object) || e.object}`);
       }
-      if (edges.length > 28) lines.push(`... +${edges.length - 28} more`);
+      if (viewEdges.length > 28) lines.push(`... +${viewEdges.length - 28} more`);
       listEl.textContent = lines.join('\n');
     }
 
@@ -3175,6 +3309,36 @@ Enter the Prologue and begin reconciliation.`
         n.removeFromParent();
       }
       semanticGraph = null;
+      semanticProjectionSignature = '';
+    }
+
+    function refreshSemanticAttentionButtons() {
+      const narrowBtn = document.getElementById('btn-sem-attention-narrow');
+      const expandedBtn = document.getElementById('btn-sem-attention-expanded');
+      if (narrowBtn) narrowBtn.classList.toggle('good', semanticAttentionMode === 'narrow');
+      if (expandedBtn) expandedBtn.classList.toggle('good', semanticAttentionMode === 'expanded');
+      const moreBtn = document.getElementById('btn-sem-more');
+      if (moreBtn) moreBtn.textContent = semanticPanelExpanded ? 'Less' : 'More';
+      for (const el of document.querySelectorAll('#semantic-panel .semantic-extra')) {
+        el.classList.toggle('hidden', !semanticPanelExpanded);
+      }
+    }
+
+    function setSemanticAttentionMode(mode = 'narrow') {
+      semanticAttentionMode = mode === 'expanded' ? 'expanded' : 'narrow';
+      const preset = SEMANTIC_ATTENTION_PRESETS[semanticAttentionMode] || SEMANTIC_ATTENTION_PRESETS.narrow;
+      setSemanticCompactionConfig(preset);
+      GameDirector.state.semantic_attention_mode = semanticAttentionMode;
+      refreshSemanticAttentionButtons();
+      syncSemanticArtifactProjection();
+      refreshSemanticInspector();
+      GameDirector.autosave();
+      setStatus(`Semantic attention: ${semanticAttentionMode}`);
+    }
+
+    function toggleSemanticPanelExpanded() {
+      semanticPanelExpanded = !semanticPanelExpanded;
+      refreshSemanticAttentionButtons();
     }
 
     function sceneSemanticTriples(sceneRecord, chapterMeta) {
@@ -3238,9 +3402,100 @@ Enter the Prologue and begin reconciliation.`
 
     function semEdgeKind(pred) {
       const p = String(pred || '').toLowerCase().replace(/\s+/g, '_');
-      if (SEM_EDGE_KINDS.has(p)) return p;
-      if (p.endsWith('s') && SEM_EDGE_KINDS.has(p.slice(0, -1))) return p.slice(0, -1);
+      const aliased = SEMANTIC_PREDICATE_ALIAS[p] || p;
+      if (SEM_EDGE_KINDS.has(aliased)) return aliased;
+      if (aliased.endsWith('s') && SEM_EDGE_KINDS.has(aliased.slice(0, -1))) return aliased.slice(0, -1);
       return 'relates_to';
+    }
+
+    function normalizeSemanticCompactionConfig(input) {
+      const src = input && typeof input === 'object' ? input : {};
+      const minScore = Number(src.min_score);
+      const maxEdgesTotal = Number(src.max_edges_total);
+      const maxEdgesPerNode = Number(src.max_edges_per_node);
+      const whitelistRaw = Array.isArray(src.predicate_whitelist) ? src.predicate_whitelist : SEMANTIC_COMPACTION_DEFAULT.predicate_whitelist;
+      const whitelist = whitelistRaw
+        .map((x) => semEdgeKind(String(x || 'relates_to')))
+        .filter(Boolean);
+      return {
+        min_score: Number.isFinite(minScore) ? Math.max(0, Math.min(1, minScore)) : SEMANTIC_COMPACTION_DEFAULT.min_score,
+        max_edges_total: Number.isFinite(maxEdgesTotal) ? Math.max(1, Math.floor(maxEdgesTotal)) : SEMANTIC_COMPACTION_DEFAULT.max_edges_total,
+        max_edges_per_node: Number.isFinite(maxEdgesPerNode) ? Math.max(1, Math.floor(maxEdgesPerNode)) : SEMANTIC_COMPACTION_DEFAULT.max_edges_per_node,
+        predicate_whitelist: whitelist.length ? Array.from(new Set(whitelist)) : cloneState(SEMANTIC_COMPACTION_DEFAULT.predicate_whitelist),
+      };
+    }
+
+    function setSemanticCompactionConfig(partial) {
+      semanticCompactionConfig = normalizeSemanticCompactionConfig({ ...semanticCompactionConfig, ...(partial || {}) });
+      if (GameDirector?.state) {
+        GameDirector.state.semantic_compaction = cloneState(semanticCompactionConfig);
+      }
+      return cloneState(semanticCompactionConfig);
+    }
+
+    function semanticEdgeScore(subjectNode, predicate, objectNode, rawPredicate = '') {
+      let score = 0.56;
+      if (predicate === 'requires' || predicate === 'grants' || predicate === 'unlocks' || predicate === 'causes') score += 0.34;
+      if (predicate === 'relates_to') score -= 0.08;
+      if (subjectNode?.kind && subjectNode.kind === objectNode?.kind) score -= 0.05;
+      if (subjectNode?.kind === 'role' || objectNode?.kind === 'role') score += 0.04;
+      if (subjectNode?.kind === 'place' || objectNode?.kind === 'place') score += 0.03;
+      if (/^[a-z]{1,2}$/.test(String(rawPredicate || '').toLowerCase())) score -= 0.09;
+      return Math.max(0, Math.min(1, score));
+    }
+
+    function compactSemanticEdgeCandidates(edgeCandidates, config) {
+      const cfg = normalizeSemanticCompactionConfig(config);
+      const whitelist = new Set(cfg.predicate_whitelist.map((x) => semEdgeKind(x)));
+      const dedup = new Map();
+      const order = [];
+      for (const cand of edgeCandidates) {
+        const pred = semEdgeKind(cand?.predicate || 'relates_to');
+        if (!whitelist.has(pred)) continue;
+        const key = `${cand.subject}|${pred}|${cand.object}`;
+        const scored = { ...cand, predicate: pred };
+        if (!dedup.has(key)) {
+          dedup.set(key, scored);
+          order.push(key);
+          continue;
+        }
+        const prev = dedup.get(key);
+        if ((Number(scored.score) || 0) > (Number(prev.score) || 0)) dedup.set(key, scored);
+      }
+      const sorted = order
+        .map((k) => dedup.get(k))
+        .filter((x) => (Number(x?.score) || 0) >= cfg.min_score)
+        .sort((a, b) => (Number(b.score) || 0) - (Number(a.score) || 0));
+
+      const degree = new Map();
+      const kept = [];
+      for (const edge of sorted) {
+        if (kept.length >= cfg.max_edges_total) break;
+        const ds = degree.get(edge.subject) || 0;
+        const doo = degree.get(edge.object) || 0;
+        if (ds >= cfg.max_edges_per_node || doo >= cfg.max_edges_per_node) continue;
+        kept.push(edge);
+        degree.set(edge.subject, ds + 1);
+        degree.set(edge.object, doo + 1);
+      }
+      return { cfg, kept, candidate_count: edgeCandidates.length, kept_count: kept.length };
+    }
+
+    function normalizeSemanticArtifact(artifact, fallbackId = null) {
+      if (!artifact || typeof artifact !== 'object') return null;
+      const nodes = Array.isArray(artifact.nodes) ? artifact.nodes : [];
+      const edges = Array.isArray(artifact.edges) ? artifact.edges : [];
+      const transitions = Array.isArray(artifact.transitions) ? artifact.transitions : [];
+      return {
+        version: 1,
+        id: artifact.id || fallbackId || `sg_${sid(stableStringify(artifact), 's').slice(-10)}`,
+        scene_id: artifact.scene_id || null,
+        chapter_id: artifact.chapter_id || null,
+        document_id: artifact.document_id || null,
+        nodes: cloneState(nodes),
+        edges: cloneState(edges),
+        transitions: cloneState(transitions),
+      };
     }
 
     function buildSemanticGraphArtifact(sceneRecord, chapterMeta, triples) {
@@ -3248,7 +3503,7 @@ Enter the Prologue and begin reconciliation.`
       const entityByLabel = new Map(entities.map((e) => [e.display.toLowerCase(), e]));
       const nodeMap = new Map();
       const nodes = [];
-      const edges = [];
+      const edgeCandidates = [];
       const transitions = [];
 
       const ensureNode = (label) => {
@@ -3274,14 +3529,19 @@ Enter the Prologue and begin reconciliation.`
         const s = ensureNode(subj);
         const o = ensureNode(obj);
         if (!s || !o) continue;
-        const edge = {
-          id: `e_${sid(`${sceneRecord?.id || 'scene'}:${s.id}:${pred}:${o.id}`, 'r').slice(-10)}`,
+        const predicate = semEdgeKind(pred);
+        edgeCandidates.push({
+          id: `e_${sid(`${sceneRecord?.id || 'scene'}:${s.id}:${predicate}:${o.id}`, 'r').slice(-10)}`,
           subject: s.id,
-          predicate: semEdgeKind(pred),
+          predicate,
           object: o.id,
-          score: 1.0,
-        };
-        edges.push(edge);
+          score: semanticEdgeScore(s, predicate, o, pred),
+        });
+      }
+
+      const compacted = compactSemanticEdgeCandidates(edgeCandidates, semanticCompactionConfig);
+      const edges = compacted.kept;
+      for (const edge of edges) {
         transitions.push({ op: 'add_edge', edge: edge.id });
       }
 
@@ -3292,6 +3552,14 @@ Enter the Prologue and begin reconciliation.`
         nodes,
         edges,
         transitions,
+        compaction: {
+          min_score: compacted.cfg.min_score,
+          max_edges_total: compacted.cfg.max_edges_total,
+          max_edges_per_node: compacted.cfg.max_edges_per_node,
+          predicate_whitelist: compacted.cfg.predicate_whitelist,
+          candidate_edges: compacted.candidate_count,
+          kept_edges: compacted.kept_count,
+        },
       };
     }
 
@@ -3317,6 +3585,53 @@ Enter the Prologue and begin reconciliation.`
         source,
         ...graph,
       };
+    }
+
+    function projectSemanticForAttention(artifact) {
+      if (!artifact || typeof artifact !== 'object') return { nodes: [], edges: [], compaction: null };
+      const nodes = Array.isArray(artifact.nodes) ? artifact.nodes : [];
+      const edgeCandidatesRaw = Array.isArray(artifact.edges) ? artifact.edges : [];
+      const nodeById = new Map(nodes.map((n) => [n.id, n]));
+      const edgeCandidates = edgeCandidatesRaw.map((e) => {
+        const pred = semEdgeKind(e?.predicate || 'relates_to');
+        const s = nodeById.get(e.subject);
+        const o = nodeById.get(e.object);
+        const score = Number.isFinite(Number(e?.score))
+          ? Number(e.score)
+          : semanticEdgeScore(s, pred, o, pred);
+        return {
+          ...e,
+          predicate: pred,
+          score,
+        };
+      });
+      const compacted = compactSemanticEdgeCandidates(edgeCandidates, semanticCompactionConfig);
+      const keepNodeIds = new Set();
+      for (const e of compacted.kept) {
+        keepNodeIds.add(e.subject);
+        keepNodeIds.add(e.object);
+      }
+      if (!keepNodeIds.size) {
+        for (const n of nodes.slice(0, Math.min(nodes.length, 4))) keepNodeIds.add(n.id);
+      }
+      const projectedNodes = nodes.filter((n) => keepNodeIds.has(n.id));
+      return {
+        nodes: projectedNodes,
+        edges: compacted.kept,
+        compaction: {
+          ...compacted.cfg,
+          candidate_edges: compacted.candidate_count,
+          kept_edges: compacted.kept_count,
+        },
+      };
+    }
+
+    function materializeSemanticArtifactInput(rawArtifact, meta = { source: 'manual_artifact' }) {
+      const normalized = normalizeSemanticArtifact(rawArtifact);
+      if (!normalized) throw new Error('invalid semantic artifact payload');
+      GameDirector.setSemanticArtifact(normalized, meta, { emit: true, source: 'semantic' });
+      GameDirector.render();
+      return cloneState(normalized);
     }
 
     function parseSectionRange(spec, totalParagraphs) {
@@ -3401,8 +3716,10 @@ Enter the Prologue and begin reconciliation.`
     function drawSemanticGraphArtifact(artifact) {
       clearSemanticGraph();
       if (!artifact || !Array.isArray(artifact.nodes) || !artifact.nodes.length) return;
-      const nodes = artifact.nodes || [];
-      const edges = artifact.edges || [];
+      const projected = projectSemanticForAttention(artifact);
+      const nodes = projected.nodes || [];
+      const edges = projected.edges || [];
+      if (!nodes.length) return;
       const nodePos = new Map();
       const radius = 2.7;
       const base = new THREE.Vector3(0, 0.35, -3.8);
@@ -3447,18 +3764,27 @@ Enter the Prologue and begin reconciliation.`
         semanticRoot.add(tag);
       }
       semanticGraph = cloneState(artifact);
+      semanticProjectionSignature = stableStringify({
+        id: artifact.id || artifact.scene_id || artifact.document_id || null,
+        mode: semanticAttentionMode,
+        cfg: semanticCompactionConfig,
+        nodes: nodes.length,
+        edges: edges.length,
+      });
     }
 
     function syncSemanticArtifactProjection() {
       const artifact = GameDirector.state.semantic_graph_artifact;
       if (!artifact && !semanticGraph) return;
-      const prevId = semanticGraph?.id || semanticGraph?.scene_id || semanticGraph?.document_id || null;
-      const nextId = artifact?.id || artifact?.scene_id || artifact?.document_id || null;
-      const prevEdges = Array.isArray(semanticGraph?.edges) ? semanticGraph.edges.length : 0;
-      const nextEdges = Array.isArray(artifact?.edges) ? artifact.edges.length : 0;
-      const prevNodes = Array.isArray(semanticGraph?.nodes) ? semanticGraph.nodes.length : 0;
-      const nextNodes = Array.isArray(artifact?.nodes) ? artifact.nodes.length : 0;
-      if (prevId === nextId && prevEdges === nextEdges && prevNodes === nextNodes) return;
+      const projected = projectSemanticForAttention(artifact);
+      const nextSignature = stableStringify({
+        id: artifact?.id || artifact?.scene_id || artifact?.document_id || null,
+        mode: semanticAttentionMode,
+        cfg: semanticCompactionConfig,
+        nodes: projected.nodes.length,
+        edges: projected.edges.length,
+      });
+      if (semanticProjectionSignature && nextSignature === semanticProjectionSignature) return;
       drawSemanticGraphArtifact(artifact);
     }
 
@@ -3468,12 +3794,24 @@ Enter the Prologue and begin reconciliation.`
       const existing = GameDirector.state.semantic_graph_artifact;
       const meta = GameDirector.state.semantic_artifact_meta || {};
       if (existing && existing.scene_id === sceneRecord.id && meta.source === 'scene') return;
-      const triples = sceneSemanticTriples(sceneRecord, chapterMeta);
-      const artifact = buildSemanticGraphArtifact(sceneRecord, chapterMeta, triples);
-      artifact.id = `sg_${sid(`${sceneRecord.id}:${chapterMeta.id}`, 's').slice(-10)}`;
+      let artifact = null;
+      if (sceneRecord.semantic_artifact && typeof sceneRecord.semantic_artifact === 'object') {
+        artifact = normalizeSemanticArtifact(sceneRecord.semantic_artifact, `sg_${sid(`${sceneRecord.id}:${chapterMeta.id}:manual`, 's').slice(-10)}`);
+      } else {
+        const triples = Array.isArray(sceneRecord.semantic_triples) && sceneRecord.semantic_triples.length
+          ? sceneRecord.semantic_triples
+          : sceneSemanticTriples(sceneRecord, chapterMeta);
+        artifact = buildSemanticGraphArtifact(sceneRecord, chapterMeta, triples);
+        artifact.id = `sg_${sid(`${sceneRecord.id}:${chapterMeta.id}`, 's').slice(-10)}`;
+      }
       GameDirector.setSemanticArtifact(
         artifact,
-        { source: 'scene', scene_id: sceneRecord.id, chapter_id: chapterMeta.id },
+        {
+          source: sceneRecord.semantic_artifact ? 'scene_artifact' : 'scene',
+          scene_id: sceneRecord.id,
+          chapter_id: chapterMeta.id,
+          compaction: cloneState(semanticCompactionConfig),
+        },
         { emit: !isReplaying, source: 'semantic' }
       );
     }
@@ -3486,6 +3824,249 @@ Enter the Prologue and begin reconciliation.`
       slider.max = String(total);
       slider.value = String(idx);
       meta.textContent = `timeline: ${idx}/${total} · ${GameDirector.state.play_state} · x${GameDirector.state.play_speed}`;
+      updateFutureBranchUI();
+    }
+
+    function futureInjectPlaceholder() {
+      const kind = String(document.getElementById('future-inject-kind')?.value || 'artifact_granted');
+      const input = document.getElementById('future-inject-value');
+      if (!input) return;
+      if (kind === 'artifact_granted') input.placeholder = 'artifact id (ex: art_measure)';
+      else if (kind === 'control_emit_codepoint') input.placeholder = 'hex codepoint (ex: 0041)';
+      else if (kind === 'chapter_entered') input.placeholder = 'chapter id';
+      else if (kind === 'control_set_basis') input.placeholder = 'basis (2|8|10|16|36|codepoint|mixed)';
+      else input.placeholder = 'value';
+    }
+
+    function buildFutureBranchEvent(kind, value) {
+      const v = String(value || '').trim();
+      if (kind === 'artifact_granted') {
+        if (!v) throw new Error('artifact id required');
+        return {
+          label: `artifact_granted:${v}`,
+          event: { type: 'artifact_granted', payload: { artifact_id: v } },
+        };
+      }
+      if (kind === 'control_emit_codepoint') {
+        const cpHex = v || String(document.getElementById('cp-codepoint')?.value || '0041').replace(/^0x/i, '').toUpperCase();
+        if (!/^[0-9A-F]{1,6}$/.test(cpHex)) throw new Error('invalid codepoint hex');
+        const plane = Math.max(0, Math.min(16, Number(document.getElementById('cp-plane')?.value || 0)));
+        return {
+          label: `control_emit_codepoint:U+${cpHex}`,
+          event: {
+            type: 'control_plane',
+            payload: {
+              action: 'emit_codepoint',
+              plane,
+              codepointHex: cpHex,
+              codepoint: `U+${cpHex}`,
+            },
+          },
+        };
+      }
+      if (kind === 'chapter_entered') {
+        if (!v) throw new Error('chapter id required');
+        return {
+          label: `chapter_entered:${v}`,
+          event: { type: 'chapter_entered', payload: { chapter_id: v } },
+        };
+      }
+      if (kind === 'control_set_basis') {
+        const basis = v || '10';
+        if (!BASIS_OPTIONS.includes(basis)) throw new Error(`invalid basis: ${basis}`);
+        const basisSpec = resolveBasisSpec(basis, null);
+        return {
+          label: `control_set_basis:${basis}`,
+          event: {
+            type: 'control_plane',
+            payload: {
+              action: 'set_frame',
+              channel: controlPlaneState.channel,
+              lane: controlPlaneState.lane,
+              basis,
+              basis_spec_id: basisSpec.id,
+              scope: 'next-unit',
+            },
+          },
+        };
+      }
+      throw new Error(`unsupported inject kind: ${kind}`);
+    }
+
+    function updateFutureBranchUI() {
+      const branchMeta = document.getElementById('future-branch-meta');
+      const previewMeta = document.getElementById('future-preview-meta');
+      if (!branchMeta || !previewMeta) return;
+      const forks = Array.isArray(GameDirector.state.fork_artifacts) ? GameDirector.state.fork_artifacts.length : 0;
+      if (!futureBranchState.events.length) {
+        branchMeta.textContent = `branch: 0 pending events · forks: ${forks}`;
+      } else {
+        const head = futureBranchState.events.slice(0, 3).map((x) => x.label).join(' | ');
+        const tail = futureBranchState.events.length > 3 ? ` +${futureBranchState.events.length - 3} more` : '';
+        branchMeta.textContent = `branch: ${futureBranchState.events.length} pending · forks: ${forks} · ${head}${tail}`;
+      }
+      if (!futureBranchState.preview) {
+        previewMeta.textContent = 'forecast: (none)';
+      } else {
+        const p = futureBranchState.preview;
+        previewMeta.textContent = `forecast(h=${p.horizon}): idx ${p.base_index}->${p.projected_index} · phase=${p.phase} · chapter=${p.chapter || '-'} · scene=${p.scene || '-'} · inv=${p.inventory_count} · cp=${p.codepoint || '-'}`;
+      }
+    }
+
+    function previewFutureBranch(horizon = 24) {
+      const h = Math.max(1, Math.min(4096, Number(horizon) || 24));
+      const savedState = cloneState(GameDirector.state);
+      const savedControl = cloneState(controlPlaneState);
+      const savedReplayFlag = isReplaying;
+      try {
+        const baseIdx = Math.max(0, Math.min(GameDirector.state.timeline_index, GameDirector.state.event_log.length));
+        const baseLog = GameDirector.state.event_log.slice(0, baseIdx);
+        const branchLog = futureBranchState.events.map((entry, i) => ({
+          t: baseLog.length + i,
+          type: entry.event.type,
+          source: 'branch_preview',
+          chapter_id: GameDirector.state.current_chapter,
+          scene_id: GameDirector.state.current_scene_id,
+          payload: cloneState(entry.event.payload || {}),
+        }));
+        const combined = baseLog.concat(branchLog);
+        isReplaying = true;
+        GameDirector.state = {
+          ...makeGenesisState(GameDirector.prologueId),
+          event_log: combined,
+          timeline_index: combined.length,
+          play_state: 'paused',
+          play_speed: savedState.play_speed,
+          ui_frame: savedState.ui_frame,
+          ui_subframe: savedState.ui_subframe,
+          ui_plane_tab: savedState.ui_plane_tab,
+          ui_basis: savedState.ui_basis,
+          ui_basis_spec_id: savedState.ui_basis_spec_id,
+        };
+        for (let i = 0; i < combined.length; i += 1) GameDirector.applyEvent(combined[i]);
+        futureBranchState.preview = {
+          horizon: h,
+          base_index: baseIdx,
+          projected_index: combined.length + h,
+          phase: GameDirector.state.current_phase,
+          chapter: GameDirector.state.current_chapter,
+          scene: GameDirector.state.current_scene_id,
+          inventory_count: Array.isArray(GameDirector.state.inventory) ? GameDirector.state.inventory.length : 0,
+          codepoint: controlPlaneState.last_emitted_codepoint || null,
+        };
+      } finally {
+        GameDirector.state = savedState;
+        Object.assign(controlPlaneState, savedControl);
+        isReplaying = savedReplayFlag;
+        GameDirector.render();
+      }
+      setStatus('Future preview computed (forecast only; not canonical).');
+    }
+
+    function injectFutureBranchEvent() {
+      const kind = String(document.getElementById('future-inject-kind')?.value || 'artifact_granted');
+      const value = String(document.getElementById('future-inject-value')?.value || '');
+      try {
+        const built = buildFutureBranchEvent(kind, value);
+        futureBranchState.events.push({
+          id: `fb_${Date.now()}_${Math.random().toString(16).slice(2, 6)}`,
+          kind,
+          label: built.label,
+          event: built.event,
+        });
+        futureBranchState.preview = null;
+        updateFutureBranchUI();
+        setStatus(`Branch event injected: ${built.label}`);
+      } catch (err) {
+        setStatus(`Inject branch failed: ${err?.message || 'invalid input'}`);
+      }
+    }
+
+    function clearFutureBranch() {
+      futureBranchState.events = [];
+      futureBranchState.preview = null;
+      updateFutureBranchUI();
+      setStatus('Future branch cleared.');
+    }
+
+    function lineageIdAt(index) {
+      const idx = Math.max(0, Math.min(Number(index) || 0, GameDirector.state.event_log.length));
+      const prefix = GameDirector.state.event_log.slice(0, idx);
+      return sid(stableStringify(prefix), 'lineage');
+    }
+
+    function buildForkArtifactFromPendingBranch() {
+      const baseIndex = Math.max(0, Math.min(GameDirector.state.timeline_index, GameDirector.state.event_log.length));
+      const parentLineageId = lineageIdAt(baseIndex);
+      const branchEvents = futureBranchState.events.map((entry, i) => ({
+        t: baseIndex + i,
+        type: entry.event.type,
+        source: 'fork_branch',
+        chapter_id: GameDirector.state.current_chapter,
+        scene_id: GameDirector.state.current_scene_id,
+        payload: cloneState(entry.event.payload || {}),
+      }));
+      const body = {
+        type: 'fork_artifact',
+        version: 1,
+        parent_lineage_id: parentLineageId,
+        base_event_index: baseIndex,
+        branch_events: branchEvents,
+        provenance: {
+          source: 'future_branch_ui',
+          created_at: new Date().toISOString(),
+        },
+        frame: {
+          ui_frame: GameDirector.state.ui_frame,
+          plane: GameDirector.state.ui_plane_tab || 'RS',
+          basis: GameDirector.state.ui_basis || controlPlaneState.basis || '10',
+          basis_spec_id: GameDirector.state.ui_basis_spec_id || controlPlaneState.basis_spec_id || 'dec_v1',
+        },
+      };
+      const canonical = stableStringify(body);
+      const artifactId = sid(canonical, 'fork');
+      return {
+        ...body,
+        id: artifactId,
+        fingerprint_algo: 'fnv1a32',
+        fingerprint: sid(canonical, 'fp'),
+      };
+    }
+
+    function materializeFutureFork() {
+      if (!futureBranchState.events.length) return setStatus('No branch events to materialize.');
+      const fork = buildForkArtifactFromPendingBranch();
+      if (!Array.isArray(GameDirector.state.fork_artifacts)) GameDirector.state.fork_artifacts = [];
+      if (!GameDirector.state.fork_artifacts.some((x) => x && x.id === fork.id)) {
+        GameDirector.state.fork_artifacts.push(fork);
+      }
+      const count = futureBranchState.events.length;
+      futureBranchState.events = [];
+      futureBranchState.preview = null;
+      GameDirector.autosave();
+      updateFutureBranchUI();
+      setStatus(`Fork materialized (${fork.id}) from ${count} branch events. Mainline unchanged.`);
+      return fork;
+    }
+
+    function loadForkIntoPendingBranch(forkId) {
+      const all = Array.isArray(GameDirector.state.fork_artifacts) ? GameDirector.state.fork_artifacts : [];
+      const fork = all.find((x) => x && x.id === forkId);
+      if (!fork) throw new Error(`unknown fork id: ${forkId}`);
+      const events = Array.isArray(fork.branch_events) ? fork.branch_events : [];
+      futureBranchState.events = events.map((ev, i) => ({
+        id: `fb_load_${i}_${Date.now()}_${Math.random().toString(16).slice(2, 6)}`,
+        kind: String(ev.type || 'event'),
+        label: `${ev.type}:${i + 1}`,
+        event: {
+          type: String(ev.type),
+          payload: cloneState(ev.payload || {}),
+        },
+      }));
+      futureBranchState.preview = null;
+      updateFutureBranchUI();
+      setStatus(`Fork loaded into pending branch: ${forkId}`);
+      return fork;
     }
 
     async function emitOutboundWebhook(event) {
@@ -4008,6 +4589,37 @@ Enter the Prologue and begin reconciliation.`
       for (const aid of GameDirector.state.inventory) ensureInventoryArtifactInScene(aid);
     }
 
+    function hasEmittedArtifactInScene(emittedId) {
+      return placedRoot.children.some((child) => child.userData?.emittedArtifactId === emittedId);
+    }
+
+    function ensureEmittedArtifactsInScene() {
+      const emitted = Array.isArray(GameDirector.state.emitted_artifacts) ? GameDirector.state.emitted_artifacts : [];
+      const validIds = new Set(emitted.map((x) => String(x.id)));
+      const stale = placedRoot.children.filter((child) => {
+        const eid = child.userData?.emittedArtifactId;
+        return eid && child.userData?.autoSource === 'emitted_artifact' && !validIds.has(String(eid));
+      });
+      for (const child of stale) child.removeFromParent();
+      for (const rec of emitted) {
+        const eid = String(rec.id);
+        if (hasEmittedArtifactInScene(eid)) continue;
+        if (!rec || typeof rec !== 'object' || !rec.artifact || typeof rec.artifact !== 'object') continue;
+        const pos = Array.isArray(rec.position) && rec.position.length === 3 ? rec.position : [0, 0, 0];
+        const point = new THREE.Vector3(Number(pos[0]) || 0, Number(pos[1]) || 0, Number(pos[2]) || 0);
+        const start = placedRoot.children.length;
+        spawnArtifact(rec.artifact, point);
+        const spawned = placedRoot.children[start];
+        if (spawned) {
+          if (Number(rec.scale) > 0 && Number(rec.scale) !== 1) spawned.scale.multiplyScalar(Number(rec.scale));
+          spawned.userData.emittedArtifactId = eid;
+          spawned.userData.autoSource = 'emitted_artifact';
+          spawned.userData.emittedSource = rec.source || 'artifact_emit';
+          if (rec.preset) spawned.userData.cityPreset = rec.preset;
+        }
+      }
+    }
+
     function runtimeArtifactCards() {
       const base = [
         {
@@ -4043,6 +4655,34 @@ Enter the Prologue and begin reconciliation.`
   <circle cx="128" cy="128" r="20" fill="#22496b"/>
 </svg>`,
           },
+        },
+        {
+          id: 'city_block_core',
+          name: 'City Block Core',
+          kind: 'city-kit',
+          meta: 'toolkit/city',
+          payload: { variant: 'block_core', color: 0x7489a3 },
+        },
+        {
+          id: 'city_tower_cluster',
+          name: 'City Tower Cluster',
+          kind: 'city-kit',
+          meta: 'toolkit/city',
+          payload: { variant: 'tower_cluster', color: 0x8a7cae },
+        },
+        {
+          id: 'city_gate_arch',
+          name: 'City Gate Arch',
+          kind: 'city-kit',
+          meta: 'toolkit/city',
+          payload: { variant: 'gate_arch', color: 0x7b8f5a },
+        },
+        {
+          id: 'city_avenue_strip',
+          name: 'City Avenue Strip',
+          kind: 'city-kit',
+          meta: 'toolkit/city',
+          payload: { variant: 'avenue_strip', color: 0x6f8293 },
         },
       ];
 
@@ -4166,6 +4806,89 @@ Enter the Prologue and begin reconciliation.`
       fitAndPlace(mesh, point, item, savedTransform);
     }
 
+    function cityBuildingMesh(width, height, depth, color) {
+      const geo = new THREE.BoxGeometry(width, height, depth);
+      const mat = new THREE.MeshStandardMaterial({
+        color,
+        roughness: 0.6,
+        metalness: 0.08,
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.y = height * 0.5;
+      return mesh;
+    }
+
+    function spawnCityKit(item, point, savedTransform = null) {
+      const group = new THREE.Group();
+      const variant = String(item.payload?.variant || 'block_core');
+      const color = Number(item.payload?.color || 0x7489a3);
+
+      const plaza = new THREE.Mesh(
+        new THREE.BoxGeometry(4.8, 0.15, 4.8),
+        new THREE.MeshStandardMaterial({ color: 0xaab8c7, roughness: 0.82, metalness: 0.02 })
+      );
+      plaza.position.y = 0.075;
+      group.add(plaza);
+
+      if (variant === 'tower_cluster') {
+        const offsets = [
+          [-1.4, -1.4, 1.6], [1.4, -1.25, 2.4], [-1.25, 1.3, 2.0], [1.25, 1.25, 1.8], [0, 0, 3.2],
+        ];
+        for (const [x, z, h] of offsets) {
+          const b = cityBuildingMesh(0.9, h, 0.9, color);
+          b.position.x = x;
+          b.position.z = z;
+          group.add(b);
+        }
+      } else if (variant === 'gate_arch') {
+        const left = cityBuildingMesh(0.9, 2.4, 0.9, color);
+        left.position.x = -1.25;
+        const right = cityBuildingMesh(0.9, 2.4, 0.9, color);
+        right.position.x = 1.25;
+        const top = cityBuildingMesh(3.2, 0.55, 0.9, color);
+        top.position.y = 2.65;
+        const marker = new THREE.Mesh(
+          new THREE.TorusGeometry(0.55, 0.11, 10, 24),
+          new THREE.MeshStandardMaterial({ color: 0xd2b85c, roughness: 0.38, metalness: 0.15 })
+        );
+        marker.rotation.x = Math.PI * 0.5;
+        marker.position.y = 1.45;
+        group.add(left, right, top, marker);
+      } else if (variant === 'avenue_strip') {
+        const road = new THREE.Mesh(
+          new THREE.BoxGeometry(4.4, 0.08, 1.2),
+          new THREE.MeshStandardMaterial({ color: 0x5c6772, roughness: 0.9, metalness: 0.0 })
+        );
+        road.position.y = 0.1;
+        group.add(road);
+        for (let i = -2; i <= 2; i += 1) {
+          if (i === 0) continue;
+          const hA = 1.1 + (Math.abs(i) * 0.45);
+          const hB = 1.3 + (Math.abs(i) * 0.35);
+          const left = cityBuildingMesh(0.58, hA, 0.58, color);
+          left.position.x = i * 0.82;
+          left.position.z = -1.25;
+          const right = cityBuildingMesh(0.58, hB, 0.58, color);
+          right.position.x = i * 0.82;
+          right.position.z = 1.25;
+          group.add(left, right);
+        }
+      } else {
+        const offsets = [
+          [-1.25, -1.15, 1.6], [1.25, -1.15, 1.25], [-1.2, 1.15, 1.2], [1.2, 1.1, 1.8], [0, 0, 2.6],
+        ];
+        for (const [x, z, h] of offsets) {
+          const b = cityBuildingMesh(0.9, h, 0.9, color);
+          b.position.x = x;
+          b.position.z = z;
+          group.add(b);
+        }
+      }
+
+      group.name = item.name;
+      fitAndPlace(group, point, item, savedTransform);
+    }
+
     function spawnGlb(item, point, savedTransform = null) {
       gltfLoader.load(item.payload.url, (gltf) => {
         const root = gltf.scene;
@@ -4188,11 +4911,107 @@ Enter the Prologue and begin reconciliation.`
 
     function spawnArtifact(item, point, savedTransform = null) {
       if (item.kind === 'primitive') return spawnPrimitive(item, point, savedTransform);
+      if (item.kind === 'city-kit') return spawnCityKit(item, point, savedTransform);
       if (item.kind === 'glb-url') return spawnGlb(item, point, savedTransform);
       if (item.kind === 'svg') return spawnSvgText(item.payload.text, item, point, savedTransform);
       if (item.kind === 'file-glb') return spawnGlb({ ...item, payload: { url: item.payload.dataUrl } }, point, savedTransform);
       if (item.kind === 'file-svg') return spawnSvgText(item.payload.text, item, point, savedTransform);
       setStatus(`Unsupported artifact kind: ${item.kind}`);
+    }
+
+    function addRemoteGlbArtifact(url) {
+      const clean = String(url || '').trim();
+      if (!/^https?:\/\//i.test(clean)) {
+        setStatus('GLB URL must start with http:// or https://');
+        return false;
+      }
+      let name = 'Remote GLB';
+      try {
+        const parsed = new URL(clean);
+        const tail = decodeURIComponent(parsed.pathname.split('/').pop() || '').trim();
+        if (tail) name = tail;
+      } catch {
+        // use fallback label
+      }
+      extraArtifacts.unshift({
+        id: `remote_${Date.now()}_${Math.random().toString(16).slice(2, 8)}`,
+        name,
+        kind: 'glb-url',
+        meta: 'remote/glb',
+        payload: { url: clean },
+      });
+      refreshArtifactCards();
+      setStatus('Remote GLB added to Scene Artifacts. Drag it into the scene (URL must allow CORS).');
+      return true;
+    }
+
+    const CITY_PRESETS = {
+      starter_district_v1: {
+        label: 'Starter District',
+        parts: [
+          { id: 'preset_block', name: 'Preset Block Core', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'block_core', color: 0x7489a3 }, offset: [0, 0, 0], scale: 1.25 },
+          { id: 'preset_towers', name: 'Preset Tower Cluster', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'tower_cluster', color: 0x8a7cae }, offset: [5.8, 0, -1.1], scale: 1.15 },
+          { id: 'preset_gate', name: 'Preset Gate Arch', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'gate_arch', color: 0x7b8f5a }, offset: [-5.6, 0, 0.8], scale: 1.05 },
+          { id: 'preset_avenue', name: 'Preset Avenue Strip', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'avenue_strip', color: 0x6f8293 }, offset: [0.2, 0, 5.9], scale: 1.1 },
+        ],
+      },
+      dense_downtown_v1: {
+        label: 'Dense Downtown',
+        parts: [
+          { id: 'dense_towers_a', name: 'Downtown Towers A', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'tower_cluster', color: 0x677a99 }, offset: [0, 0, 0], scale: 1.35 },
+          { id: 'dense_towers_b', name: 'Downtown Towers B', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'tower_cluster', color: 0x6f6ea4 }, offset: [5.8, 0, -0.2], scale: 1.25 },
+          { id: 'dense_towers_c', name: 'Downtown Towers C', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'tower_cluster', color: 0x7c6a91 }, offset: [-5.6, 0, 0.1], scale: 1.2 },
+          { id: 'dense_avenue', name: 'Downtown Avenue', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'avenue_strip', color: 0x5f7388 }, offset: [0, 0, 6.1], scale: 1.2 },
+          { id: 'dense_gate', name: 'Downtown Gate', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'gate_arch', color: 0x6f8463 }, offset: [0.2, 0, -6.3], scale: 1.0 },
+        ],
+      },
+      walled_gate_city_v1: {
+        label: 'Walled Gate City',
+        parts: [
+          { id: 'wall_core', name: 'Walled Core', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'block_core', color: 0x7a8497 }, offset: [0, 0, 0], scale: 1.35 },
+          { id: 'wall_gate_n', name: 'North Gate', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'gate_arch', color: 0x76875f }, offset: [0, 0, -6.2], scale: 0.95 },
+          { id: 'wall_gate_s', name: 'South Gate', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'gate_arch', color: 0x76875f }, offset: [0, 0, 6.2], scale: 0.95 },
+          { id: 'wall_gate_e', name: 'East Gate', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'gate_arch', color: 0x76875f }, offset: [6.2, 0, 0], scale: 0.95 },
+          { id: 'wall_gate_w', name: 'West Gate', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'gate_arch', color: 0x76875f }, offset: [-6.2, 0, 0], scale: 0.95 },
+          { id: 'wall_avenue', name: 'Central Avenue', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'avenue_strip', color: 0x667789 }, offset: [0, 0, 0], scale: 1.0 },
+        ],
+      },
+      lowrise_river_v1: {
+        label: 'Low-Rise River Quarter',
+        parts: [
+          { id: 'river_avenue_a', name: 'River Walk A', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'avenue_strip', color: 0x748aa0 }, offset: [-3.1, 0, 0], scale: 1.05 },
+          { id: 'river_avenue_b', name: 'River Walk B', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'avenue_strip', color: 0x6b8098 }, offset: [3.1, 0, 0], scale: 1.05 },
+          { id: 'river_lowrise_a', name: 'Quarter Block A', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'block_core', color: 0x8f8f86 }, offset: [-6.3, 0, 4.0], scale: 0.95 },
+          { id: 'river_lowrise_b', name: 'Quarter Block B', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'block_core', color: 0x8d867f }, offset: [6.1, 0, -3.8], scale: 0.95 },
+          { id: 'river_gate', name: 'Quarter Gate', kind: 'city-kit', meta: 'preset/city', payload: { variant: 'gate_arch', color: 0x7f9066 }, offset: [0, 0, 6.1], scale: 0.95 },
+        ],
+      },
+    };
+
+    function spawnCityPresetDistrict(origin = new THREE.Vector3(0, 0, 0), presetId = 'starter_district_v1') {
+      const preset = CITY_PRESETS[presetId] || CITY_PRESETS.starter_district_v1;
+      const parts = preset.parts;
+      for (const part of parts) {
+        const item = {
+          id: `${part.id}_${Date.now()}_${Math.random().toString(16).slice(2, 6)}`,
+          name: part.name,
+          kind: part.kind,
+          meta: part.meta,
+          payload: part.payload,
+        };
+        const point = origin.clone().add(new THREE.Vector3(part.offset[0], part.offset[1], part.offset[2]));
+        GameDirector.appendEvent('artifact_emitted', {
+          emitted_id: `em_${item.id}`,
+          artifact: item,
+          position: [point.x, point.y, point.z],
+          scale: part.scale,
+          source: 'city_preset',
+          preset: presetId,
+        }, 'preset');
+      }
+      GameDirector.replayTo(GameDirector.state.event_log.length);
+      GameDirector.autosave();
+      setStatus(`City preset injected as artifact events: ${preset.label}.`);
     }
 
     function addDroppedFile(file) {
@@ -4559,11 +5378,59 @@ Enter the Prologue and begin reconciliation.`
     document.getElementById('btn-slot-3').addEventListener('click', () => GameDirector.loadGame(2));
     document.getElementById('btn-save-current').addEventListener('click', () => GameDirector.saveGame(activeSlot));
     document.getElementById('btn-toggle-toolbox').addEventListener('click', () => triggerMenuAction('toggle_toolbox'));
+    const toggleComplexityMode = () => {
+      uiComplexityMode = uiComplexityMode === 'advanced' ? 'simple' : 'advanced';
+      GameDirector.state.ui_complexity_mode = uiComplexityMode;
+      applyComplexityMode();
+      updateTimelineUI();
+      GameDirector.autosave();
+      setStatus(uiComplexityMode === 'advanced' ? 'Advanced UI enabled.' : 'Simple UI enabled.');
+    };
+    document.getElementById('btn-toggle-complexity-panel').addEventListener('click', toggleComplexityMode);
+    document.getElementById('btn-toggle-complexity-stage').addEventListener('click', toggleComplexityMode);
+    document.getElementById('btn-quick-advanced').addEventListener('click', toggleComplexityMode);
+    document.getElementById('btn-quick-mode').addEventListener('click', () => triggerMenuAction('toggle_mode'));
+    document.getElementById('btn-quick-frame').addEventListener('click', () => triggerMenuAction('cycle_frame'));
+    document.getElementById('btn-quick-city').addEventListener('click', () => {
+      const selectedPreset = String(cityPresetSelect?.value || 'starter_district_v1');
+      spawnCityPresetDistrict(new THREE.Vector3(0, 0, 0), selectedPreset);
+    });
+    document.getElementById('btn-quick-fork').addEventListener('click', () => {
+      if (!futureBranchState.events.length) {
+        const built = buildFutureBranchEvent('artifact_granted', 'sigil_bootstrap');
+        futureBranchState.events.push({
+          id: `fb_${Date.now()}_${Math.random().toString(16).slice(2, 6)}`,
+          kind: 'artifact_granted',
+          label: built.label,
+          event: built.event,
+        });
+        futureBranchState.preview = null;
+        updateFutureBranchUI();
+      }
+      previewFutureBranch(Number(document.getElementById('future-horizon')?.value || 24));
+      materializeFutureFork();
+    });
+    document.getElementById('btn-sem-attention-narrow').addEventListener('click', () => setSemanticAttentionMode('narrow'));
+    document.getElementById('btn-sem-attention-expanded').addEventListener('click', () => setSemanticAttentionMode('expanded'));
+    document.getElementById('btn-sem-more').addEventListener('click', toggleSemanticPanelExpanded);
 
     document.getElementById('btn-reset-camera').addEventListener('click', () => {
-      camera.position.set(7, 6, 9);
-      controls.target.set(0, 1.2, 0);
+      camera.position.set(...CAMERA_DEFAULT.position);
+      controls.target.set(...CAMERA_DEFAULT.target);
       controls.update();
+    });
+    document.getElementById('btn-add-city-url').addEventListener('click', () => {
+      if (addRemoteGlbArtifact(cityGlbUrlInput.value)) cityGlbUrlInput.value = '';
+    });
+    document.getElementById('btn-city-preset').addEventListener('click', () => {
+      const selectedPreset = String(cityPresetSelect?.value || 'starter_district_v1');
+      spawnCityPresetDistrict(new THREE.Vector3(0, 0, 0), selectedPreset);
+    });
+    cityGlbUrlInput.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter') {
+        ev.preventDefault();
+        if (addRemoteGlbArtifact(cityGlbUrlInput.value)) cityGlbUrlInput.value = '';
+      }
     });
     document.getElementById('btn-clear-scene').addEventListener('click', clearSceneObjects);
     document.getElementById('btn-mode-move').addEventListener('click', () => { toolMode = 'translate'; transformControls.setMode(toolMode); });
@@ -4722,6 +5589,14 @@ Enter the Prologue and begin reconciliation.`
       GameDirector.state.play_state = 'rewinding';
       updateTimelineUI();
     });
+    document.getElementById('btn-future-preview').addEventListener('click', () => {
+      const horizon = Number(document.getElementById('future-horizon')?.value || 24);
+      previewFutureBranch(horizon);
+    });
+    document.getElementById('btn-future-inject').addEventListener('click', injectFutureBranchEvent);
+    document.getElementById('btn-future-clear').addEventListener('click', clearFutureBranch);
+    document.getElementById('btn-future-accept').addEventListener('click', materializeFutureFork);
+    document.getElementById('future-inject-kind').addEventListener('change', futureInjectPlaceholder);
     document.getElementById('btn-export-events').addEventListener('click', () => {
       const blob = new Blob([GameDirector.state.event_log.map((e) => JSON.stringify(e)).join('\n') + '\n'], { type: 'application/x-ndjson' });
       const url = URL.createObjectURL(blob);
@@ -4985,8 +5860,36 @@ Enter the Prologue and begin reconciliation.`
     window.grantArtifact = (artifactId) => GameDirector.grantArtifact(artifactId);
     window.jumpToEvent = (index = 0) => GameDirector.replayTo(Number(index) || 0);
     window.exportEventLog = () => GameDirector.state.event_log.slice();
+    window.previewFuture = (horizon = 24) => previewFutureBranch(Number(horizon) || 24);
+    window.injectFuture = (kind = 'artifact_granted', value = '') => {
+      const built = buildFutureBranchEvent(String(kind), String(value));
+      futureBranchState.events.push({
+        id: `fb_${Date.now()}_${Math.random().toString(16).slice(2, 6)}`,
+        kind: String(kind),
+        label: built.label,
+        event: built.event,
+      });
+      futureBranchState.preview = null;
+      updateFutureBranchUI();
+      return cloneState(futureBranchState.events);
+    };
+    window.clearFutureBranch = () => clearFutureBranch();
+    window.acceptFutureBranch = () => materializeFutureFork();
+    window.materializeFutureFork = () => materializeFutureFork();
+    window.listForkArtifacts = () => cloneState(Array.isArray(GameDirector.state.fork_artifacts) ? GameDirector.state.fork_artifacts : []);
+    window.loadForkIntoBranch = (forkId) => loadForkIntoPendingBranch(String(forkId || ''));
     window.exportSemanticGraph = () => GameDirector.state.semantic_graph_artifact
       ? cloneState(GameDirector.state.semantic_graph_artifact) : null;
+    window.materializeSemanticArtifact = (artifact, meta = { source: 'manual_artifact' }) => materializeSemanticArtifactInput(artifact, meta);
+    window.getSemanticCompaction = () => cloneState(semanticCompactionConfig);
+    window.setSemanticCompaction = (partial = {}) => {
+      const next = setSemanticCompactionConfig(partial || {});
+      GameDirector.render();
+      GameDirector.autosave();
+      return cloneState(next);
+    };
+    window.getSemanticAttention = () => semanticAttentionMode;
+    window.setSemanticAttention = (mode = 'narrow') => setSemanticAttentionMode(mode);
     window.registerDocument = (documentId, text, source = 'uploaded') => registerSemanticDocument(documentId, text, source);
     window.listDocuments = () => Array.from(semanticDocuments.values()).map((d) => ({ document_id: d.document_id, source: d.source, paragraph_count: d.paragraph_count }));
     window.analyzeDocument = (request) => analyzeSemanticDocument(request || {});
@@ -5036,6 +5939,8 @@ Enter the Prologue and begin reconciliation.`
     window.setUIFrame = (frame) => setUIFrame(frame);
 
     applySnapSettings();
+    futureInjectPlaceholder();
+    updateFutureBranchUI();
     loadBasisSpecs();
     buildHubGraph();
     buildControlAndCodepointFrames();

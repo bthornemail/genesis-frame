@@ -193,6 +193,8 @@ Normative sentence:
 > An artifact is authoritative only if it is canonicalized, deterministic, replay-reconstructible, and independently verifiable; all other representations are projections.
 
 Formal reduction spec:
+- HTML formal view: `formal_spec.html`
+- Pure algorithms (single-file minimal form): `atomic-kernel/dev-docs/PURE_ALGORITHMS.md`
 - Normative core: `atomic-kernel/dev-docs/ATOMIC_KERNEL_NORMATIVE_CORE_v1_2.md`
 - Proof notes: `atomic-kernel/dev-docs/ATOMIC_KERNEL_PROOF_NOTES_v1_2.md`
 - Combined draft: `atomic-kernel/dev-docs/ATOMIC_KERNEL_REDUCTION_SPEC_v1_2.md`

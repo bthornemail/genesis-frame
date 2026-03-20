@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atomic Kernel — Formal Specification</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --ink:     #0f0e0c;
+    --dim:     #5a5750;
+    --faint:   #b8b5ae;
+    --rule:    #d4d0c8;
+    --bg:      #f7f4ef;
+    --bg2:     #efece5;
+    --accent:  #1a1a18;
+    --red:     #8b1c14;
+    --mono-bg: #e8e4dc;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; background: var(--bg); color: var(--ink); }
+
+  body {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1.05rem;
+    line-height: 1.72;
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 4rem 2rem 8rem;
+  }
+
+  /* ── Header ─────────────────────────────── */
+  header {
+    border-top: 3px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding: 2.4rem 0 1.8rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .doc-class {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 0.9rem;
+  }
+
+  h1 {
+    font-size: 1.85rem;
+    font-weight: 500;
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.1rem;
+  }
+
+  .meta-table {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.15rem 1.4rem;
+    font-size: 0.82rem;
+    color: var(--dim);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 1.2rem;
+  }
+  .meta-table .k { color: var(--faint); }
+  .meta-table .v { color: var(--dim); }
+
+  /* ── Sections ────────────────────────────── */
+  section { margin-bottom: 3.8rem; }
+
+  h2 {
+    font-size: 0.72rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--dim);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.45rem;
+    margin-bottom: 2rem;
+    margin-top: 3.5rem;
+  }
+
+  h3 {
+    font-size: 1.08rem;
+    font-weight: 600;
+    font-style: italic;
+    margin: 2.2rem 0 0.7rem;
+    color: var(--accent);
+  }
+
+  p { margin-bottom: 0.9rem; }
+  p + p { text-indent: 1.5em; }
+
+  /* ── Math display ────────────────────────── */
+  .math-block {
+    background: var(--mono-bg);
+    border-left: 2.5px solid var(--ink);
+    padding: 1.1rem 1.4rem;
+    margin: 1.4rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 300;
+    line-height: 1.8;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .math-block .kw  { color: var(--dim); font-weight: 400; }
+  .math-block .op  { color: #444; }
+  .math-block .lit { color: var(--red); font-weight: 500; }
+  .math-block .cmt { color: var(--faint); font-style: italic; font-weight: 300; }
+  .math-block .def { font-weight: 500; color: var(--accent); }
+
+  /* ── Algorithm boxes ─────────────────────── */
+  .algo {
+    border: 1px solid var(--rule);
+    background: var(--bg2);
+    margin: 1.8rem 0;
+  }
+
+  .algo-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.55rem 1.1rem;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bg);
+  }
+
+  .algo-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--faint);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+
+  .algo-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .algo-sig {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--faint);
+    font-weight: 300;
+  }
+
+  .algo pre {
+    padding: 0.9rem 1.1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.79rem;
+    font-weight: 300;
+    line-height: 1.75;
+    overflow-x: auto;
+    white-space: pre;
+    color: var(--ink);
+  }
+
+  /* ── Invariant list ──────────────────────── */
+  .inv-list {
+    list-style: none;
+    margin: 1.2rem 0;
+  }
+
+  .inv-list li {
+    display: grid;
+    grid-template-columns: 2.2rem 1fr;
+    gap: 0 0.6rem;
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.9rem;
+  }
+
+  .inv-list li:last-child { border-bottom: none; }
+
+  .inv-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--faint);
+    padding-top: 0.1rem;
+    font-weight: 400;
+  }
+
+  .inv-body {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.79rem;
+    font-weight: 300;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+
+  /* ── Golden table ────────────────────────── */
+  .golden {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    font-weight: 300;
+    margin: 1.4rem 0;
+  }
+  .golden th {
+    text-align: left;
+    font-weight: 400;
+    color: var(--dim);
+    border-bottom: 1.5px solid var(--ink);
+    padding: 0.3rem 0.7rem 0.3rem 0;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+  }
+  .golden td {
+    padding: 0.25rem 0.7rem 0.25rem 0;
+    color: var(--dim);
+    border-bottom: 1px solid var(--rule);
+  }
+  .golden tr:last-child td { border-bottom: none; }
+  .golden td:first-child, .golden th:first-child { color: var(--faint); }
+  .golden .hl { color: var(--red); font-weight: 500; }
+
+  /* ── Fano diagram ────────────────────────── */
+  .fano-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    font-weight: 300;
+    margin: 1.4rem 0;
+  }
+  .fano-table th {
+    font-weight: 400;
+    color: var(--dim);
+    border-bottom: 1.5px solid var(--ink);
+    padding: 0.3rem 0.6rem 0.3rem 0;
+    text-align: left;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+  }
+  .fano-table td {
+    padding: 0.22rem 0.6rem 0.22rem 0;
+    color: var(--dim);
+    border-bottom: 1px solid var(--rule);
+  }
+  .fano-table tr:last-child td { border-bottom: none; }
+  .pt0 { color: #7a3b1e; }
+  .pt1 { color: #1e4d7a; }
+  .pt2 { color: #2a6b3e; }
+  .pt3 { color: #6b2a6b; }
+  .pt4 { color: #5a5020; }
+  .pt5 { color: #1a5a5a; }
+  .pt6 { color: var(--faint); }
+
+  /* ── Inline code ─────────────────────────── */
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.83em;
+    font-weight: 400;
+    background: var(--mono-bg);
+    padding: 0.05em 0.3em;
+    border-radius: 2px;
+    color: var(--accent);
+  }
+
+  /* ── Composition matrix ──────────────────── */
+  .composition {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    gap: 0.1rem 0;
+    margin: 1.6rem 0;
+  }
+  .comp-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--faint);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--rule);
+    align-self: start;
+  }
+  .comp-body {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.79rem;
+    font-weight: 300;
+    color: var(--dim);
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--rule);
+    line-height: 1.6;
+  }
+
+  /* ── Footer ──────────────────────────────── */
+  footer {
+    margin-top: 5rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--faint);
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="doc-class">Formal Specification · Pure Algorithmic Form</div>
+  <h1>Atomic Kernel<br><em style="font-weight:400;font-size:0.88em;color:var(--dim)">Seven Core Laws, Eleven Decomposed Procedures</em></h1>
+  <div class="meta-table">
+    <span class="k">authority</span><span class="v">algorithms define invariants; frozen artifacts are verification witnesses</span>
+    <span class="k">version</span><span class="v">1.1 · 2026</span>
+    <span class="k">rule</span><span class="v">no claim admitted unless it reduces to a computable function and frozen artifact</span>
+    <span class="k">status</span><span class="v">verified against current frozen suite: tests/test_all.py (113/113)</span>
+  </div>
+</header>
+
+<!-- ─────────────────────────────────────────────────────── -->
+<section>
+<h2>§0 — Reduction Principle</h2>
+
+<p>The system is defined by a single test: <em>what structure can be removed while the same canonical unfold, replay, and projection still results?</em> A structure is foundational if and only if removing it changes canonical output. Everything else is either derived from the foundation or projected from it.</p>
+
+<p>The normative surface is seven core laws. The eleven algorithms below are the executable decomposition of those laws. They are presented without motivation because motivation is not part of the specification. They are verified against frozen artifacts. Any interpretation of what they "mean" is advisory; the algorithms are normative.</p>
+</section>
+
+<!-- ─────────────────────────────────────────────────────── -->
+<section>
+<h2>§0.1 — Core Law Map</h2>
+
+<table class="golden" style="margin-top:1rem">
+  <thead><tr><th>core law</th><th>decomposed procedures</th></tr></thead>
+  <tbody>
+    <tr><td>kernel transition law</td><td>A1, A2</td></tr>
+    <tr><td>mixed-radix law</td><td>A3, A4</td></tr>
+    <tr><td>basis projection law</td><td>A5, A6</td></tr>
+    <tr><td>incidence coordination law</td><td>A7, A8</td></tr>
+    <tr><td>structural plane law</td><td>A9, A10</td></tr>
+    <tr><td>carrier verification law</td><td>A11</td></tr>
+    <tr><td>reduction composition law</td><td>§8 composition constraints</td></tr>
+  </tbody>
+</table>
+</section>
+
+<!-- ─────────────────────────────────────────────────────── -->
+<section>
+<h2>§1 — State Space and Transition</h2>
+
+<div class="math-block"><span class="cmt">-- state space</span>
+𝕊ₙ  = { x ∈ ℤ  |  0 ≤ x &lt; 2ⁿ }
+maskₙ   = 2ⁿ − 1
+
+<span class="cmt">-- rotation operators on 𝕊ₙ</span>
+rotl(x, k, n)  =  ((x &lt;&lt; k) | (x &gt;&gt; (n−k)))  &amp;  maskₙ
+rotr(x, k, n)  =  ((x &gt;&gt; k) | (x &lt;&lt; (n−k)))  &amp;  maskₙ
+
+<span class="cmt">-- constant: 0x1D repeated for each byte of width n</span>
+Cₙ  =  ⊕ᵢ₌₀ⁿ⁻¹  0x1D &lt;&lt; (8i)
+    <span class="cmt">-- n=16:  0x1D1D     n=32:  0x1D1D1D1D</span>
+    <span class="cmt">-- n=64:  0x1D1D1D1D1D1D1D1D</span></div>
+
+<div class="algo">
+  <div class="algo-head">
+    <span class="algo-id">A1</span>
+    <span class="algo-name">delta</span>
+    <span class="algo-sig">𝕊ₙ × Cₙ × ℕ⁺ → 𝕊ₙ</span>
+  </div>
+  <pre>delta(x, C, n):
+  return (rotl(x,1,n)  XOR
+          rotl(x,3,n)  XOR
+          rotr(x,2,n)  XOR
+          C           )  AND  maskₙ</pre>
+</div>
+
+<div class="algo">
+  <div class="algo-head">
+    <span class="algo-id">A2</span>
+    <span class="algo-name">replay</span>
+    <span class="algo-sig">𝕊ₙ × ℕ × Cₙ × ℕ⁺ → 𝕊ₙ*</span>
+  </div>
+  <pre>replay(x₀, steps, C, n):
+  x      := x₀ AND maskₙ
+  result := []
+  repeat steps times:
+    result.append(x)
+    x := delta(x, C, n)
+  return result</pre>
+</div>
+
+<h3>Golden sequence</h3>
+<p>Observed period of A1 on 𝕊₁₆ from seed <code>0x0001</code> with <code>C₁₆ = 0x1D1D</code>:</p>
+
+<table class="golden">
+  <thead><tr><th>t</th><th>xₜ</th><th>E₁ = xₜ mod 7</th><th>E₉ = xₜ mod 37</th></tr></thead>
+  <tbody>
+    <tr><td>0</td><td class="hl">0x0001</td><td>1</td><td>1</td></tr>
+    <tr><td>1</td><td>0x5D17</td><td>3</td><td>3</td></tr>
+    <tr><td>2</td><td>0x98CC</td><td>0</td><td>7</td></tr>
+    <tr><td>3</td><td>0xCCD3</td><td>5</td><td>6</td></tr>
+    <tr><td>4</td><td>0x1110</td><td>0</td><td>2</td></tr>
+    <tr><td>5</td><td>0xB3F9</td><td>6</td><td>8</td></tr>
+    <tr><td>6</td><td>0x89DD</td><td>6</td><td>32</td></tr>
+    <tr><td>7</td><td class="hl">0x223D</td><td>1</td><td>33</td></tr>
+  </tbody>
+</table>
+
+<p>Frozen in <code>tests/golden_parity.json</code> (widths 16, 32, 64, 128, 256). Proven in <code>AtomicKernelCoq.v</code>: <code>delta_deterministic</code>, <code>replay_deterministic</code>, <code>replay_len</code>.</p>
+
+<h3>Derived witnesses (non-normative)</h3>
+<div class="math-block"><span class="cmt">-- these are computed, not chosen</span>
+period(delta₁₆, 0x0001)          = 8
+argmin_p { p prime, ord_p(10) = 8 }  = 73
+digits(1/73)                      = [0, 1, 3, 6, 9, 8, 6, 3]  =: B
+W  :=  Σ B  =  36
+orbit(pos), offset(pos)  :=  divmod(pos, W)</div>
+
+<p>73 is a witness. It is frozen in <code>tests/admitted_invariants.json</code>. It is not a parameter to any algorithm.</p>
+</section>
+
+<!-- ─────────────────────────────────────────────────────── -->
+<section>
+<h2>§2 — Mixed-Radix Coordinate Law</h2>
+
+<div class="algo">
+  <div class="algo-head">
+    <span class="algo-id">A3</span>
+    <span class="algo-name">mixed_encode</span>
+    <span class="algo-sig">ℤ≥₀ × R* → ℤ≥₀*</span>
+  </div>
+  <pre>mixed_encode(v, R):            -- R = [r₀, r₁, …, rₖ₋₁], each rᵢ ≥ 2
+  coords := []
+  for r in R:
+    coords.append(v mod r)
+    v := floor(v / r)
+  coords.append(v)             -- most-significant remainder
+  return coords                -- |coords| = |R| + 1</pre>
+</div>
+
+<div class="algo">
+  <div class="algo-head">
+    <span class="algo-id">A4</span>
+    <span class="algo-name">mixed_decode</span>
+    <span class="algo-sig">ℤ≥₀* × R* → ℤ≥₀</span>
+  </div>
+  <pre>mixed_decode(coords, R):
+  v := coords[|R|]             -- start from most-significant
+  for i from |R|−1 down to 0:
+    v := coords[i] + R[i] × v
+  return v</pre>
+</div>
+
+<div class="math-block"><span class="cmt">-- Theorem 4 (Reversibility)</span>
+∀ v ≥ 0,  ∀ R with each rᵢ ≥ 2:
+  mixed_decode( mixed_encode(v, R), R )  =  v</div>
+
+<h3>Canonical instances</h3>
+<div class="math-block"><span class="cmt">-- orbit / offset  (crystal timing axis)</span>
+R = [W]  =  [36]
+  encode(pos, [36])  →  [offset, orbit]
+  where  orbit  = pos div 36
+         offset = pos mod 36
+
+<span class="cmt">-- channel / lane  (control-plane address)</span>
+R = [16]
+  encode(addr, [16])  →  [lane, channel]
+
+<span class="cmt">-- Unicode codepoint  (plane / offset decomposition)</span>
+R = [65536]
+  encode(cp, [65536])  →  [offset, plane]
+  where  plane  = cp div 65536    ∈ [0..16]
+         offset = cp mod 65536    ∈ [0..65535]
+  decode([offset, plane], [65536])  =  plane × 65536 + offset  =  cp</div>
+
+<p>These three instances are the same algorithm with different radices. Unicode plane decomposition is not a special case; it is <em>an</em> case.</p>
+</section>
+
+<!-- ─────────────────────────────────────────────────────── -->
+<section>
+<h2>§3 — Basis Projection</h2>
+
+<div class="algo">
+  <div class="algo-head">
+    <span class="algo-id">A5</span>
+    <span class="algo-name">project_value</span>
+    <span class="algo-sig">ℤ≥₀ × plane × basis_spec → repr</span>
+  </div>
+  <pre>project_value(v, p, b):
+  b.kind = "2"         →  ("2",          v)
+  b.kind = "8"         →  ("8",          v)
+  b.kind = "10"        →  ("10",         v)
+  b.kind = "16"        →  ("16",         v)
+  b.kind = "36"        →  ("36",         v)
+  b.kind = "codepoint" →  ("codepoint", [v mod 65536,  v div 65536])
+  b.kind = "mixed"     →  ("mixed",      mixed_encode(v, b.radices))</pre>
+</div>
+
+<div class="algo">
+  <div class="algo-head">
+    <span class="algo-id">A6</span>
+    <span class="algo-name">interpret_value</span>
+    <span class="algo-sig">repr × plane × basis_spec → ℤ≥₀</span>
+  </div>
+  <pre>interpret_value(repr, p, b):
+  ("2",          v)      →  v
+  ("8",          v)      →  v
+  ("10",         v)      →  v
+  ("16",         v)      →  v
+  ("36",         v)      →  v
+  ("codepoint", [o, pl]) →  pl × 65536 + o
+  ("mixed",      coords) →  mixed_decode(coords, b.radices)</pre>
+</div>
+
+<div class="math-block"><span class="cmt">-- Theorem 5 (Projection Law)</span>
+∀ v ≥ 0,  ∀ valid (p, b):
+  interpret_value( project_value(v, p, b), p, b )  =  v</pre></div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────── -->
+<section>
+<h2>§4 — Incidence Schedule</h2>
+
+<p>The seven structural token types form the points of the Fano plane PG(2,2): 7 points, 7 lines, 3 points per line, 3 lines per point. The seven lines define a deterministic 7-periodic schedule over ticks.</p>
+
+<table class="fano-table">
+  <thead><tr><th>t mod 7</th><th>line</th><th>token types active</th></tr></thead>
+  <tbody>
+    <tr><td>0</td><td>(<span class="pt0">0</span>,<span class="pt1">1</span>,<span class="pt3">3</span>)</td><td><span class="pt0">FS-boundary</span> · <span class="pt1">GS-boundary</span> · <span class="pt3">US-boundary</span></td></tr>
+    <tr><td>1</td><td>(<span class="pt0">0</span>,<span class="pt2">2</span>,<span class="pt5">5</span>)</td><td><span class="pt0">FS-boundary</span> · <span class="pt2">RS-boundary</span> · <span class="pt5">EXTD-gateway</span></td></tr>
+    <tr><td>2</td><td>(<span class="pt0">0</span>,<span class="pt4">4</span>,<span class="pt6">6</span>)</td><td><span class="pt0">FS-boundary</span> · <span class="pt4">NUMSYS-context</span> · <span class="pt6">payload-data</span></td></tr>
+    <tr><td>3</td><td>(<span class="pt1">1</span>,<span class="pt2">2</span>,<span class="pt4">4</span>)</td><td><span class="pt1">GS-boundary</span> · <span class="pt2">RS-boundary</span> · <span class="pt4">NUMSYS-context</span></td></tr>
+    <tr><td>4</td><td>(<span class="pt1">1</span>,<span class="pt5">5</span>,<span class="pt6">6</span>)</td><td><span class="pt1">GS-boundary</span> · <span class="pt5">EXTD-gateway</span> · <span class="pt6">payload-data</span></td></tr>
+    <tr><td>5</td><td>(<span class="pt2">2</span>,<span class="pt3">3</span>,<span class="pt6">6</span>)</td><td><span class="pt2">RS-boundary</span> · <span class="pt3">US-boundary</span> · <span class="pt6">payload-data</span></td></tr>
+    <tr><td>6</td><td>(<span class="pt3">3</span>,<span class="pt4">4</span>,<span class="pt5">5</span>)</td><td><span class="pt3">US-boundary</span> · <span class="pt4">NUMSYS-context</span> · <span class="pt5">EXTD-gateway</span></td></tr>
+  </tbody>
+</table>
+
+<div class="algo">
+  <div class="algo-head">
+    <span class="algo-id">A7</span>
+    <span class="algo-name">fano_triplet</span>
+    <span class="algo-sig">ℤ → {0..6}³</span>
+  </div>
+  <pre>fano_triplet(tick):
+  return FANO_LINES[ tick mod 7 ]</pre>
+</div>
+
+<div class="algo">
+  <div class="algo-head">
+    <span class="algo-id">A8</span>
+    <span class="algo-name">frame_at_tick</span>
+    <span class="algo-sig">ℤ × basis_spec × plane → frame</span>
+  </div>
+  <pre>frame_at_tick(tick, basis_spec, plane):
+  return {
+    tick:       tick,
+    plane:      plane,
+    basis_spec: basis_spec,
+    triplet:    fano_triplet(tick),
+  }</pre>
+</div>
+
+<div class="math-block"><span class="cmt">-- Invariant I5</span>
+fano_triplet(t + 7)  =  fano_triplet(t)   ∀ t</div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────── -->
+<section>
+<h2>§5 — Projection Collapse</h2>
+
+<p>Each entity carries a canonical byte stream. That stream is projected through four structural planes. The collapse condition is a structural property of the stream's content, not an assigned label.</p>
+
+<div class="algo">
+  <div class="algo-head">
+    <span class="algo-id">A9</span>
+    <span class="algo-name">projection_vector</span>
+    <span class="algo-sig">bytes × frame → bytes⁴</span>
+  </div>
+  <pre>project_entity(stream, plane, frame):
+  -- abstract structural projection
+  -- returns content selected by structural markers of `plane`
+  -- selection rule is supplied by the active encoding profile
+  return plane_profile_select(stream, plane, frame)
+
+projection_vector(stream, frame):
+  return [
+    project_entity(stream, FS, frame),
+    project_entity(stream, GS, frame),
+    project_entity(stream, RS, frame),
+    project_entity(stream, US, frame),
+  ]</pre>
+</div>
+
+<div class="algo">
+  <div class="algo-head">
+    <span class="algo-id">A10</span>
+    <span class="algo-name">is_collapsed · continuation_surface · step_projection</span>
+    <span class="algo-sig">bytes⁴ → bool / bytes*</span>
+  </div>
+  <pre>is_collapsed(V):
+  return  V[0] = V[1] = V[2] = V[3]
+
+continuation_surface(V):
+  seen := []
+  for x in V:
+    if x ∉ seen:  seen.append(x)
+  return seen                        -- deduplicated, order-preserving
+
+step_projection(stream, tick, basis_spec):
+  f := frame_at_tick(tick, basis_spec, RS)
+  V := projection_vector(stream, f)
+  if is_collapsed(V):
+    return ("collapsed",  V[0])
+  else:
+    return ("divergent",  continuation_surface(V))</pre>
+</div>
+
+<div class="math-block"><span class="cmt">-- example: pure payload (no structural markers)</span>
+stream  = [0x42, 0x43, 0x44]          <span class="cmt">-- FLAG=0 bytes only</span>
+V       = [b'BCD', b'BCD', b'BCD', b'BCD']
+is_collapsed(V)  =  true
+
+<span class="cmt">-- example: structured stream (GS and US markers)</span>
+stream  = [0xA0, 0x42, 0x43, 0xA0, 0xE0, 0x44, 0xE0]
+V       = [b'', b'BC', b'', b'D']
+is_collapsed(V)  =  false
+continuation_surface(V)  =  [b'', b'BC', b'D']   -- |surface| = 3</div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────── -->
+<section>
+<h2>§5.1 — Reference Encoding Profile (Current Version)</h2>
+
+<p>The following byte mapping is the current reference profile for structural selection. It is a profile, not the abstract law itself.</p>
+
+<div class="math-block">PLANE_OPEN := {
+  FS: 0x80,
+  GS: 0xA0,
+  RS: 0xC0,
+  US: 0xE0
+}
+
+plane_profile_select(stream, plane, frame):
+  boundary := PLANE_OPEN[plane]
+  inside   := false
+  content  := []
+  for b in stream:
+    is_ctrl := (b AND 0x80) ≠ 0
+    is_bdry := is_ctrl AND (b AND 0xE0) = (boundary AND 0xE0) AND (b AND 0x01) = 0
+    if is_bdry: inside := NOT inside
+    elif NOT is_ctrl AND inside: content.append(b)
+  return bytes(content)</div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────── -->
+<section>
+<h2>§6 — Carrier Verification</h2>
+
+<div class="algo">
+  <div class="algo-head">
+    <span class="algo-id">A11</span>
+    <span class="algo-name">verify_package · apply_package</span>
+    <span class="algo-sig">pkg → bool</span>
+  </div>
+  <pre>pkg := {
+  type:             "artifact_package",
+  version:          1,
+  artifact_kind:    string,
+  payload_bytes:    bytes,
+  fingerprint_algo: "sha256",
+  fingerprint:      "sha256:" || hex(sha256(payload_bytes)),
+}
+
+verify_package(pkg):
+  computed := "sha256:" || hex( sha256(pkg.payload_bytes) )
+  return computed = pkg.fingerprint
+
+apply_package(pkg):
+  if NOT verify_package(pkg):  reject
+  parse payload
+  validate kind and schema
+  apply</pre>
+</div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────── -->
+<section>
+<h2>§7 — Pure Invariants</h2>
+
+<ul class="inv-list">
+  <li><span class="inv-id">I1</span><span class="inv-body">delta(x, C, n) = delta(x, C, n)  &nbsp;∀ x, C, n</span></li>
+  <li><span class="inv-id">I2</span><span class="inv-body">replay(x₀, s, C, n) = replay(x₀, s, C, n)  &nbsp;∀ x₀, s, C, n</span></li>
+  <li><span class="inv-id">I3</span><span class="inv-body">mixed_decode( mixed_encode(v, R), R ) = v  &nbsp;∀ v ≥ 0, valid R</span></li>
+  <li><span class="inv-id">I4</span><span class="inv-body">interpret_value( project_value(v, p, b), p, b ) = v  &nbsp;∀ valid (v, p, b)</span></li>
+  <li><span class="inv-id">I5</span><span class="inv-body">fano_triplet(t + 7) = fano_triplet(t)  &nbsp;∀ t</span></li>
+  <li><span class="inv-id">I6</span><span class="inv-body">projection_vector is deterministic given (stream, frame)</span></li>
+  <li><span class="inv-id">I7</span><span class="inv-body">continuation_surface is deterministic given V</span></li>
+  <li><span class="inv-id">I8</span><span class="inv-body">¬ verify_package(pkg) ⟹ apply does not execute</span></li>
+</ul>
+</section>
+
+<!-- ─────────────────────────────────────────────────────── -->
+<section>
+<h2>§8 — Composition</h2>
+
+<div class="composition">
+  <div class="comp-id">state</div>
+  <div class="comp-body">x(t+1)  =  delta( x(t), Cₙ, n )</div>
+
+  <div class="comp-id">frame</div>
+  <div class="comp-body">f(t)  =  frame_at_tick( t, basis_spec, plane )</div>
+
+  <div class="comp-id">project</div>
+  <div class="comp-body">repr  =  project_value( v, p, b )
+v  =  interpret_value( repr, p, b )</div>
+
+  <div class="comp-id">collapse</div>
+  <div class="comp-body">V  =  projection_vector( stream, f(t) )
+output  =  ("collapsed", V[0])        if  is_collapsed(V)
+         | ("divergent",  surface(V))  otherwise</div>
+
+  <div class="comp-id">verify</div>
+  <div class="comp-body">shared_payload_valid  =  verify_package( pkg )</div>
+</div>
+</section>
+
+<!-- ─────────────────────────────────────────────────────── -->
+<section>
+<h2>§9 — Reduction</h2>
+
+<table class="golden" style="margin-top:1rem">
+  <thead><tr><th>component</th><th>removable</th><th>reason</th></tr></thead>
+  <tbody>
+    <tr><td>A1 delta</td><td>no</td><td>replay changes</td></tr>
+    <tr><td>A3/A4 mixed radix</td><td>no</td><td>coordinate recovery fails</td></tr>
+    <tr><td>A5/A6 projection</td><td>no</td><td>reversibility fails</td></tr>
+    <tr><td>A7 fano_triplet</td><td>replaceable in principle</td><td>canonical incidence scheduler for this version</td></tr>
+    <tr><td>A9/A10 plane projection</td><td>no (for multi-plane)</td><td>FS/GS/RS/US become indistinguishable</td></tr>
+    <tr><td>A11 verify</td><td>no (for sharing)</td><td>carrier integrity fails</td></tr>
+    <tr><td>73, B, W</td><td>yes (witnesses)</td><td>derived from A1; frozen in artifacts</td></tr>
+    <tr><td>PNG / Aztec format</td><td>yes (projection)</td><td>any lossless carrier works</td></tr>
+  </tbody>
+</table>
+</section>
+
+<!-- ─────────────────────────────────────────────────────── -->
+<section>
+<h2>§10 — Artifacts</h2>
+
+<div class="math-block"><span class="cmt">-- canonical artifacts (authoritative)</span>
+tests/golden_parity.json        <span class="cmt">-- A1/A2: 5 widths × 8 states</span>
+tests/admitted_invariants.json  <span class="cmt">-- E1, E9, E2, 73-derivation; sha3_256-hashed</span>
+docs/AtomicKernelCoq.v          <span class="cmt">-- Coq proof: delta_deterministic, replay_len</span>
+
+<span class="cmt">-- one-line verification</span>
+python3 tests/test_all.py        <span class="cmt">-- expected: current frozen suite passes (113/113)</span>
+python3 -c "from kernel import delta; print(hex(delta(16,1)))"
+                                 <span class="cmt">-- expected: 0x5d17</span></div>
+
+<p>The algorithms define invariants. Frozen artifacts are the accepted verification witnesses for this version. This document is a projection of those witnesses, not an authority over them.</p>
+</section>
+
+<footer>
+  <span>Atomic Kernel · Formal Specification v1.1</span>
+  <span>Authority: algorithms + frozen witnesses (current suite)</span>
+</footer>
+
+</body>
+</html>
