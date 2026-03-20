@@ -10,6 +10,8 @@
     "verify:artifact-package-fixtures": "python3 tools/build_artifact_package_fixture.py --verify && node tools/build_artifact_package_png_fixture.mjs --verify",
     "build:wordnet": "python3 tools/build_wordnet_5wn_index.py --write",
     "verify:wordnet": "python3 tools/build_wordnet_5wn_index.py --verify",
+    "build:imports-manifest": "python3 tools/build_import_asset_manifest.py --write",
+    "verify:imports-manifest": "python3 tools/build_import_asset_manifest.py --verify",
     "build:nlp-bundle": "browserify nlp/wn_bridge.js -o nlp/bundle.js",
     "build:nlp": "npm run build:wordnet && npm run build:nlp-bundle"
   },

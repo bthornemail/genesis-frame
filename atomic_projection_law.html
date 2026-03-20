@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Atomic Projection Law</title>
+  <style>
+    :root { --bg:#f6f8fb; --ink:#0f172a; --muted:#475569; --rule:#cbd5e1; --mono:#0b1320; --card:#ffffff; }
+    body { margin:0; font:16px/1.55 ui-serif, Georgia, serif; color:var(--ink); background:var(--bg); }
+    main { max-width:900px; margin:0 auto; padding:40px 24px 64px; }
+    h1 { margin:0 0 8px; font-size:2rem; }
+    h2 { margin:28px 0 10px; font-size:1.1rem; border-bottom:1px solid var(--rule); padding-bottom:6px; }
+    p { margin:10px 0; }
+    .meta { color:var(--muted); font-size:.95rem; margin-bottom:20px; }
+    .card { background:var(--card); border:1px solid var(--rule); border-radius:12px; padding:16px; margin:14px 0; }
+    pre { margin:0; overflow:auto; background:var(--mono); color:#e2e8f0; border-radius:10px; padding:14px; font:13px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>The Atomic Projection Law</h1>
+    <div class="meta">Formal Draft · Algorithm-first authority · All representations are projections.</div>
+
+    <h2>Abstract</h2>
+    <p>The system is reduced by quotient analysis: remove any structure that can be removed while preserving canonical unfold, replay, and projection. The irreducible law is the deterministic delta transformation over bounded state.</p>
+
+    <h2>Minimal Kernel Law</h2>
+    <div class="card">
+      <pre>delta(x) = rotl(x,1) XOR rotl(x,3) XOR rotr(x,2) XOR C
+mask = (2^n - 1)
+x(t+1) = delta(x(t)) &amp; mask</pre>
+    </div>
+    <p>Deterministic replay, finite closure, and frame-stable transition semantics follow from this law.</p>
+
+    <h2>Derived Structure</h2>
+    <div class="card">
+      <pre>period (16-bit empirical) = 8
+1 / 73 = 0.(01369863)
+B = [0,1,3,6,9,8,6,3]
+W = sum(B) = 36
+(orbit, offset) = divmod(t, W)</pre>
+    </div>
+
+    <h2>Projection Law</h2>
+    <p>Everything above kernel state is projection: narrative, semantic graph, visualization chain, avatars, and transport packaging. Canonical truth is invariant state plus verified replay inputs.</p>
+    <div class="card">
+      <pre>entity = invariant
+avatar = projection(entity, mode)
+render  = project(state, frame, basis, view)</pre>
+    </div>
+
+    <h2>Final Statement</h2>
+    <p><strong>If two systems share the same delta law and replay inputs, they produce the same canonical unfold regardless of representation.</strong></p>
+
+    <p>Full markdown source: <code>atomic-kernel/dev-docs/ATOMIC_PROJECTION_LAW.md</code></p>
+  </main>
+</body>
+</html>

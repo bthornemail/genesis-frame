@@ -14,6 +14,51 @@ This repository is a framed distribution built from my `atomic-kernel` work and 
 - a narrative chapter system compiled from markdown into NDJSON
 - local save slots, editor mode, and story mode in one page
 
+## Start Here
+
+If you want the fastest path into the system:
+
+1. Run the full validation suite:
+
+```bash
+python3 atomic-kernel/tests/test_all.py
+```
+
+Current frozen lane: `113/113 passed`.
+
+2. Open the world runtime:
+
+```bash
+cd atomic-kernel
+python3 -m http.server 8000
+```
+
+Then visit `http://localhost:8000/world.html`.
+
+3. Use the attention-first global strip:
+
+* `Mode` (story/editor)
+* `Frame` (world/control/codepoint/aztec/semantic/replay)
+* `Attention` (narrow/expand)
+* `More/Less` for deeper controls
+
+Default UI reference screenshot:
+
+* `docs/screenshots/default-ui-v1.1.png`
+* `docs/screenshots/ui-strict-startup-v2.png`
+* `CHANGELOG.md` for v1.1 publication notes
+
+Core law references:
+
+* `atomic-kernel/dev-docs/ATOMIC_PROJECTION_LAW.md`
+* `atomic-kernel/dev-docs/WITNESS_PLANE_SPEC.md`
+* `atomic-kernel/docs/UI_ATTENTION_LAW.md`
+* `formal_spec.html`
+
+Witness hook map:
+
+* `atomic-kernel/narrative_data/witness_article_hooks.json`
+
 ## Decentralized Collaboration Bridge
 
 The bridge this repository provides is:
@@ -23,6 +68,53 @@ The bridge this repository provides is:
 - independent replay verification,
 - shareable projection/artifact packages,
 - interoperability at any shared deterministic timeline index.
+
+---
+
+## Witness Plane (Advisory, Non-Projecting)
+
+Genesis Frame includes a formal Witness Plane boundary:
+
+- reads canonical snapshots,
+- compares current vs candidate-next state,
+- emits receipts/warnings/proposals,
+- queues transitions for frame-boundary acceptance.
+
+It does **not** author canonical state directly.
+
+Law:
+
+> Projection renders. Witness inspects. Law commits.
+
+---
+
+## UI Reduction Law (Normative)
+
+The primary interaction surface SHALL expose exactly four control groups:
+
+1. `Mode`
+2. `Frame`
+3. `Attention` (`Narrow` / `Expand`)
+4. `Depth` (`More` / `Less`)
+
+Formal rule:
+
+> Every interactive entity MUST be reachable through `Mode + Frame + Attention + Depth`.  
+> No additional always-visible primary controls are permitted.
+
+Required behavior:
+
+* `Mode` selects operating context (for example story/editor).
+* `Frame` selects projection context (world/control/codepoint/aztec/semantic/replay).
+* `Attention` changes scope density only (`Narrow` or `Expand`).
+* `Depth` reveals or hides secondary tooling only (`More` or `Less`).
+
+Constraints:
+
+* Secondary controls MUST be hidden by default and revealed only through `More`.
+* Secondary controls MUST NOT create a parallel primary navigation grammar.
+* Switching `Attention` or `Depth` MUST NOT mutate canonical kernel state or replay truth.
+* Any new UI feature MUST map into one of the four control groups above.
 
 ---
 
@@ -82,6 +174,10 @@ Important paths:
 * dropped GLB/SVG support
 * transform controls for move / rotate / scale
 * layout save/load JSON
+* license-aware import library via `docs/imports/asset-manifest.json`
+* default toolkit exposure is manifest-gated (`redistributable: true` only)
+* startup imports are manifest-driven (`default_enabled: true`)
+* manifest now carries `role`/`theme`/`scale_hint` for world composition
 
 ### Projection Sharing
 
@@ -90,6 +186,16 @@ Important paths:
 * clipboard copy for quick sharing between users
 * Aztec PNG carrier mode (`artifact_package.v1`) for share/packing transport with payload fingerprint verification
 * explicit allowed package kinds with fail-closed import; schema documented in `atomic-kernel/docs/ARTIFACT_PACKAGE_SCHEMA.md`
+
+### Visual Projection Pipeline
+
+* artifact-first runtime always shows narrative/state on startup
+* visual chain available in stage `More`:
+  * `artifact -> document_graph -> svg -> obj/mtl -> glb`
+* view modes: `2D`, `3D`, `AR`, `VR`
+* control-plane/Fano shuffle can switch view mode deterministically from current tick/lane context
+* Fano path envelope readout (last 8 / current / next 8 likely) is available in stage `More`
+* queued path bias is advisory-only and influences future emphasis windows, never current canonical truth
 
 ### Recursive Node GUI
 
@@ -123,6 +229,9 @@ Important paths:
 ### Scene-First Onboarding
 
 * starts in scene-first mode (toolbox collapsed)
+* canonical narrative autoplay runs continuously by default (the movie is always in motion)
+* user interaction pauses autoplay temporarily, then autoplay resumes automatically
+* startup scene composes `environment -> architecture -> character -> symbolic` from imported role-matched assets before primitive fallback
 * 3D menu artifacts in-world: Toolbox / Mode / Frame / Cycle
 * cycle label updates from replay timeline and current phase
 * menu ring is data-driven via XML/line spec and can be shared in projection packages

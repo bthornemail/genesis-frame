@@ -207,6 +207,42 @@
       padding: 6px 10px;
       font-size: .68rem;
     }
+    .projection-pipeline {
+      margin-top: 8px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #f4f9fd;
+      padding: 8px;
+      display: grid;
+      gap: 8px;
+    }
+    .projection-chain {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .projection-chip {
+      border: 1px solid #9fbbd3;
+      border-radius: 999px;
+      padding: 3px 8px;
+      background: #f2f8fc;
+      font-size: .72rem;
+      font-family: "IBM Plex Mono", monospace;
+      color: #23415f;
+    }
+    .projection-chip.good {
+      border-color: #2f8f73;
+      background: #e9f8f2;
+      color: #1f5c4a;
+    }
+    .projection-svg {
+      width: 100%;
+      height: 150px;
+      border: 1px solid #bcd0e1;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #eef5fb, #e2edf7);
+    }
     #stage {
       position: relative;
       min-height: 560px;
@@ -247,6 +283,11 @@
       gap: 10px;
       pointer-events: none;
       max-height: min(48vh, 380px);
+    }
+    body.scene-first .story-ui {
+      top: 12px;
+      bottom: auto;
+      max-height: min(52vh, 420px);
     }
     .story-main, .story-side {
       border: 1px solid rgba(191, 210, 226, .92);
@@ -387,16 +428,13 @@
       <header>
         <h1>Narrative Artifact Toolkit</h1>
         <div class="sub">Story mode + editor mode in one scene.</div>
-        <div class="row" style="margin-top:6px;">
-          <button id="btn-toggle-complexity-panel" class="primary">Advanced UI</button>
-        </div>
       </header>
 
       <div class="hint">
         Drag artifacts into scene. Story mode drives chapter progression and inventory gates across worlds.
       </div>
 
-      <div id="mode-saves-panel" data-plane-scope="FS">
+      <div id="mode-saves-panel" class="sidebar-extra" data-plane-scope="FS">
         <div class="section-title">Mode + Saves</div>
         <div class="row">
           <button id="btn-story-mode" class="good">Story Mode</button>
@@ -420,7 +458,7 @@
         </div>
       </div>
 
-      <div id="artifacts-panel" data-plane-scope="GS">
+      <div id="artifacts-panel" class="sidebar-extra" data-plane-scope="GS">
         <div class="section-title">Scene Artifacts</div>
         <div id="artifact-list" class="artifact-list"></div>
         <div class="row" style="margin-top:6px;">
@@ -438,12 +476,12 @@
         </div>
       </div>
 
-      <div id="navigator-panel" class="hint advanced-only" data-plane-scope="GS">
+      <div id="navigator-panel" class="hint advanced-only sidebar-extra" data-plane-scope="GS">
         <div class="section-title">Navigator</div>
         <div id="node-nav-list" class="nav-list"></div>
       </div>
 
-      <div id="context-panel" class="hint advanced-only" data-plane-scope="FS,GS,RS,US">
+      <div id="context-panel" class="hint advanced-only sidebar-extra" data-plane-scope="FS,GS,RS,US">
         <div class="section-title">Node Context</div>
         <div class="ctx-tabs">
           <button data-plane-tab="FS">FS</button>
@@ -455,7 +493,7 @@
         <div id="ctx-view" class="mini ctx-view">(no node selected)</div>
       </div>
 
-      <div id="timeline-panel" class="hint advanced-only" data-plane-scope="FS">
+      <div id="timeline-panel" class="hint advanced-only sidebar-extra" data-plane-scope="FS">
         <div class="section-title">Timeline Replay</div>
         <input id="timeline-slider" class="timeline-slider" type="range" min="0" max="0" value="0">
         <div class="row" style="margin-top:6px;">
@@ -490,7 +528,7 @@
         <div id="future-branch-meta" class="mono-note" style="margin-top:6px;">branch: 0 pending events</div>
       </div>
 
-      <div id="webhook-panel" class="hint advanced-only" data-plane-scope="FS">
+      <div id="webhook-panel" class="hint advanced-only sidebar-extra" data-plane-scope="FS">
         <div class="section-title">Webhook Lanes</div>
         <input id="outbound-url" class="field" type="text" placeholder="outbound webhook URL">
         <input id="inbound-url" class="field" type="text" placeholder="inbound webhook URL" style="margin-top:6px;">
@@ -500,7 +538,7 @@
         </div>
       </div>
 
-      <div id="cp-panel" class="hint advanced-only" data-plane-scope="RS">
+      <div id="cp-panel" class="hint advanced-only sidebar-extra" data-plane-scope="RS">
         <div class="section-title">Control Plane</div>
         <div class="control-grid">
           <select id="cp-channel" class="field">
@@ -563,7 +601,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         </div>
       </div>
 
-      <div id="semantic-panel" class="hint advanced-only" data-plane-scope="GS">
+      <div id="semantic-panel" class="hint advanced-only sidebar-extra" data-plane-scope="GS">
         <div class="section-title">Semantic Inspector</div>
         <div class="row" style="margin-top:4px;">
           <button id="btn-sem-attention-narrow" class="good">Narrow</button>
@@ -573,6 +611,13 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         <div id="semantic-meta" class="mono-note">No semantic artifact.</div>
         <div id="semantic-list" class="semantic-list mini" style="margin-top:6px;">(empty)</div>
         <div class="row semantic-extra" style="margin-top:8px;">
+          <select id="character-select" class="field"></select>
+          <select id="character-avatar-select" class="field"></select>
+          <button id="btn-character-swap" class="good">Queue Swap</button>
+          <button id="btn-character-random">Random Avatar</button>
+        </div>
+        <div id="character-avatar-pending" class="mono-note semantic-extra" style="margin-top:6px;">pending swaps: none</div>
+        <div class="row semantic-extra" style="margin-top:6px;">
           <select id="template-select" class="field"></select>
           <button id="btn-template-instantiate" class="good">Instantiate</button>
         </div>
@@ -588,7 +633,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         </div>
       </div>
 
-      <div id="transform-panel" class="controls advanced-only" data-plane-scope="US">
+      <div id="transform-panel" class="controls advanced-only sidebar-extra" data-plane-scope="US">
         <button id="btn-reset-camera">Reset Camera</button>
         <button id="btn-clear-scene" class="warn">Clear Scene Objects</button>
         <button id="btn-mode-move">Mode: Move (W)</button>
@@ -598,12 +643,12 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         <button id="btn-load-layout">Load Layout JSON</button>
       </div>
 
-      <div id="snap-panel" class="hint advanced-only" data-plane-scope="US">
+      <div id="snap-panel" class="hint advanced-only sidebar-extra" data-plane-scope="US">
         <div><strong>Snap Placement</strong> <input id="snap-enable" type="checkbox" checked> on</div>
         <div>step <input id="snap-step" type="number" value="1" min="0.1" step="0.1" style="width:70px;"></div>
       </div>
 
-      <textarea id="layout-json" class="advanced-only" data-plane-scope="US" spellcheck="false"></textarea>
+      <textarea id="layout-json" class="advanced-only sidebar-extra" data-plane-scope="US" spellcheck="false"></textarea>
       <div id="status" class="status">READY</div>
     </aside>
 
@@ -613,9 +658,16 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
           <strong>Three.js Narrative Bootstrap</strong>
           <div class="sub">Phase flow: boot cinematic -> hub -> chapter scene -> hub return -> epilogue.</div>
           <div class="row" style="margin-top:6px;" data-plane-scope="FS,GS,RS,US">
-            <button id="btn-toggle-complexity-stage">Advanced UI</button>
+            <button id="btn-strip-mode">Mode</button>
+            <button id="btn-strip-frame">Frame</button>
+            <button id="btn-strip-attention-narrow" class="good">Narrow</button>
+            <button id="btn-strip-attention-expanded">Expand</button>
+            <button id="btn-strip-more">More</button>
           </div>
-          <div class="row" style="margin-top:6px;" data-plane-scope="FS,GS,RS,US">
+          <div class="row stage-extra hidden" style="margin-top:6px;" data-plane-scope="FS,GS,RS,US">
+            <button id="btn-toggle-complexity-stage">Advanced</button>
+          </div>
+          <div class="row stage-extra hidden" style="margin-top:6px;" data-plane-scope="FS,GS,RS,US">
             <button id="btn-frame-world" class="good">World</button>
             <button id="btn-frame-control">Control</button>
             <button id="btn-frame-codepoint">Codepoint</button>
@@ -623,14 +675,14 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
             <button id="btn-frame-semantic">Semantic</button>
             <button id="btn-frame-replay">Replay</button>
           </div>
-          <div class="row" style="margin-top:6px;" data-plane-scope="FS,GS,RS,US">
+          <div class="row stage-extra hidden" style="margin-top:6px;" data-plane-scope="FS,GS,RS,US">
             <button id="btn-quick-mode">Mode</button>
             <button id="btn-quick-frame">Frame</button>
             <button id="btn-quick-city">City</button>
             <button id="btn-quick-fork">Fork</button>
             <button id="btn-quick-advanced">Advanced</button>
           </div>
-          <div class="row" style="margin-top:6px;">
+          <div class="row stage-extra hidden" style="margin-top:6px;">
             <div class="plane-rail">
               <button id="btn-global-plane-fs">FS</button>
               <button id="btn-global-plane-gs">GS</button>
@@ -638,13 +690,43 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
               <button id="btn-global-plane-us">US</button>
             </div>
           </div>
-          <div class="row" style="margin-top:6px;">
+          <div class="row stage-extra hidden" style="margin-top:6px;">
             <div class="basis-rail">
               <button id="btn-global-basis-2">2</button>
               <button id="btn-global-basis-10">10</button>
               <button id="btn-global-basis-16">16</button>
               <button id="btn-global-basis-codepoint">CP</button>
               <button id="btn-global-basis-mixed">MIX</button>
+            </div>
+          </div>
+          <div id="projection-pipeline-wrap" class="stage-extra hidden" style="margin-top:8px;" data-plane-scope="FS,GS,RS,US">
+            <div class="row">
+              <button id="btn-view-2d">2D</button>
+              <button id="btn-view-3d" class="good">3D</button>
+              <button id="btn-view-ar">AR</button>
+              <button id="btn-view-vr">VR</button>
+              <button id="btn-view-shuffle">Shuffle Fano</button>
+            </div>
+            <div class="projection-pipeline">
+              <div id="projection-chain" class="projection-chain"></div>
+              <svg id="projection-svg-preview" class="projection-svg" viewBox="0 0 720 220" preserveAspectRatio="xMidYMid meet"></svg>
+              <div id="projection-view-hint" class="mono-note">view: 3D · pipeline active</div>
+            </div>
+          </div>
+          <div id="fano-envelope-panel" class="hint stage-extra hidden" style="margin-top:8px;" data-plane-scope="FS,GS,RS,US">
+            <div class="section-title">Fano Path Envelope</div>
+            <div id="fano-envelope-readout" class="mono-note">line: - · roles: - · active_path: - · last8: - · next8: -</div>
+            <div class="row" style="margin-top:6px;">
+              <select id="fano-bias-role" class="field" style="width:180px;">
+                <option value="advisor.wisdom">advisor.wisdom</option>
+                <option value="advisor.law">advisor.law</option>
+                <option value="advisor.cohesion">advisor.cohesion</option>
+                <option value="witness.observe">witness.observe</option>
+                <option value="witness.record">witness.record</option>
+              </select>
+              <input id="fano-bias-weight" class="field" type="number" step="0.1" min="0.1" value="1.0" style="width:90px;">
+              <button id="btn-fano-bias-add">Queue Bias</button>
+              <button id="btn-fano-bias-clear">Clear Bias</button>
             </div>
           </div>
         </div>
@@ -660,7 +742,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
       </div>
 
       <div id="stage">
-        <button id="btn-toggle-toolbox" class="primary">Toolbox</button>
+        <button id="btn-toggle-toolbox" class="primary stage-extra hidden" data-plane-scope="FS,GS,RS,US">Toolbox</button>
         <div id="drop-overlay">Drop Artifact</div>
 
         <div id="story-ui" class="story-ui">
@@ -869,6 +951,21 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
     let semanticAttentionMode = 'narrow';
     let semanticProjectionSignature = '';
     let semanticPanelExpanded = false;
+    let stageStripExpanded = false;
+    let sidebarExpanded = false;
+    let projectionViewMode = '3d';
+    let idleStoryAutoplayTimer = null;
+    let idleStoryAutoplayInterval = null;
+    let idleStoryAutoplayPausedUntil = 0;
+    let idleStoryArticleOrder = [];
+    let idleStoryArticleIndex = 0;
+    let characterAvatarCurrentAssignments = {};
+    let characterAvatarQueuedAssignments = {};
+    let characterAvatarPolicy = {};
+    let importManifestAssets = [];
+    let manifestRuntimeArtifacts = [];
+    let manifestStartupArtifacts = [];
+    let characterAvatarLibrary = [];
 
     const SAVE_VERSION = 2;
     const TEMPLATE_STORE_KEY = "ak_progression_templates_custom_v1";
@@ -881,6 +978,9 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
     const SLOT_KEYS = ["ak_story_slot_1", "ak_story_slot_2", "ak_story_slot_3"];
     const AUTOSAVE_KEY = "ak_story_autosave";
     const BASIS_SPEC_STORE_KEY = "ak_basis_specs_custom_v1";
+    const IDLE_STORY_AUTOPLAY_START_MS = 2200;
+    const IDLE_STORY_AUTOPLAY_STEP_MS = 4800;
+    const IDLE_STORY_AUTOPLAY_PAUSE_MS = 18000;
     const BASIS_OPTIONS = ['2', '8', '10', '16', '36', 'codepoint', 'mixed'];
     const BASIS_TO_NUMSYS = { '2': 2, '8': 8, '10': 10, '16': 16, '36': 36 };
     const DEFAULT_BASIS_SPEC_BY_ID = {
@@ -1187,12 +1287,18 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         ui_basis_spec_id: 'dec_v1',
         ui_expanded_node_ids: [],
         scene_first_mode: true,
+        ui_sidebar_expanded: false,
         menu_ring_spec: DEFAULT_MENU_RING_SPEC,
         cp_diagram_spec: '',
         semantic_graph_artifact: null,
         semantic_artifact_meta: null,
         semantic_compaction: cloneState(SEMANTIC_COMPACTION_DEFAULT),
         semantic_attention_mode: 'narrow',
+        fano_path_bias_queue: [],
+        character_avatar_current_map: {},
+        character_avatar_queue_map: {},
+        character_avatar_policy_map: {},
+        character_avatar_map: {},
       };
     }
 
@@ -1273,6 +1379,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
             ui_basis_spec_id: typeof parsed.ui_basis_spec_id === 'string' ? parsed.ui_basis_spec_id : null,
             ui_expanded_node_ids: Array.isArray(parsed.ui_expanded_node_ids) ? parsed.ui_expanded_node_ids.filter((x) => typeof x === 'string') : [],
             scene_first_mode: parsed.scene_first_mode !== false,
+            ui_sidebar_expanded: parsed.ui_sidebar_expanded === true,
             menu_ring_spec: typeof parsed.menu_ring_spec === 'string' ? parsed.menu_ring_spec : DEFAULT_MENU_RING_SPEC,
             cp_diagram_spec: typeof parsed.cp_diagram_spec === 'string' ? parsed.cp_diagram_spec : '',
             semantic_graph_artifact: parsed.semantic_graph_artifact && typeof parsed.semantic_graph_artifact === 'object'
@@ -1281,6 +1388,18 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
               ? cloneState(parsed.semantic_artifact_meta) : null,
             semantic_compaction: normalizeSemanticCompactionConfig(parsed.semantic_compaction),
             semantic_attention_mode: parsed.semantic_attention_mode === 'expanded' ? 'expanded' : 'narrow',
+            fano_path_bias_queue: Array.isArray(parsed.fano_path_bias_queue)
+              ? parsed.fano_path_bias_queue.filter((x) => x && typeof x === 'object')
+              : [],
+            character_avatar_current_map: parsed.character_avatar_current_map && typeof parsed.character_avatar_current_map === 'object'
+              ? cloneState(parsed.character_avatar_current_map)
+              : (parsed.character_avatar_map && typeof parsed.character_avatar_map === 'object' ? cloneState(parsed.character_avatar_map) : {}),
+            character_avatar_queue_map: parsed.character_avatar_queue_map && typeof parsed.character_avatar_queue_map === 'object'
+              ? cloneState(parsed.character_avatar_queue_map) : {},
+            character_avatar_policy_map: parsed.character_avatar_policy_map && typeof parsed.character_avatar_policy_map === 'object'
+              ? cloneState(parsed.character_avatar_policy_map) : {},
+            character_avatar_map: parsed.character_avatar_map && typeof parsed.character_avatar_map === 'object'
+              ? cloneState(parsed.character_avatar_map) : {},
           };
           this.render();
           setStatus(`Loaded slot ${slotIndex + 1}`);
@@ -1300,6 +1419,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
 
       jumpToChapter(chapterId) {
         if (!this.chapterMap[chapterId]) return;
+        commitQueuedCharacterAvatarSwaps('jump_chapter');
         this.state.current_chapter = chapterId;
         this.state.current_scene_id = this.getIntroScene(chapterId)?.id || null;
         this.state.current_phase = 'chapter_scene';
@@ -1371,6 +1491,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
           ui_basis_spec_id: typeof parsed.ui_basis_spec_id === 'string' ? parsed.ui_basis_spec_id : null,
           ui_expanded_node_ids: Array.isArray(parsed.ui_expanded_node_ids) ? parsed.ui_expanded_node_ids.filter((x) => typeof x === 'string') : [],
           scene_first_mode: parsed.scene_first_mode !== false,
+          ui_sidebar_expanded: parsed.ui_sidebar_expanded === true,
           menu_ring_spec: typeof parsed.menu_ring_spec === 'string' ? parsed.menu_ring_spec : DEFAULT_MENU_RING_SPEC,
           cp_diagram_spec: typeof parsed.cp_diagram_spec === 'string' ? parsed.cp_diagram_spec : '',
           semantic_graph_artifact: parsed.semantic_graph_artifact && typeof parsed.semantic_graph_artifact === 'object'
@@ -1379,6 +1500,18 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
             ? cloneState(parsed.semantic_artifact_meta) : null,
           semantic_compaction: normalizeSemanticCompactionConfig(parsed.semantic_compaction),
           semantic_attention_mode: parsed.semantic_attention_mode === 'expanded' ? 'expanded' : 'narrow',
+          fano_path_bias_queue: Array.isArray(parsed.fano_path_bias_queue)
+            ? parsed.fano_path_bias_queue.filter((x) => x && typeof x === 'object')
+            : [],
+          character_avatar_current_map: parsed.character_avatar_current_map && typeof parsed.character_avatar_current_map === 'object'
+            ? cloneState(parsed.character_avatar_current_map)
+            : (parsed.character_avatar_map && typeof parsed.character_avatar_map === 'object' ? cloneState(parsed.character_avatar_map) : {}),
+          character_avatar_queue_map: parsed.character_avatar_queue_map && typeof parsed.character_avatar_queue_map === 'object'
+            ? cloneState(parsed.character_avatar_queue_map) : {},
+          character_avatar_policy_map: parsed.character_avatar_policy_map && typeof parsed.character_avatar_policy_map === 'object'
+            ? cloneState(parsed.character_avatar_policy_map) : {},
+          character_avatar_map: parsed.character_avatar_map && typeof parsed.character_avatar_map === 'object'
+            ? cloneState(parsed.character_avatar_map) : {},
         };
         this.saveGame(slotIndex);
         this.autosave();
@@ -1597,6 +1730,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
       },
 
       enterChapter(chapterId) {
+        commitQueuedCharacterAvatarSwaps('enter_chapter');
         const gate = this.gateFor(chapterId);
         if (gate && !this.hasRequired(gate.requires_artifacts)) {
           const missing = gate.requires_artifacts.filter((r) => !this.state.inventory.includes(r));
@@ -1614,6 +1748,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
       },
 
       choose(choiceId) {
+        commitQueuedCharacterAvatarSwaps('choice_selected');
         const chapterId = this.state.current_chapter;
         const choices = this.getRecords(chapterId, 'choice');
         const choice = choices.find((c) => c.id === choiceId);
@@ -1782,7 +1917,25 @@ Enter the Prologue and begin reconciliation.`
         this.state.semantic_compaction = cloneState(semanticCompactionConfig);
         semanticAttentionMode = this.state.semantic_attention_mode === 'expanded' ? 'expanded' : 'narrow';
         this.state.semantic_attention_mode = semanticAttentionMode;
+        characterAvatarCurrentAssignments = this.state.character_avatar_current_map && typeof this.state.character_avatar_current_map === 'object'
+          ? cloneState(this.state.character_avatar_current_map)
+          : (this.state.character_avatar_map && typeof this.state.character_avatar_map === 'object'
+              ? cloneState(this.state.character_avatar_map) : {});
+        characterAvatarQueuedAssignments = this.state.character_avatar_queue_map && typeof this.state.character_avatar_queue_map === 'object'
+          ? cloneState(this.state.character_avatar_queue_map)
+          : {};
+        characterAvatarPolicy = this.state.character_avatar_policy_map && typeof this.state.character_avatar_policy_map === 'object'
+          ? cloneState(this.state.character_avatar_policy_map)
+          : {};
+        this.state.character_avatar_current_map = cloneState(characterAvatarCurrentAssignments);
+        this.state.character_avatar_queue_map = cloneState(characterAvatarQueuedAssignments);
+        this.state.character_avatar_policy_map = cloneState(characterAvatarPolicy);
+        this.state.character_avatar_map = cloneState(characterAvatarCurrentAssignments);
+        sidebarExpanded = this.state.ui_sidebar_expanded === true;
+        this.state.ui_sidebar_expanded = sidebarExpanded;
         refreshSemanticAttentionButtons();
+        refreshSidebarCollapse();
+        refreshStageStrip();
         syncMenuRingFromState();
         document.getElementById('pill-phase').textContent = `phase: ${this.state.current_phase}`;
         if (this.state.current_phase === 'boot_cinematic') this.renderBoot();
@@ -1797,12 +1950,17 @@ Enter the Prologue and begin reconciliation.`
         refreshArtifactCards();
         syncInventoryArtifactsInScene();
         ensureEmittedArtifactsInScene();
+        if (appMode === 'story' && (this.state.ui_frame || UI_FRAMES.WORLD) === UI_FRAMES.WORLD && placedRoot.children.length === 0) {
+          ensureStartupTempleScene();
+        }
         updateHubGraphState();
         updateTimelineUI();
         refreshControlPlaneStatus();
         syncControlDiagramProjection();
         syncSemanticArtifactProjection();
         refreshSemanticInspector();
+        refreshProjectionPipelineUI('render');
+        updateFanoEnvelopeReadout();
         buildRuntimeNodeIndex();
         if (!uiSelectedNodeId || !getNode(uiSelectedNodeId)) {
           uiSelectedNodeId = this.state.ui_selected_node_id || currentFrameRootId();
@@ -1901,6 +2059,38 @@ Enter the Prologue and begin reconciliation.`
       const label = simple ? 'Advanced UI' : 'Simple UI';
       if (panelBtn) panelBtn.textContent = label;
       if (stageBtn) stageBtn.textContent = label;
+    }
+
+    function refreshStageStrip() {
+      const btn = document.getElementById('btn-strip-more');
+      if (btn) btn.textContent = stageStripExpanded ? 'Less' : 'More';
+      for (const el of document.querySelectorAll('.stage-head .stage-extra')) {
+        el.classList.toggle('hidden', !stageStripExpanded);
+      }
+    }
+
+    function toggleStageStripExpanded() {
+      stageStripExpanded = !stageStripExpanded;
+      sidebarExpanded = stageStripExpanded;
+      GameDirector.state.ui_sidebar_expanded = sidebarExpanded;
+      refreshStageStrip();
+      refreshSidebarCollapse();
+      GameDirector.autosave();
+    }
+
+    function refreshSidebarCollapse() {
+      const btn = document.getElementById('btn-sidebar-more');
+      if (btn) btn.textContent = sidebarExpanded ? 'Less' : 'More';
+      for (const el of document.querySelectorAll('.panel .sidebar-extra')) {
+        el.classList.toggle('hidden', !sidebarExpanded);
+      }
+    }
+
+    function toggleSidebarExpanded() {
+      sidebarExpanded = !sidebarExpanded;
+      GameDirector.state.ui_sidebar_expanded = sidebarExpanded;
+      refreshSidebarCollapse();
+      GameDirector.autosave();
     }
 
     function createMenuNode(action, label, color, x, z) {
@@ -2064,6 +2254,352 @@ Enter the Prologue and begin reconciliation.`
 
     function showHubGraphForPhase(phase) {
       return appMode === 'story' && (phase === 'hub' || phase === 'hub_return' || phase === 'epilogue');
+    }
+
+    function romanToInt(raw) {
+      const s = String(raw || '').toUpperCase().trim();
+      if (!s) return null;
+      const map = { I: 1, V: 5, X: 10, L: 50, C: 100 };
+      let total = 0;
+      let prev = 0;
+      for (let i = s.length - 1; i >= 0; i -= 1) {
+        const n = map[s[i]];
+        if (!n) return null;
+        if (n < prev) total -= n;
+        else {
+          total += n;
+          prev = n;
+        }
+      }
+      return total > 0 ? total : null;
+    }
+
+    function articleOrdinalFromTitle(title) {
+      const m = String(title || '').toUpperCase().match(/\bARTICLE\s+([IVXLCDM]+)\b/);
+      if (!m) return null;
+      const n = romanToInt(m[1]);
+      if (!Number.isInteger(n)) return null;
+      return n;
+    }
+
+    function computeArticleAutoplayOrder() {
+      const ranked = [];
+      for (const cid of GameDirector.chapterOrder) {
+        const meta = GameDirector.chapterMap[cid]?.meta;
+        const ord = articleOrdinalFromTitle(meta?.title || '');
+        if (!ord || ord < 1 || ord > 8) continue;
+        ranked.push({ id: cid, ord });
+      }
+      ranked.sort((a, b) => a.ord - b.ord);
+      return ranked.map((x) => x.id);
+    }
+
+    function stopIdleStoryAutoplay() {
+      if (idleStoryAutoplayTimer) {
+        clearTimeout(idleStoryAutoplayTimer);
+        idleStoryAutoplayTimer = null;
+      }
+      if (idleStoryAutoplayInterval) {
+        clearInterval(idleStoryAutoplayInterval);
+        idleStoryAutoplayInterval = null;
+      }
+    }
+
+    function markIdleStoryTouched(pauseMs = IDLE_STORY_AUTOPLAY_PAUSE_MS) {
+      const ms = Math.max(1200, Number(pauseMs) || IDLE_STORY_AUTOPLAY_PAUSE_MS);
+      const until = Date.now() + ms;
+      if (until > idleStoryAutoplayPausedUntil) idleStoryAutoplayPausedUntil = until;
+    }
+
+    function idleStoryNextArticleJump() {
+      if (!idleStoryArticleOrder.length) return;
+      const cid = idleStoryArticleOrder[idleStoryArticleIndex % idleStoryArticleOrder.length];
+      GameDirector.jumpToChapter(cid);
+    }
+
+    function idleStoryAutoplayStep() {
+      if (Date.now() < idleStoryAutoplayPausedUntil) return;
+      if (!idleStoryArticleOrder.length) return;
+
+      if (appMode !== 'story') setAppMode('story');
+      if ((GameDirector.state.ui_frame || UI_FRAMES.WORLD) !== UI_FRAMES.WORLD) setUIFrame(UI_FRAMES.WORLD);
+
+      const phase = GameDirector.state.current_phase;
+      if (phase === 'boot_cinematic') {
+        idleStoryArticleIndex = 0;
+        idleStoryNextArticleJump();
+        return;
+      }
+
+      if (phase === 'hub' || phase === 'hub_return' || phase === 'epilogue') {
+        idleStoryNextArticleJump();
+        return;
+      }
+
+      if (phase !== 'chapter_scene') return;
+
+      const current = String(GameDirector.state.current_chapter || '');
+      const idx = idleStoryArticleOrder.indexOf(current);
+      if (idx < 0) {
+        idleStoryNextArticleJump();
+        return;
+      }
+      idleStoryArticleIndex = idx;
+
+      const sceneId = String(GameDirector.state.current_scene_id || '');
+      const choices = GameDirector.getRecords(current, 'choice')
+        .filter((c) => c.from_scene_id === sceneId && GameDirector.hasRequired(c.requires_artifacts));
+
+      if (choices.length) {
+        GameDirector.choose(choices[0].id);
+        return;
+      }
+
+      idleStoryArticleIndex = (idleStoryArticleIndex + 1) % idleStoryArticleOrder.length;
+      idleStoryNextArticleJump();
+    }
+
+    function startIdleStoryAutoplay() {
+      stopIdleStoryAutoplay();
+      idleStoryAutoplayPausedUntil = 0;
+      idleStoryArticleOrder = computeArticleAutoplayOrder();
+      idleStoryArticleIndex = 0;
+      if (!idleStoryArticleOrder.length) return;
+
+      idleStoryAutoplayTimer = setTimeout(() => {
+        if (Date.now() < idleStoryAutoplayPausedUntil) return;
+        idleStoryAutoplayStep();
+        idleStoryAutoplayInterval = setInterval(idleStoryAutoplayStep, IDLE_STORY_AUTOPLAY_STEP_MS);
+      }, IDLE_STORY_AUTOPLAY_START_MS);
+    }
+
+    const FANO_LINES = [
+      [0, 1, 3],
+      [0, 2, 5],
+      [0, 4, 6],
+      [1, 2, 4],
+      [1, 5, 6],
+      [2, 3, 6],
+      [3, 4, 5],
+    ];
+    const FANO_ROLE_LINES = [
+      ['advisor.wisdom', 'witness.observe', 'witness.record'],
+      ['advisor.law', 'witness.observe', 'witness.record'],
+      ['advisor.cohesion', 'witness.observe', 'witness.record'],
+      ['advisor.wisdom', 'advisor.law', 'advisor.cohesion'],
+      ['advisor.wisdom', 'advisor.law', 'witness.observe'],
+      ['advisor.law', 'advisor.cohesion', 'witness.record'],
+      ['advisor.wisdom', 'advisor.cohesion', 'witness.observe'],
+    ];
+    const FANO_ACTIVE_PATH_BY_ROLE = {
+      'advisor.wisdom': 'semantic_reconciliation',
+      'advisor.law': 'lawful_branch',
+      'advisor.cohesion': 'collective_join',
+      'witness.observe': 'witness_pause',
+      'witness.record': 'receipted_commit',
+    };
+    const PROJECTION_VIEW_MODES = ['2d', '3d', 'ar', 'vr'];
+
+    function fanoTripletForTick(tick) {
+      const t = ((Number(tick) || 0) % 7 + 7) % 7;
+      return FANO_LINES[t];
+    }
+
+    function fanoRoleTripletForLine(lineIndex) {
+      const idx = ((Number(lineIndex) || 0) % 7 + 7) % 7;
+      return FANO_ROLE_LINES[idx] || [];
+    }
+
+    function compactFanoPathBiasQueue(currentTick) {
+      const nowTick = Number(currentTick) || 0;
+      const queue = Array.isArray(GameDirector.state.fano_path_bias_queue) ? GameDirector.state.fano_path_bias_queue : [];
+      const kept = queue.filter((x) => {
+        const created = Number(x.created_tick) || 0;
+        const ttl = Math.max(1, Number(x.ttl_frames) || 8);
+        return nowTick <= created + ttl;
+      });
+      if (kept.length !== queue.length) GameDirector.state.fano_path_bias_queue = kept;
+      return kept;
+    }
+
+    function fanoLineScore(lineIndex, tick, biasQueue) {
+      const roles = fanoRoleTripletForLine(lineIndex);
+      let score = 1;
+      for (const b of (biasQueue || [])) {
+        if (!b || typeof b !== 'object') continue;
+        const role = String(b.role || '');
+        if (!roles.includes(role)) continue;
+        const created = Number(b.created_tick) || 0;
+        const ttl = Math.max(1, Number(b.ttl_frames) || 8);
+        const age = Math.max(0, (Number(tick) || 0) - created);
+        if (age > ttl) continue;
+        const decay = 1 - (age / (ttl + 1));
+        score += (Number(b.weight) || 0) * decay;
+      }
+      return score;
+    }
+
+    function computeFanoPathEnvelope(tick, horizon = 8) {
+      const t = Number(tick) || 0;
+      const h = Math.max(1, Math.min(32, Number(horizon) || 8));
+      const currentLine = ((t % 7) + 7) % 7;
+      const currentTriplet = fanoTripletForTick(t);
+      const currentRoles = fanoRoleTripletForLine(currentLine);
+      const last8 = [];
+      for (let i = h; i >= 1; i -= 1) last8.push((((t - i) % 7) + 7) % 7);
+      const biasQueue = compactFanoPathBiasQueue(t);
+      const nextScored = [];
+      for (let i = 1; i <= h; i += 1) {
+        const line = (((t + i) % 7) + 7) % 7;
+        const score = fanoLineScore(line, t + i, biasQueue);
+        nextScored.push({ offset: i, line, score });
+      }
+      nextScored.sort((a, b) => b.score - a.score || a.offset - b.offset || a.line - b.line);
+      const next8Likely = nextScored.map((x) => x.line).slice(0, h);
+      const roleScore = new Map();
+      for (const row of nextScored.slice(0, Math.min(h, 6))) {
+        for (const role of fanoRoleTripletForLine(row.line)) {
+          roleScore.set(role, (roleScore.get(role) || 0) + row.score);
+        }
+      }
+      let activeRole = currentRoles[0] || 'witness.observe';
+      let best = -Infinity;
+      for (const [role, score] of roleScore.entries()) {
+        if (score > best) {
+          best = score;
+          activeRole = role;
+        }
+      }
+      return {
+        tick: t,
+        horizon: h,
+        currentLine,
+        currentTriplet,
+        currentRoles,
+        last8,
+        next8Likely,
+        activeRole,
+        activePath: FANO_ACTIVE_PATH_BY_ROLE[activeRole] || 'semantic_reconciliation',
+        biasQueue: cloneState(biasQueue),
+      };
+    }
+
+    function queueFanoPathBias(role, weight = 1, ttlFrames = 8) {
+      const r = String(role || '').trim();
+      if (!r) return false;
+      const allowed = new Set(['advisor.wisdom', 'advisor.law', 'advisor.cohesion', 'witness.observe', 'witness.record']);
+      if (!allowed.has(r)) return false;
+      const w = Math.max(0.1, Math.min(5, Number(weight) || 1));
+      const ttl = Math.max(1, Math.min(32, Number(ttlFrames) || 8));
+      if (!Array.isArray(GameDirector.state.fano_path_bias_queue)) GameDirector.state.fano_path_bias_queue = [];
+      const event = {
+        role: r,
+        weight: w,
+        ttl_frames: ttl,
+        created_tick: Number(GameDirector.state.timeline_index) || 0,
+      };
+      GameDirector.state.fano_path_bias_queue.push(event);
+      return true;
+    }
+
+    function clearFanoPathBiasQueue() {
+      GameDirector.state.fano_path_bias_queue = [];
+    }
+
+    function updateFanoEnvelopeReadout() {
+      const el = document.getElementById('fano-envelope-readout');
+      if (!el) return;
+      const tick = (Number(GameDirector.state.timeline_index) || 0) + Number(controlPlaneState.lane || 0);
+      const env = computeFanoPathEnvelope(tick, 8);
+      const lineLabel = `L${env.currentLine}`;
+      const roles = env.currentRoles.join(' | ');
+      const last8 = env.last8.join(',');
+      const next8 = env.next8Likely.join(',');
+      const biasN = Array.isArray(env.biasQueue) ? env.biasQueue.length : 0;
+      el.textContent = `line:${lineLabel} · roles:${roles} · active_path:${env.activePath} · last8:[${last8}] · next8:[${next8}] · biases:${biasN}`;
+    }
+
+    function normalizeProjectionViewMode(mode) {
+      const m = String(mode || '').toLowerCase();
+      return PROJECTION_VIEW_MODES.includes(m) ? m : '3d';
+    }
+
+    function setProjectionViewMode(mode, source = 'manual') {
+      projectionViewMode = normalizeProjectionViewMode(mode);
+      refreshProjectionPipelineUI(source);
+    }
+
+    function shuffleProjectionViewFromControlPlane() {
+      const tick = Number(GameDirector?.state?.timeline_index || 0) + Number(controlPlaneState.lane || 0);
+      const triplet = fanoTripletForTick(tick);
+      const idx = (triplet[0] + triplet[1] + triplet[2] + Number(controlPlaneState.lane || 0)) % PROJECTION_VIEW_MODES.length;
+      setProjectionViewMode(PROJECTION_VIEW_MODES[idx], 'fano');
+    }
+
+    function renderProjectionSvg() {
+      const svg = document.getElementById('projection-svg-preview');
+      if (!svg) return;
+      const W = 720;
+      const H = 220;
+      const graph = semanticGraph || GameDirector.state.semantic_graph_artifact || { nodes: [], edges: [] };
+      const nodes = Array.isArray(graph.nodes) ? graph.nodes.slice(0, 12) : [];
+      const edges = Array.isArray(graph.edges) ? graph.edges.slice(0, 18) : [];
+      const fallbackTriplet = fanoTripletForTick(GameDirector.state.timeline_index || 0);
+
+      const nodeById = new Map(nodes.map((n) => [n.id, n]));
+      const pos = new Map();
+      const total = Math.max(1, nodes.length || 3);
+      for (let i = 0; i < total; i += 1) {
+        const theta = (-Math.PI / 2) + ((Math.PI * 2 * i) / total);
+        const x = (W / 2) + Math.cos(theta) * 250;
+        const y = (H / 2) + Math.sin(theta) * 74;
+        const id = nodes[i]?.id || `fano_${i}`;
+        const label = nodes[i]?.label || `T${fallbackTriplet[i % fallbackTriplet.length]}`;
+        pos.set(id, { x, y, label });
+      }
+
+      const edgeSvg = edges.map((e) => {
+        const a = pos.get(e.subject);
+        const b = pos.get(e.object);
+        if (!a || !b) return '';
+        return `<line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" stroke="#6d93b3" stroke-width="2" opacity="0.75" />`;
+      }).join('');
+
+      const nodeSvg = Array.from(pos.values()).map((p) => {
+        return [
+          `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="14" fill="#2f5f83" opacity="0.9" />`,
+          `<text x="${p.x.toFixed(1)}" y="${(p.y - 20).toFixed(1)}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#1f3550">${String(p.label).slice(0, 16)}</text>`,
+        ].join('');
+      }).join('');
+
+      svg.innerHTML = `
+        <rect x="0" y="0" width="${W}" height="${H}" fill="transparent" />
+        ${edgeSvg}
+        ${nodeSvg}
+      `;
+    }
+
+    function refreshProjectionPipelineUI(source = 'render') {
+      const chain = document.getElementById('projection-chain');
+      const hint = document.getElementById('projection-view-hint');
+      if (!chain || !hint) return;
+      const triplet = fanoTripletForTick((GameDirector?.state?.timeline_index || 0) + Number(controlPlaneState.lane || 0));
+      const supportsXR = !!(navigator && navigator.xr);
+      chain.innerHTML = [
+        ['artifact', true],
+        ['document_graph', true],
+        ['svg', projectionViewMode === '2d'],
+        ['obj/mtl', projectionViewMode === '3d'],
+        ['glb', projectionViewMode === '3d' || projectionViewMode === 'ar' || projectionViewMode === 'vr'],
+      ].map(([label, active]) => `<span class="projection-chip ${active ? 'good' : ''}">${label}</span>`).join('<span class="projection-chip">→</span>');
+
+      hint.textContent = `view: ${projectionViewMode.toUpperCase()} · source: ${source} · fano: (${triplet.join(',')}) · control: ${controlPlaneState.channel}/${controlPlaneState.lane} · xr: ${supportsXR ? 'available' : 'not-available'}`;
+      renderProjectionSvg();
+
+      document.getElementById('btn-view-2d')?.classList.toggle('good', projectionViewMode === '2d');
+      document.getElementById('btn-view-3d')?.classList.toggle('good', projectionViewMode === '3d');
+      document.getElementById('btn-view-ar')?.classList.toggle('good', projectionViewMode === 'ar');
+      document.getElementById('btn-view-vr')?.classList.toggle('good', projectionViewMode === 'vr');
     }
 
     function buildHubGraph() {
@@ -2405,6 +2941,7 @@ Enter the Prologue and begin reconciliation.`
       if (!artifact) {
         metaEl.textContent = 'No semantic artifact.';
         listEl.textContent = '(empty)';
+        refreshCharacterAvatarControls();
         return;
       }
       const nodes = Array.isArray(artifact.nodes) ? artifact.nodes : [];
@@ -2432,6 +2969,66 @@ Enter the Prologue and begin reconciliation.`
       }
       if (viewEdges.length > 28) lines.push(`... +${viewEdges.length - 28} more`);
       listEl.textContent = lines.join('\n');
+      refreshCharacterAvatarControls();
+    }
+
+    function refreshCharacterAvatarPendingIndicator() {
+      const el = document.getElementById('character-avatar-pending');
+      if (!el) return;
+      const entries = Object.entries(characterAvatarQueuedAssignments || {});
+      if (!entries.length) {
+        el.textContent = 'pending swaps: none';
+        return;
+      }
+      const lines = entries.slice(0, 8).map(([noun, avatarId]) => {
+        const avatar = avatarById(avatarId);
+        return `${titleCase(noun)} -> ${avatar?.name || avatarId}`;
+      });
+      if (entries.length > 8) lines.push(`... +${entries.length - 8} more`);
+      el.textContent = `pending swaps (${entries.length})\n${lines.join('\n')}`;
+    }
+
+    function queueCharacterAvatarSwap(noun, avatarId) {
+      const key = String(noun || '').trim().toLowerCase();
+      if (!key) return false;
+      const avatar = avatarById(avatarId);
+      if (!avatar) return false;
+      characterAvatarQueuedAssignments[key] = avatar.id;
+      characterAvatarPolicy[key] = 'queued';
+      GameDirector.state.character_avatar_queue_map = cloneState(characterAvatarQueuedAssignments);
+      GameDirector.state.character_avatar_policy_map = cloneState(characterAvatarPolicy);
+      refreshCharacterAvatarPendingIndicator();
+      refreshCharacterAvatarControls();
+      setStatus(`Avatar queued for next frame: ${titleCase(key)} -> ${avatar.name}`);
+      return true;
+    }
+
+    function commitQueuedCharacterAvatarSwaps(reason = 'frame_transition') {
+      const queued = characterAvatarQueuedAssignments && typeof characterAvatarQueuedAssignments === 'object'
+        ? Object.entries(characterAvatarQueuedAssignments)
+        : [];
+      if (!queued.length) return 0;
+      for (const [noun, avatarId] of queued) {
+        characterAvatarCurrentAssignments[noun] = avatarId;
+        characterAvatarPolicy[noun] = 'pinned';
+      }
+      characterAvatarQueuedAssignments = {};
+      GameDirector.state.character_avatar_current_map = cloneState(characterAvatarCurrentAssignments);
+      GameDirector.state.character_avatar_queue_map = {};
+      GameDirector.state.character_avatar_policy_map = cloneState(characterAvatarPolicy);
+      GameDirector.state.character_avatar_map = cloneState(characterAvatarCurrentAssignments);
+      refreshCharacterAvatarPendingIndicator();
+      GameDirector.appendEvent('avatar_swaps_committed', { reason, swaps: queued.length }, 'avatar');
+      return queued.length;
+    }
+
+    function randomizeQueuedCharacterAvatar(noun = '') {
+      const key = String(noun || '').trim().toLowerCase();
+      const library = activeCharacterAvatarLibrary();
+      if (!key || !library.length) return false;
+      const i = Math.floor(Math.random() * library.length);
+      characterAvatarPolicy[key] = 'random';
+      return queueCharacterAvatarSwap(key, library[i].id);
     }
 
     function templateNodePrimitive(kind) {
@@ -3200,7 +3797,9 @@ Enter the Prologue and begin reconciliation.`
       for (const el of document.querySelectorAll('[data-plane-scope]')) {
         const raw = el.getAttribute('data-plane-scope') || '';
         const scopes = raw.split(',').map((x) => x.trim()).filter(Boolean);
-        const visible = !scopes.length || scopes.includes(plane);
+        const sidebarHidden = !sidebarExpanded && el.classList.contains('sidebar-extra');
+        const stageHidden = !stageStripExpanded && el.classList.contains('stage-extra');
+        const visible = (!scopes.length || scopes.includes(plane)) && !sidebarHidden && !stageHidden;
         el.classList.toggle('hidden', !visible);
       }
       for (const btn of document.querySelectorAll('#btn-global-plane-fs,#btn-global-plane-gs,#btn-global-plane-rs,#btn-global-plane-us')) {
@@ -3315,8 +3914,12 @@ Enter the Prologue and begin reconciliation.`
     function refreshSemanticAttentionButtons() {
       const narrowBtn = document.getElementById('btn-sem-attention-narrow');
       const expandedBtn = document.getElementById('btn-sem-attention-expanded');
+      const stripNarrowBtn = document.getElementById('btn-strip-attention-narrow');
+      const stripExpandedBtn = document.getElementById('btn-strip-attention-expanded');
       if (narrowBtn) narrowBtn.classList.toggle('good', semanticAttentionMode === 'narrow');
       if (expandedBtn) expandedBtn.classList.toggle('good', semanticAttentionMode === 'expanded');
+      if (stripNarrowBtn) stripNarrowBtn.classList.toggle('good', semanticAttentionMode === 'narrow');
+      if (stripExpandedBtn) stripExpandedBtn.classList.toggle('good', semanticAttentionMode === 'expanded');
       const moreBtn = document.getElementById('btn-sem-more');
       if (moreBtn) moreBtn.textContent = semanticPanelExpanded ? 'Less' : 'More';
       for (const el of document.querySelectorAll('#semantic-panel .semantic-extra')) {
@@ -4413,6 +5016,36 @@ Enter the Prologue and begin reconciliation.`
       return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     }
 
+    function avatarById(avatarId) {
+      return activeCharacterAvatarLibrary().find((x) => x.id === avatarId) || null;
+    }
+
+    function defaultAvatarForNoun(noun, sceneId = '') {
+      const library = activeCharacterAvatarLibrary();
+      if (!library.length) return null;
+      const key = `${String(sceneId || '')}:${String(noun || '').toLowerCase()}`;
+      const idx = hashWord(key) % library.length;
+      return library[idx];
+    }
+
+    function assignedAvatarForNoun(noun, sceneId = '') {
+      const key = String(noun || '').toLowerCase();
+      if (!key) return null;
+      const queued = avatarById(characterAvatarQueuedAssignments[key]);
+      if (queued) return queued;
+      const assigned = avatarById(characterAvatarCurrentAssignments[key]);
+      if (assigned) return assigned;
+      const fallback = defaultAvatarForNoun(key, sceneId);
+      if (fallback) {
+        characterAvatarCurrentAssignments[key] = fallback.id;
+        characterAvatarPolicy[key] = characterAvatarPolicy[key] || 'default';
+        GameDirector.state.character_avatar_current_map = cloneState(characterAvatarCurrentAssignments);
+        GameDirector.state.character_avatar_policy_map = cloneState(characterAvatarPolicy);
+        GameDirector.state.character_avatar_map = cloneState(characterAvatarCurrentAssignments);
+      }
+      return fallback;
+    }
+
     function entityKind(noun) {
       const w = noun.toLowerCase();
       const personWords = new Set([
@@ -4505,16 +5138,41 @@ Enter the Prologue and begin reconciliation.`
       const entities = extractEntityNouns(sceneRecord, chapterMeta);
       const sid = sceneRecord?.id || 'scene';
       return entities.map((entity) => ({
-        id: `noun_${sid}_${entity.noun}`,
-        name: `${entity.kind}: ${entity.display}`,
-        kind: 'primitive',
-        meta: `story-noun/${entity.kind}`,
-        payload: {
-          primitive: primitiveForWord(entity.noun),
-          color: colorForWord(entity.noun),
-          noun: entity.noun,
-          entityKind: entity.kind,
-        },
+        ...(function buildEntry() {
+          const base = {
+            id: `noun_${sid}_${entity.noun}`,
+            name: `${entity.kind}: ${entity.display}`,
+            meta: `story-noun/${entity.kind}`,
+            payload: {
+              noun: entity.noun,
+              entityKind: entity.kind,
+            },
+          };
+          if (entity.kind === 'person' && activeCharacterAvatarLibrary().length) {
+            const avatar = assignedAvatarForNoun(entity.noun, sid);
+            if (avatar) {
+              return {
+                ...base,
+                kind: 'glb-url',
+                name: `${entity.kind}: ${entity.display} (${avatar.name})`,
+                payload: {
+                  ...base.payload,
+                  avatarId: avatar.id,
+                  url: avatar.url,
+                },
+              };
+            }
+          }
+          return {
+            ...base,
+            kind: 'primitive',
+            payload: {
+              ...base.payload,
+              primitive: primitiveForWord(entity.noun),
+              color: colorForWord(entity.noun),
+            },
+          };
+        }())
       }));
     }
 
@@ -4522,6 +5180,7 @@ Enter the Prologue and begin reconciliation.`
       const toRemove = placedRoot.children.filter((child) => child.userData?.autoSource === 'narrative_noun');
       for (const child of toRemove) child.removeFromParent();
       sceneNounArtifacts = [];
+      refreshCharacterAvatarControls();
     }
 
     function renderSceneNounVisuals(sceneRecord, chapterMeta) {
@@ -4540,9 +5199,67 @@ Enter the Prologue and begin reconciliation.`
         if (last) {
           last.userData.autoSource = 'narrative_noun';
           last.userData.storyNoun = item.payload.noun;
+          if (item.payload.avatarId) last.userData.storyAvatarId = item.payload.avatarId;
         }
       }
+      refreshCharacterAvatarControls();
       setSelected(null);
+    }
+
+    function currentSceneContext() {
+      const chapterId = GameDirector.state.current_chapter;
+      const chapterMeta = GameDirector.chapterMap[chapterId]?.meta || null;
+      const scene = GameDirector.findScene(chapterId, GameDirector.state.current_scene_id) || GameDirector.getIntroScene(chapterId);
+      if (!chapterMeta || !scene) return null;
+      return { scene, chapterMeta };
+    }
+
+    function rerenderCurrentSceneNouns() {
+      const ctx = currentSceneContext();
+      if (!ctx) return false;
+      renderSceneNounVisuals(ctx.scene, ctx.chapterMeta);
+      GameDirector.autosave();
+      return true;
+    }
+
+    function refreshCharacterAvatarControls() {
+      const nounSel = document.getElementById('character-select');
+      const avatarSel = document.getElementById('character-avatar-select');
+      if (!nounSel || !avatarSel) return;
+      const library = activeCharacterAvatarLibrary();
+
+      const people = sceneNounArtifacts
+        .filter((x) => x?.payload?.entityKind === 'person' && x?.payload?.noun)
+        .map((x) => ({ noun: x.payload.noun, label: x.name }));
+      nounSel.innerHTML = '';
+      if (!people.length) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = 'No characters in scene';
+        nounSel.appendChild(opt);
+      } else {
+        for (const p of people) {
+          const opt = document.createElement('option');
+          opt.value = p.noun;
+          opt.textContent = p.label;
+          nounSel.appendChild(opt);
+        }
+      }
+
+      avatarSel.innerHTML = '';
+      for (const avatar of library) {
+        const opt = document.createElement('option');
+        opt.value = avatar.id;
+        opt.textContent = avatar.name;
+        avatarSel.appendChild(opt);
+      }
+
+      if (!people.length || !library.length) return;
+      const noun = nounSel.value || people[0].noun;
+      const queued = avatarById(characterAvatarQueuedAssignments[noun]);
+      const assigned = queued || assignedAvatarForNoun(noun) || library[0];
+      avatarSel.value = assigned?.id || library[0].id;
+      refreshCharacterAvatarPendingIndicator();
     }
 
     function inventoryArtifactCardForId(aid) {
@@ -4620,6 +5337,116 @@ Enter the Prologue and begin reconciliation.`
       }
     }
 
+    const LOCAL_IMPORT_ARTIFACTS = [
+      { id: 'import_human_gltf', name: 'Human Rigged Base (Local GLTF)', kind: 'glb-url', meta: 'imports/local-gltf', payload: { url: '/assets/imports/human_malefemale_basemesh_rigged/scene.gltf' } },
+      { id: 'import_arena_glb', name: 'Arena 240606-002 (GLB)', kind: 'glb-url', meta: 'imports/local-glb', payload: { url: '/assets/imports/arena_240606-002.glb' } },
+      { id: 'import_arena_gltf', name: 'Arena 240606-002 (GLTF)', kind: 'glb-url', meta: 'imports/local-gltf', payload: { url: '/assets/imports/arena_240606-002/scene.gltf' } },
+      { id: 'import_recycled_glb', name: 'Recycled RC1486 (GLB)', kind: 'glb-url', meta: 'imports/local-glb', payload: { url: '/assets/imports/recycled_rc1486.glb' } },
+      { id: 'import_recycled_gltf', name: 'Recycled RC1486 (GLTF)', kind: 'glb-url', meta: 'imports/local-gltf', payload: { url: '/assets/imports/recycled_rc1486/scene.gltf' } },
+      { id: 'import_park_0914_glb', name: 'Park 0914 (GLB)', kind: 'glb-url', meta: 'imports/local-glb', payload: { url: '/assets/imports/park_0914.glb' } },
+      { id: 'import_park_0914_gltf', name: 'Park 0914 (GLTF)', kind: 'glb-url', meta: 'imports/local-gltf', payload: { url: '/assets/imports/park_0914/scene.gltf' } },
+      { id: 'import_park_0926_glb', name: 'Park 0926 (GLB)', kind: 'glb-url', meta: 'imports/local-glb', payload: { url: '/assets/imports/park_0926.glb' } },
+      { id: 'import_park_0926_gltf', name: 'Park 0926 (GLTF)', kind: 'glb-url', meta: 'imports/local-gltf', payload: { url: '/assets/imports/park_0926/scene.gltf' } },
+      { id: 'import_lucero_nicholas_glb', name: 'Lucero and Nicholas (GLB)', kind: 'glb-url', meta: 'imports/local-glb', payload: { url: '/assets/imports/lucero_and_nicholas.glb' } },
+      { id: 'import_lucero_nicholas_gltf', name: 'Lucero and Nicholas (GLTF)', kind: 'glb-url', meta: 'imports/local-gltf', payload: { url: '/assets/imports/lucero_and_nicholas/scene.gltf' } },
+      { id: 'import_nikki_nick_glb', name: 'Nikki and Nick (GLB)', kind: 'glb-url', meta: 'imports/local-glb', payload: { url: '/assets/imports/nikki_and_nick.glb' } },
+      { id: 'import_lori_zack_gltf', name: 'Lori and Zack (GLTF)', kind: 'glb-url', meta: 'imports/local-gltf', payload: { url: '/assets/imports/lori_and_zack/scene.gltf' } },
+      { id: 'import_steven_stacy_gltf', name: 'Steven and Stacy (GLTF)', kind: 'glb-url', meta: 'imports/local-gltf', payload: { url: '/assets/imports/steven_and_stacy/scene.gltf' } },
+      { id: 'import_all_characters_glb', name: 'All Characters (GLB)', kind: 'glb-url', meta: 'imports/characters', payload: { url: '/assets/imports/all_characters.glb' } },
+      { id: 'import_all_characters_gltf', name: 'All Characters (GLTF)', kind: 'glb-url', meta: 'imports/characters', payload: { url: '/assets/imports/all_characters/scene.gltf' } },
+      { id: 'import_bluey_characters', name: 'Bluey Characters', kind: 'glb-url', meta: 'imports/characters', payload: { url: '/assets/imports/bluey_characters.glb' } },
+      { id: 'import_family_guy_characters', name: 'Family Guy Characters', kind: 'glb-url', meta: 'imports/characters', payload: { url: '/assets/imports/family_guy_characters.glb' } },
+      { id: 'import_jimmy_neutron_characters', name: 'Jimmy Neutron Characters', kind: 'glb-url', meta: 'imports/characters', payload: { url: '/assets/imports/jimmy_neutron_characters.glb' } },
+      { id: 'import_low_poly_characters', name: 'Low Poly Characters', kind: 'glb-url', meta: 'imports/characters', payload: { url: '/assets/imports/low_poly_characters.glb' } },
+      { id: 'import_incredibles_characters', name: 'Incredibles Characters', kind: 'glb-url', meta: 'imports/characters', payload: { url: '/assets/imports/the_incredibles_characters.glb' } },
+      { id: 'import_apocalyptic_city', name: 'Apocalyptic City', kind: 'glb-url', meta: 'imports/city', payload: { url: '/assets/imports/apocalyptic_city.glb' } },
+      { id: 'import_city_glb', name: 'City (GLB)', kind: 'glb-url', meta: 'imports/city', payload: { url: '/assets/imports/city.glb' } },
+      { id: 'import_city_pack_8', name: 'City Pack 8', kind: 'glb-url', meta: 'imports/city', payload: { url: '/assets/imports/city_pack_8.glb' } },
+      { id: 'import_lowpoly_city', name: 'Lowpoly City', kind: 'glb-url', meta: 'imports/city', payload: { url: '/assets/imports/lowpoly_city.glb' } },
+      { id: 'import_persian_city', name: 'Persian City', kind: 'glb-url', meta: 'imports/city', payload: { url: '/assets/imports/persian_city.glb' } },
+      { id: 'import_imaginary_city', name: 'Imaginary City I', kind: 'glb-url', meta: 'imports/city', payload: { url: '/assets/imports/imaginary_city_i.glb' } },
+      { id: 'import_city_building_set', name: 'City Building Set 1', kind: 'glb-url', meta: 'imports/city', payload: { url: '/assets/imports/ccity_building_set_1.glb' } },
+      { id: 'import_img_arena', name: 'Arena Texture Plate', kind: 'image-url', meta: 'imports/local-image', payload: { url: '/assets/imports/arena-240606-002/textures/Generic.jpeg' } },
+      { id: 'import_img_lori_zack', name: 'Lori+Zack Texture Plate', kind: 'image-url', meta: 'imports/local-image', payload: { url: '/assets/imports/lori-and-zack/textures/Lori_and_Zack_1.png' } },
+      { id: 'import_img_lucero_nicholas', name: 'Lucero+Nicholas Texture Plate', kind: 'image-url', meta: 'imports/local-image', payload: { url: '/assets/imports/lucero-and-nicholas/textures/Lucero_and_Nicholas_1.png' } },
+      { id: 'import_img_nikki_nick', name: 'Nikki+Nick Texture Plate', kind: 'image-url', meta: 'imports/local-image', payload: { url: '/assets/imports/nikki-and-nick/textures/Nikki_and_Nick_2.png' } },
+      { id: 'import_img_steven_stacy', name: 'Steven+Stacy Texture Plate', kind: 'image-url', meta: 'imports/local-image', payload: { url: '/assets/imports/steven-and-stacy/textures/Steven_and_Stacy_2.png' } },
+    ];
+
+    const CHARACTER_AVATAR_LIBRARY_FALLBACK = [
+      { id: 'avatar_human_base', name: 'Human Base Mesh', url: '/assets/imports/human_malefemale_basemesh_rigged/scene.gltf' },
+      { id: 'avatar_all_characters', name: 'All Characters', url: '/assets/imports/all_characters.glb' },
+    ];
+
+    function activeCharacterAvatarLibrary() {
+      return Array.isArray(characterAvatarLibrary) && characterAvatarLibrary.length
+        ? characterAvatarLibrary
+        : CHARACTER_AVATAR_LIBRARY_FALLBACK;
+    }
+
+    function canonicalImportPath(path) {
+      const s = String(path || '').trim();
+      if (!s) return '';
+      if (s.startsWith('/assets/imports/')) return s;
+      if (s.startsWith('/docs/imports/')) return `/assets/imports/${s.slice('/docs/imports/'.length)}`;
+      if (s.startsWith('docs/imports/')) return `/assets/imports/${s.slice('docs/imports/'.length)}`;
+      return s;
+    }
+
+    function manifestEntryToArtifactCard(entry) {
+      if (!entry || typeof entry !== 'object') return null;
+      if (entry.redistributable !== true) return null;
+      const entryUrl = canonicalImportPath(entry.entry_glb || entry.entry_gltf || '');
+      if (!entryUrl) return null;
+      return {
+        id: `manifest_${entry.id}`,
+        name: String(entry.title || entry.id || 'Imported Asset'),
+        kind: 'glb-url',
+        meta: `imports/${entry.role || entry.kind || 'asset'}${entry.default_enabled ? '/default' : ''}`,
+        payload: { url: entryUrl },
+      };
+    }
+
+    function refreshManifestAssetViews() {
+      manifestRuntimeArtifacts = [];
+      manifestStartupArtifacts = [];
+      characterAvatarLibrary = [];
+      for (const entry of importManifestAssets) {
+        const card = manifestEntryToArtifactCard(entry);
+        if (!card) continue;
+        manifestRuntimeArtifacts.push(card);
+        if (entry.default_enabled === true) manifestStartupArtifacts.push(card);
+        if (String(entry.kind || '').toLowerCase() === 'avatar') {
+          characterAvatarLibrary.push({
+            id: `avatar_${entry.id}`,
+            name: String(entry.title || entry.id || 'Avatar'),
+            url: canonicalImportPath(entry.entry_glb || entry.entry_gltf || ''),
+          });
+        }
+      }
+      manifestRuntimeArtifacts.sort((a, b) => a.name.localeCompare(b.name));
+      manifestStartupArtifacts.sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    async function loadImportAssetManifest() {
+      try {
+        const res = await fetch('/assets/imports/asset-manifest.json');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const entries = Array.isArray(data?.assets) ? data.assets : [];
+        importManifestAssets = entries.filter((x) => x && typeof x === 'object');
+        refreshManifestAssetViews();
+        refreshArtifactCards();
+        refreshCharacterAvatarControls();
+        ensureStartupTempleScene();
+        maybeUpgradeStartupFromManifest();
+      } catch {
+        importManifestAssets = [];
+        refreshManifestAssetViews();
+        ensureStartupTempleScene();
+      }
+    }
+
     function runtimeArtifactCards() {
       const base = [
         {
@@ -4685,6 +5512,7 @@ Enter the Prologue and begin reconciliation.`
           payload: { variant: 'avenue_strip', color: 0x6f8293 },
         },
       ];
+      if (manifestRuntimeArtifacts.length) base.push(...manifestRuntimeArtifacts);
 
       for (const aid of GameDirector.state.inventory) {
         const art = artifactFromId(aid);
@@ -4787,6 +5615,19 @@ Enter the Prologue and begin reconciliation.`
       obj.userData.artifactToken = token;
       placedRoot.add(obj);
       setSelected(obj);
+      return obj;
+    }
+
+    function applyTempleMeta(obj, item) {
+      const meta = item?.payload?.templeMeta;
+      if (!obj || !meta || typeof meta !== 'object') return;
+      obj.userData.templeMeta = {
+        radius: Number(meta.radius) || 0,
+        phase: Number(meta.phase) || 0,
+        speed: Number(meta.speed) || 0.2,
+        baseY: Number(meta.baseY) || 0,
+      };
+      obj.userData.autoSource = 'startup_temple';
     }
 
     function spawnPrimitive(item, point, savedTransform = null) {
@@ -4803,7 +5644,8 @@ Enter the Prologue and begin reconciliation.`
       });
       const mesh = new THREE.Mesh(geo, mat);
       mesh.name = `${item.name}-${Date.now()}`;
-      fitAndPlace(mesh, point, item, savedTransform);
+      const created = fitAndPlace(mesh, point, item, savedTransform);
+      applyTempleMeta(created, item);
     }
 
     function cityBuildingMesh(width, height, depth, color) {
@@ -4886,15 +5728,30 @@ Enter the Prologue and begin reconciliation.`
       }
 
       group.name = item.name;
-      fitAndPlace(group, point, item, savedTransform);
+      const created = fitAndPlace(group, point, item, savedTransform);
+      applyTempleMeta(created, item);
     }
 
     function spawnGlb(item, point, savedTransform = null) {
       gltfLoader.load(item.payload.url, (gltf) => {
         const root = gltf.scene;
         root.name = item.name;
-        fitAndPlace(root, point, item, savedTransform);
-      }, undefined, (err) => setStatus(`GLB load failed: ${err?.message || 'unknown'}`));
+        const created = fitAndPlace(root, point, item, savedTransform);
+        applyTempleMeta(created, item);
+      }, undefined, (err) => {
+        setStatus(`GLB load failed: ${err?.message || 'unknown'} · fallback spawned`);
+        // Guaranteed visual fallback so startup scene is never empty.
+        const fallback = {
+          ...item,
+          kind: 'primitive',
+          payload: {
+            primitive: 'torus',
+            color: 0x7e8fad,
+            templeMeta: item?.payload?.templeMeta || null,
+          },
+        };
+        spawnPrimitive(fallback, point, savedTransform);
+      });
     }
 
     function spawnSvgText(svgText, item, point, savedTransform = null) {
@@ -4904,9 +5761,32 @@ Enter the Prologue and begin reconciliation.`
         const mat = new THREE.MeshStandardMaterial({ map: tex, transparent: true, side: THREE.DoubleSide });
         const plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat);
         plane.name = item.name;
-        fitAndPlace(plane, point, item, savedTransform);
+        const created = fitAndPlace(plane, point, item, savedTransform);
+        applyTempleMeta(created, item);
         URL.revokeObjectURL(url);
       }, undefined, () => URL.revokeObjectURL(url));
+    }
+
+    function spawnImageUrl(url, item, point, savedTransform = null) {
+      textureLoader.load(url, (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        const mat = new THREE.MeshStandardMaterial({ map: tex, transparent: true, side: THREE.DoubleSide });
+        const plane = new THREE.Mesh(new THREE.PlaneGeometry(2.4, 1.8), mat);
+        plane.name = item.name;
+        const created = fitAndPlace(plane, point, item, savedTransform);
+        applyTempleMeta(created, item);
+      }, undefined, () => {
+        // Keep startup visual if texture URL fails.
+        spawnPrimitive({
+          ...item,
+          kind: 'primitive',
+          payload: {
+            primitive: 'box',
+            color: 0x6f8fb0,
+            templeMeta: item?.payload?.templeMeta || null,
+          },
+        }, point, savedTransform);
+      });
     }
 
     function spawnArtifact(item, point, savedTransform = null) {
@@ -4914,6 +5794,7 @@ Enter the Prologue and begin reconciliation.`
       if (item.kind === 'city-kit') return spawnCityKit(item, point, savedTransform);
       if (item.kind === 'glb-url') return spawnGlb(item, point, savedTransform);
       if (item.kind === 'svg') return spawnSvgText(item.payload.text, item, point, savedTransform);
+      if (item.kind === 'image-url') return spawnImageUrl(item.payload.url, item, point, savedTransform);
       if (item.kind === 'file-glb') return spawnGlb({ ...item, payload: { url: item.payload.dataUrl } }, point, savedTransform);
       if (item.kind === 'file-svg') return spawnSvgText(item.payload.text, item, point, savedTransform);
       setStatus(`Unsupported artifact kind: ${item.kind}`);
@@ -4943,6 +5824,267 @@ Enter the Prologue and begin reconciliation.`
       refreshArtifactCards();
       setStatus('Remote GLB added to Scene Artifacts. Drag it into the scene (URL must allow CORS).');
       return true;
+    }
+
+    const STARTUP_TEMPLE_ARTIFACTS = [
+      {
+        id: 'startup_phoenix',
+        name: 'Phoenix Bird',
+        kind: 'glb-url',
+        meta: 'startup/import',
+        payload: { url: '/assets/imports/phoenix_bird.glb' },
+      },
+      {
+        id: 'startup_ophanim',
+        name: 'Ophanim Angel',
+        kind: 'glb-url',
+        meta: 'startup/import',
+        payload: { url: '/assets/imports/ophanim_angel.glb' },
+      },
+      {
+        id: 'startup_brain',
+        name: 'Brain Hologram',
+        kind: 'glb-url',
+        meta: 'startup/import',
+        payload: { url: '/assets/imports/brain_hologram.glb' },
+      },
+      {
+        id: 'startup_human',
+        name: 'Human Base Mesh',
+        kind: 'glb-url',
+        meta: 'startup/import',
+        payload: { url: '/assets/imports/human_malefemale_basemesh_rigged/human_malefemale_basemesh_rigged.glb' },
+      },
+      {
+        id: 'startup_sigil',
+        name: 'Temple Sigil',
+        kind: 'svg',
+        meta: 'startup/svg',
+        payload: {
+          text: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <radialGradient id="rg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#d9f4ff"/>
+      <stop offset="100%" stop-color="#7aa0c8"/>
+    </radialGradient>
+  </defs>
+  <rect width="256" height="256" fill="#0e1d2c"/>
+  <circle cx="128" cy="128" r="96" fill="none" stroke="url(#rg)" stroke-width="8"/>
+  <path d="M128 34 L160 96 L222 104 L176 150 L188 214 L128 180 L68 214 L80 150 L34 104 L96 96 Z" fill="none" stroke="#c9e8ff" stroke-width="7"/>
+  <circle cx="128" cy="128" r="26" fill="#c9e8ff"/>
+</svg>`,
+        },
+      },
+      {
+        id: 'startup_gate_arch',
+        name: 'Temple Gate',
+        kind: 'city-kit',
+        meta: 'startup/city',
+        payload: { variant: 'gate_arch', color: 0x7b8f5a },
+      },
+      {
+        id: 'startup_avenue',
+        name: 'Temple Avenue',
+        kind: 'city-kit',
+        meta: 'startup/city',
+        payload: { variant: 'avenue_strip', color: 0x6f8293 },
+      },
+    ];
+
+    function startupArtifactsFromManifest(maxItems = 4) {
+      if (!manifestStartupArtifacts.length) return [];
+      return manifestStartupArtifacts.slice(0, Math.max(0, maxItems)).map((item, i) => ({
+        id: `startup_manifest_${i}_${item.id}`,
+        name: item.name,
+        kind: item.kind,
+        meta: 'startup/manifest',
+        payload: cloneState(item.payload || {}),
+      }));
+    }
+
+    const STARTUP_LAYOUT_ARCHETYPES = {
+      gate_plaza: {
+        environment: [new THREE.Vector3(0, 0, -8.5)],
+        architecture: [new THREE.Vector3(-8.2, 0, -2.8), new THREE.Vector3(8.2, 0, -2.8), new THREE.Vector3(0, 0, 6.6)],
+        character: [new THREE.Vector3(-2.1, 0, 1.4), new THREE.Vector3(2.1, 0, 1.2), new THREE.Vector3(0.3, 0, -1.8)],
+        symbolic: [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, 3.8)],
+      },
+      city_street: {
+        environment: [new THREE.Vector3(0, 0, -10)],
+        architecture: [new THREE.Vector3(-9.4, 0, -3.2), new THREE.Vector3(9.4, 0, -3.2), new THREE.Vector3(-7.6, 0, 4.5), new THREE.Vector3(7.6, 0, 4.5)],
+        character: [new THREE.Vector3(-2.6, 0, 2.4), new THREE.Vector3(2.6, 0, 2.1), new THREE.Vector3(0, 0, -1.4)],
+        symbolic: [new THREE.Vector3(0, 0, 0)],
+      },
+      witness_sparse: {
+        environment: [new THREE.Vector3(0, 0, -8.8)],
+        architecture: [new THREE.Vector3(-7.4, 0, -2.7), new THREE.Vector3(7.4, 0, -2.7)],
+        character: [new THREE.Vector3(0, 0, 2.2)],
+        symbolic: [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -2.8)],
+      },
+    };
+    const STARTUP_ROLE_PREFERRED_IDS = {
+      environment: ['lowpoly_city', 'city', 'park_0914', 'park_0926', 'arena_240606_002'],
+      architecture: ['ccity_building_set_1', 'city_pack_8', 'park_0914', 'park_0926'],
+      character: ['human_malefemale_basemesh_rigged', 'low_poly_characters', 'lori_and_zack', 'lucero_and_nicholas'],
+      symbolic: ['brain_hologram', 'phoenix_bird', 'ophanim_angel'],
+    };
+
+    function manifestRole(entry) {
+      const role = String(entry?.role || '').trim();
+      if (role) return role;
+      const kind = String(entry?.kind || '').toLowerCase();
+      if (kind === 'avatar') return 'character/human';
+      if (kind === 'environment') return 'environment/ground';
+      return 'symbolic/object';
+    }
+
+    function manifestTheme(entry) {
+      const theme = String(entry?.theme || '').trim();
+      return theme || 'gate_plaza';
+    }
+
+    function pickStartupTheme() {
+      const phase = String(GameDirector.state.current_phase || '');
+      if (phase === 'epilogue') return 'witness_sparse';
+      if (phase === 'hub' || phase === 'hub_return') return 'gate_plaza';
+      const cid = String(GameDirector.state.current_chapter || '');
+      const title = String(GameDirector.chapterMap[cid]?.meta?.title || '').toLowerCase();
+      if (title.includes('babel') || title.includes('flood') || title.includes('city') || title.includes('mark')) return 'city_street';
+      if (title.includes('canticle') || title.includes('covenant') || title.includes('reconciliation') || title.includes('witness')) return 'witness_sparse';
+      return 'gate_plaza';
+    }
+
+    function startupCandidatesBySlot(slot, want, theme) {
+      const slotMatch = (e) => {
+        const role = manifestRole(e);
+        if (slot === 'environment') return role.startsWith('environment/');
+        if (slot === 'architecture') return role.startsWith('architecture/');
+        if (slot === 'character') return role.startsWith('character/');
+        return role.startsWith('symbolic/') || role.startsWith('effect/');
+      };
+      const byPriority = importManifestAssets
+        .filter((e) => e && typeof e === 'object' && e.redistributable === true)
+        .filter(slotMatch)
+        .sort((a, b) => {
+          const ag = a.entry_glb ? 0 : 1;
+          const bg = b.entry_glb ? 0 : 1;
+          if (ag !== bg) return ag - bg;
+          const preferred = STARTUP_ROLE_PREFERRED_IDS[slot] || [];
+          const ai = preferred.indexOf(String(a.id || ''));
+          const bi = preferred.indexOf(String(b.id || ''));
+          const ap = ai >= 0 ? ai : 999;
+          const bp = bi >= 0 ? bi : 999;
+          if (ap !== bp) return ap - bp;
+          const ad = a.default_enabled === true ? 0 : 1;
+          const bd = b.default_enabled === true ? 0 : 1;
+          if (ad !== bd) return ad - bd;
+          const at = manifestTheme(a) === theme ? 0 : 1;
+          const bt = manifestTheme(b) === theme ? 0 : 1;
+          if (at !== bt) return at - bt;
+          return String(a.title || a.id).localeCompare(String(b.title || b.id));
+        });
+      return byPriority.slice(0, Math.max(0, want));
+    }
+
+    function manifestEntryToStartupItem(entry, slot, anchor, idx) {
+      const url = canonicalImportPath(entry.entry_glb || entry.entry_gltf || '');
+      if (!url) return null;
+      const scale = Math.max(0.2, Number(entry.scale_hint) || 1);
+      return {
+        id: `startup_${slot}_${idx}_${entry.id}`,
+        name: String(entry.title || entry.id || 'Imported'),
+        kind: 'glb-url',
+        meta: `startup/${slot}`,
+        payload: {
+          url,
+          scale: [scale, scale, scale],
+          templeMeta: {
+            radius: Math.sqrt((anchor.x * anchor.x) + (anchor.z * anchor.z)),
+            phase: Math.atan2(anchor.z, anchor.x),
+            speed: 0.12,
+            baseY: slot === 'character' ? 0.15 : 0.04,
+          },
+        },
+      };
+    }
+
+    function composeStartupWorldArtifacts() {
+      const theme = pickStartupTheme();
+      const layout = STARTUP_LAYOUT_ARCHETYPES[theme] || STARTUP_LAYOUT_ARCHETYPES.gate_plaza;
+      const plan = [
+        ['environment', 1],
+        ['architecture', Math.min(2, layout.architecture.length)],
+        ['character', Math.min(1, layout.character.length)],
+        ['symbolic', Math.min(1, layout.symbolic.length)],
+      ];
+      const rows = [];
+      for (const [slot, want] of plan) {
+        const anchors = layout[slot] || [];
+        const picks = startupCandidatesBySlot(slot, want, theme);
+        for (let i = 0; i < Math.min(anchors.length, picks.length); i += 1) {
+          const item = manifestEntryToStartupItem(picks[i], slot, anchors[i], i);
+          if (item) rows.push({ item, point: anchors[i].clone() });
+        }
+      }
+      return rows;
+    }
+
+    function maybeUpgradeStartupFromManifest() {
+      const startupNodes = placedRoot.children.filter((child) => child.userData?.autoSource === 'startup_temple');
+      if (!startupNodes.length) return;
+      const hasRoleComposed = startupNodes.some((child) => String(child.userData?.artifactToken?.meta || '').includes('startup/environment'))
+        || startupNodes.some((child) => String(child.userData?.artifactToken?.meta || '').includes('startup/architecture'))
+        || startupNodes.some((child) => String(child.userData?.artifactToken?.meta || '').includes('startup/character'))
+        || startupNodes.some((child) => String(child.userData?.artifactToken?.meta || '').includes('startup/symbolic'));
+      if (hasRoleComposed) return;
+      const composed = composeStartupWorldArtifacts();
+      if (!composed.length) return;
+      for (const node of startupNodes) {
+        if (selected === node) setSelected(null);
+        placedRoot.remove(node);
+      }
+      ensureStartupTempleScene();
+      setStatus('Startup world shell upgraded with imported role assets.');
+    }
+
+    function ensureStartupTempleScene() {
+      const hasStartup = placedRoot.children.some((child) => child.userData?.autoSource === 'startup_temple');
+      if (hasStartup) return;
+
+      const composed = composeStartupWorldArtifacts();
+      if (composed.length) {
+        for (const row of composed) spawnArtifact(row.item, row.point);
+      } else {
+        const list = STARTUP_TEMPLE_ARTIFACTS.concat(startupArtifactsFromManifest(4));
+        const count = list.length;
+        const radius = 7.8;
+        for (let i = 0; i < count; i += 1) {
+          const item = cloneState(list[i]);
+          const ang = -Math.PI / 2 + ((Math.PI * 2 * i) / count);
+          const point = new THREE.Vector3(Math.cos(ang) * radius, 0, Math.sin(ang) * radius);
+          if (!item.payload || typeof item.payload !== 'object') item.payload = {};
+          item.payload.templeMeta = {
+            radius,
+            phase: ang,
+            speed: 0.18 + (i % 4) * 0.03,
+            baseY: 0.05 + ((i % 3) * 0.08),
+          };
+          spawnArtifact(item, point);
+        }
+        // Primitive fail-safe only if imported composition is unavailable.
+        spawnArtifact({
+          id: 'startup_center_core',
+          name: 'Temple Core',
+          kind: 'primitive',
+          meta: 'startup/core',
+          payload: { primitive: 'torus', color: 0x89a8c4, templeMeta: { radius: 0, phase: 0, speed: 0.25, baseY: 0.2 } },
+        }, new THREE.Vector3(0, 0, 0));
+      }
+
+      // Cinematic framing so startup scene reads as a temple tableau.
+      camera.position.set(0, 9.5, 17.5);
+      controls.target.set(0, 1.4, 0);
+      controls.update();
     }
 
     const CITY_PRESETS = {
@@ -5327,6 +6469,7 @@ Enter the Prologue and begin reconciliation.`
     });
 
     renderer.domElement.addEventListener('pointerdown', (ev) => {
+      markIdleStoryTouched();
       const rect = renderer.domElement.getBoundingClientRect();
       mouse.x = ((ev.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((ev.clientY - rect.top) / rect.height) * 2 + 1;
@@ -5386,8 +6529,34 @@ Enter the Prologue and begin reconciliation.`
       GameDirector.autosave();
       setStatus(uiComplexityMode === 'advanced' ? 'Advanced UI enabled.' : 'Simple UI enabled.');
     };
-    document.getElementById('btn-toggle-complexity-panel').addEventListener('click', toggleComplexityMode);
-    document.getElementById('btn-toggle-complexity-stage').addEventListener('click', toggleComplexityMode);
+    document.getElementById('btn-toggle-complexity-panel')?.addEventListener('click', toggleComplexityMode);
+    document.getElementById('btn-sidebar-more')?.addEventListener('click', toggleSidebarExpanded);
+    document.getElementById('btn-toggle-complexity-stage')?.addEventListener('click', toggleComplexityMode);
+    document.getElementById('btn-strip-mode').addEventListener('click', () => triggerMenuAction('toggle_mode'));
+    document.getElementById('btn-strip-frame').addEventListener('click', () => triggerMenuAction('cycle_frame'));
+    document.getElementById('btn-strip-attention-narrow').addEventListener('click', () => setSemanticAttentionMode('narrow'));
+    document.getElementById('btn-strip-attention-expanded').addEventListener('click', () => setSemanticAttentionMode('expanded'));
+    document.getElementById('btn-strip-more').addEventListener('click', toggleStageStripExpanded);
+    document.getElementById('btn-view-2d')?.addEventListener('click', () => setProjectionViewMode('2d'));
+    document.getElementById('btn-view-3d')?.addEventListener('click', () => setProjectionViewMode('3d'));
+    document.getElementById('btn-view-ar')?.addEventListener('click', () => setProjectionViewMode('ar'));
+    document.getElementById('btn-view-vr')?.addEventListener('click', () => setProjectionViewMode('vr'));
+    document.getElementById('btn-view-shuffle')?.addEventListener('click', () => shuffleProjectionViewFromControlPlane());
+    document.getElementById('btn-fano-bias-add')?.addEventListener('click', () => {
+      const role = String(document.getElementById('fano-bias-role')?.value || 'advisor.wisdom');
+      const weight = Number(document.getElementById('fano-bias-weight')?.value || 1);
+      if (!queueFanoPathBias(role, weight, 8)) {
+        setStatus('Fano bias rejected.');
+        return;
+      }
+      updateFanoEnvelopeReadout();
+      setStatus(`Fano path bias queued: ${role} (+${Math.max(0.1, Number(weight) || 1).toFixed(1)})`);
+    });
+    document.getElementById('btn-fano-bias-clear')?.addEventListener('click', () => {
+      clearFanoPathBiasQueue();
+      updateFanoEnvelopeReadout();
+      setStatus('Fano path bias queue cleared.');
+    });
     document.getElementById('btn-quick-advanced').addEventListener('click', toggleComplexityMode);
     document.getElementById('btn-quick-mode').addEventListener('click', () => triggerMenuAction('toggle_mode'));
     document.getElementById('btn-quick-frame').addEventListener('click', () => triggerMenuAction('cycle_frame'));
@@ -5413,6 +6582,26 @@ Enter the Prologue and begin reconciliation.`
     document.getElementById('btn-sem-attention-narrow').addEventListener('click', () => setSemanticAttentionMode('narrow'));
     document.getElementById('btn-sem-attention-expanded').addEventListener('click', () => setSemanticAttentionMode('expanded'));
     document.getElementById('btn-sem-more').addEventListener('click', toggleSemanticPanelExpanded);
+    document.getElementById('character-select')?.addEventListener('change', () => {
+      const noun = String(document.getElementById('character-select')?.value || '').trim().toLowerCase();
+      const avatarSel = document.getElementById('character-avatar-select');
+      if (!noun || !avatarSel) return;
+      const assigned = assignedAvatarForNoun(noun);
+      if (assigned) avatarSel.value = assigned.id;
+    });
+    document.getElementById('btn-character-swap')?.addEventListener('click', () => {
+      const noun = String(document.getElementById('character-select')?.value || '').trim().toLowerCase();
+      const avatarId = String(document.getElementById('character-avatar-select')?.value || '');
+      if (!noun || !avatarId) return setStatus('Choose character + avatar.');
+      if (!queueCharacterAvatarSwap(noun, avatarId)) return setStatus('Avatar swap queue failed.');
+      GameDirector.autosave();
+    });
+    document.getElementById('btn-character-random')?.addEventListener('click', () => {
+      const noun = String(document.getElementById('character-select')?.value || '').trim().toLowerCase();
+      if (!noun) return setStatus('No character selected.');
+      if (!randomizeQueuedCharacterAvatar(noun)) return setStatus('No avatar library loaded.');
+      GameDirector.autosave();
+    });
 
     document.getElementById('btn-reset-camera').addEventListener('click', () => {
       camera.position.set(...CAMERA_DEFAULT.position);
@@ -5443,6 +6632,7 @@ Enter the Prologue and begin reconciliation.`
       setStatus('Codex shows seen scenes in right panel.');
     });
     document.getElementById('btn-story-next').addEventListener('click', () => {
+      commitQueuedCharacterAvatarSwaps('story_continue');
       if (GameDirector.state.current_phase === 'boot_cinematic') {
         GameDirector.state.boot_index = (GameDirector.state.boot_index || 0) + 1;
         GameDirector.appendEvent('boot_advanced', { boot_index: GameDirector.state.boot_index });
@@ -5829,6 +7019,7 @@ Enter the Prologue and begin reconciliation.`
     });
 
     window.addEventListener('keydown', (ev) => {
+      markIdleStoryTouched();
       const tag = ev.target && ev.target.tagName ? ev.target.tagName.toLowerCase() : '';
       if (tag === 'input' || tag === 'textarea') return;
       const k = ev.key.toLowerCase();
@@ -5843,6 +7034,15 @@ Enter the Prologue and begin reconciliation.`
 
       if (k === 's') { ev.preventDefault(); exportLayoutFile(); }
       else if (k === 'o') { ev.preventDefault(); importInput.click(); }
+    });
+
+    document.addEventListener('pointerdown', (ev) => {
+      if (!ev.isTrusted) return;
+      const t = ev.target;
+      if (!t) return;
+      if (t.closest('button, input, select, textarea, a, label')) {
+        markIdleStoryTouched();
+      }
     });
 
     function onResize() {
@@ -5937,6 +7137,49 @@ Enter the Prologue and begin reconciliation.`
       updateTimelineUI();
     };
     window.setUIFrame = (frame) => setUIFrame(frame);
+    window.setProjectionViewMode = (mode = '3d') => setProjectionViewMode(mode, 'api');
+    window.shuffleProjectionView = () => shuffleProjectionViewFromControlPlane();
+    window.startIdleStoryAutoplay = () => startIdleStoryAutoplay();
+    window.stopIdleStoryAutoplay = () => stopIdleStoryAutoplay();
+    window.computeFanoPathEnvelope = (tick = null, horizon = 8) => {
+      const t = tick == null ? ((Number(GameDirector?.state?.timeline_index || 0) + Number(controlPlaneState.lane || 0)) || 0) : Number(tick);
+      return cloneState(computeFanoPathEnvelope(t, horizon));
+    };
+    window.queueFanoPathBias = (role = 'advisor.wisdom', weight = 1, ttlFrames = 8) => {
+      const ok = queueFanoPathBias(role, weight, ttlFrames);
+      if (ok) updateFanoEnvelopeReadout();
+      return ok;
+    };
+    window.clearFanoPathBias = () => {
+      clearFanoPathBiasQueue();
+      updateFanoEnvelopeReadout();
+    };
+    window.getStartupPopulationStats = () => {
+      const rows = placedRoot.children
+        .filter((child) => child.userData?.autoSource === 'startup_temple')
+        .map((child) => {
+          const token = child.userData?.artifactToken || {};
+          return { kind: String(token.kind || ''), meta: String(token.meta || '') };
+        });
+      return {
+        total: rows.length,
+        imported: rows.filter((r) => r.kind === 'glb-url' || r.kind === 'file-glb').length,
+        primitives: rows.filter((r) => r.kind === 'primitive').length,
+        bySlot: {
+          environment: rows.filter((r) => r.meta.includes('startup/environment')).length,
+          architecture: rows.filter((r) => r.meta.includes('startup/architecture')).length,
+          character: rows.filter((r) => r.meta.includes('startup/character')).length,
+          symbolic: rows.filter((r) => r.meta.includes('startup/symbolic')).length,
+        },
+      };
+    };
+    window.getStartupCompositionPlan = () => composeStartupWorldArtifacts().map((row) => ({
+      id: row.item?.id || '',
+      name: row.item?.name || '',
+      kind: row.item?.kind || '',
+      meta: row.item?.meta || '',
+      point: [Number(row.point?.x || 0), Number(row.point?.y || 0), Number(row.point?.z || 0)],
+    }));
 
     applySnapSettings();
     futureInjectPlaceholder();
@@ -5946,6 +7189,7 @@ Enter the Prologue and begin reconciliation.`
     buildControlAndCodepointFrames();
     build3DMenuArtifacts();
     loadProgressionTemplates();
+    loadImportAssetManifest();
     setAppMode('story');
 
     if (localStorage.getItem(AUTOSAVE_KEY)) {
@@ -5959,6 +7203,11 @@ Enter the Prologue and begin reconciliation.`
     } else {
       GameDirector.startNewGame(0);
     }
+    startIdleStoryAutoplay();
+
+    window.addEventListener('pointerdown', markIdleStoryTouched, { passive: true });
+    window.addEventListener('wheel', markIdleStoryTouched, { passive: true });
+    window.addEventListener('touchstart', markIdleStoryTouched, { passive: true });
 
     const clock = new THREE.Clock();
     function animate() {
@@ -6006,6 +7255,22 @@ Enter the Prologue and begin reconciliation.`
           core.rotation.y += dt * 0.6;
         }
         if (ring) ring.rotation.z += dt * 0.5;
+      }
+      // Temple kaleidoscope motion for startup artifacts.
+      for (const child of placedRoot.children) {
+        const meta = child.userData?.templeMeta;
+        if (!meta) continue;
+        const phase = Number(meta.phase) || 0;
+        const radius = Number(meta.radius) || 0;
+        const speed = Number(meta.speed) || 0.2;
+        const baseY = Number(meta.baseY) || 0;
+        if (radius > 0.001) {
+          const theta = phase + (t * speed);
+          child.position.x = Math.cos(theta) * radius;
+          child.position.z = Math.sin(theta) * radius;
+        }
+        child.position.y = baseY + Math.sin((t * speed * 2.2) + phase) * 0.18;
+        child.rotation.y += dt * (0.35 + speed * 0.35);
       }
       renderer.render(scene, camera);
       requestAnimationFrame(animate);

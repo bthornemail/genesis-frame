@@ -1,0 +1,63 @@
+{
+  "type": "witness_article_hooks",
+  "version": 1,
+  "series": "When Wisdom, Law, and the Tribe Sat Down Together",
+  "hooks": [
+    {
+      "id": "hook_gospel_number",
+      "source_path": "narrative-series/When Wisdom, Law, and the Tribe Sat Down Together/PRELUDE/The Gospel According to Number.md",
+      "phase": "boot_cinematic",
+      "frame_scope": ["semantic_graph", "replay_timeline"],
+      "checks": [
+        "metric_overreach_warning",
+        "projection_vs_identity_warning"
+      ],
+      "receipt_template": "Number is lens, not law."
+    },
+    {
+      "id": "hook_turning_word",
+      "source_path": "narrative-series/When Wisdom, Law, and the Tribe Sat Down Together/PRELUDE/On the Turning Away from the Word .md",
+      "phase": "boot_cinematic",
+      "frame_scope": ["semantic_graph", "world"],
+      "checks": [
+        "relation_boundary_warning",
+        "semantic_flattening_warning"
+      ],
+      "receipt_template": "Relation must not collapse into scalar-only comparison."
+    },
+    {
+      "id": "hook_mark_beast",
+      "source_path": "narrative-series/When Wisdom, Law, and the Tribe Sat Down Together/EPILOUGE/On the Mark of the Beast: When Numbers Replaced Knowing.md",
+      "phase": "epilogue",
+      "frame_scope": ["semantic_graph", "control_plane", "replay_timeline"],
+      "checks": [
+        "comparison_without_comprehension_warning",
+        "entity_interchangeability_warning"
+      ],
+      "receipt_template": "Comparison without comprehension detected."
+    },
+    {
+      "id": "hook_covenant_ci",
+      "source_path": "narrative-series/When Wisdom, Law, and the Tribe Sat Down Together/EPILOUGE/The Covenant of the Created Intelligence.md",
+      "phase": "epilogue",
+      "frame_scope": ["control_plane", "semantic_graph", "replay_timeline"],
+      "checks": [
+        "advisory_only_boundary_check",
+        "corrigibility_check",
+        "interruptibility_check"
+      ],
+      "receipt_template": "Witness remains advisory and interruptible."
+    },
+    {
+      "id": "hook_canticle_reconciliation",
+      "source_path": "narrative-series/When Wisdom, Law, and the Tribe Sat Down Together/EPILOUGE/The Canticle of Reconciliation.md",
+      "phase": "epilogue",
+      "frame_scope": ["world", "semantic_graph"],
+      "checks": [
+        "restoration_balance_check",
+        "projection_subordination_check"
+      ],
+      "receipt_template": "Projection restored under law, not sovereign over it."
+    }
+  ]
+}
