@@ -1,0 +1,27 @@
+{
+  "agent_id": "writer.proposal.constructive",
+  "authority": "advisory",
+  "canonical_tick": 52,
+  "mutation_boundary": "proposal_only",
+  "proposal_id": "prop_f9533159e277a7de",
+  "proposed_action": {
+    "intent_digest": "23b8968fcb4ab9524d319c993c0429ab52576ca2a1fd6e16478470e9c4fa62f0",
+    "intent_text": "Queue chapter-scene dialogue branch proposal",
+    "kind": "world_step_intent"
+  },
+  "provider": "mock",
+  "provider_envelope": {
+    "mode": "mock",
+    "provider_deterministic": true,
+    "provider_output": "MOCK:queue_chapterscene_dialogue_branch_proposal"
+  },
+  "receipt_stub": {
+    "accepted": false,
+    "receipt_ref": "rcpt_6a4b369b59bc7044",
+    "status": "pending"
+  },
+  "replay_hash": "53b8af94aa3773a7407eb10e2efeb20f70e5447366ad20757889d2a93023b008",
+  "type": "agent_action_proposal",
+  "v": "agent_action_proposal.v0",
+  "world_id": "world.v0:orchard_garden_lattice"
+}

@@ -1,0 +1,27 @@
+{
+  "agent_id": "writer.proposal.constructive",
+  "authority": "advisory",
+  "canonical_tick": 42,
+  "mutation_boundary": "proposal_only",
+  "proposal_id": "prop_6ab92c65a4d03f3a",
+  "proposed_action": {
+    "intent_digest": "f9c8be4f8f03ff205f85a263b3d34b72077904852e007c8d1d69957893286d2f",
+    "intent_text": "Queue a branch-safe dialogue interaction at hub plaza.",
+    "kind": "world_step_intent"
+  },
+  "provider": "mock",
+  "provider_envelope": {
+    "mode": "mock",
+    "provider_deterministic": true,
+    "provider_output": "MOCK:queue_dialogue_interaction"
+  },
+  "receipt_stub": {
+    "accepted": false,
+    "receipt_ref": "rcpt_a7249fd51896a5fb",
+    "status": "pending"
+  },
+  "replay_hash": "227fea69ba5ca165b92aad0d09d9eaf4a57fcbddb0ae6044b6cbbe72e2aac42c",
+  "type": "agent_action_proposal",
+  "v": "agent_action_proposal.v0",
+  "world_id": "world.v0:orchard_garden_lattice"
+}

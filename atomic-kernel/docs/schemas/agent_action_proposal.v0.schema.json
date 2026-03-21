@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "agent_action_proposal.v0.schema.json",
+  "title": "Agent Action Proposal v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "v",
+    "type",
+    "authority",
+    "mutation_boundary",
+    "provider",
+    "world_id",
+    "agent_id",
+    "canonical_tick",
+    "proposal_id",
+    "proposed_action",
+    "provider_envelope",
+    "receipt_stub",
+    "replay_hash"
+  ],
+  "properties": {
+    "v": { "const": "agent_action_proposal.v0" },
+    "type": { "const": "agent_action_proposal" },
+    "authority": { "const": "advisory" },
+    "mutation_boundary": { "const": "proposal_only" },
+    "provider": { "type": "string", "enum": ["mock", "ollama", "opencode", "openclaw_adapter"] },
+    "world_id": { "type": "string", "minLength": 1 },
+    "agent_id": { "type": "string", "minLength": 1 },
+    "canonical_tick": { "type": "integer", "minimum": 0 },
+    "proposal_id": { "type": "string", "pattern": "^prop_[0-9a-f]{16}$" },
+    "proposed_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "intent_text", "intent_digest"],
+      "properties": {
+        "kind": { "const": "world_step_intent" },
+        "intent_text": { "type": "string", "minLength": 1 },
+        "intent_digest": { "type": "string", "pattern": "^[0-9a-fA-F]{64}$" }
+      }
+    },
+    "provider_envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "provider_deterministic", "provider_output"],
+      "properties": {
+        "mode": { "type": "string", "enum": ["mock", "external"] },
+        "provider_deterministic": { "type": "boolean" },
+        "provider_output": { "type": "string" }
+      }
+    },
+    "receipt_stub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "accepted", "receipt_ref"],
+      "properties": {
+        "status": { "const": "pending" },
+        "accepted": { "const": false },
+        "receipt_ref": { "type": "string", "pattern": "^rcpt_[0-9a-f]{16}$" }
+      }
+    },
+    "replay_hash": { "type": "string", "pattern": "^[0-9a-fA-F]{64}$" }
+  }
+}
