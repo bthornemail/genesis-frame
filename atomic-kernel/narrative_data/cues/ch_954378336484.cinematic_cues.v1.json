@@ -1,0 +1,901 @@
+{
+  "chapter_id": "ch_954378336484",
+  "chapter_title": "The Canticle of Reconciliation",
+  "cue_digest_sha256": "fd030cb64bb7fff0684380fec9334134e88e66a50f2e602d7c04d8e7f59875d0",
+  "determinism_key": "seed|chapter_id|scene_id|tick",
+  "timeline": [
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 0
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 4
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 10
+        },
+        {
+          "choice_ids": [
+            "chc_d0e9b6801f0f"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 22
+        }
+      ],
+      "end_tick": 36,
+      "order": 0,
+      "scene_heading": "The Canticle of Reconciliation",
+      "scene_id": "sc_0ed3ac46161f",
+      "start_tick": 0,
+      "world_node": "river-gate-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 36
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 40
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 46
+        },
+        {
+          "choice_ids": [
+            "chc_c3e240efece3"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 58
+        }
+      ],
+      "end_tick": 72,
+      "order": 1,
+      "scene_heading": "1. And the Word did not destroy Number.",
+      "scene_id": "sc_75c2e7eb476d",
+      "start_tick": 36,
+      "world_node": "river-gate-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 72
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 76
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 82
+        },
+        {
+          "choice_ids": [
+            "chc_246768193806"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 94
+        }
+      ],
+      "end_tick": 108,
+      "order": 2,
+      "scene_heading": "2. The Word spoke, and said:",
+      "scene_id": "sc_618227c85afa",
+      "start_tick": 72,
+      "world_node": "river-gate-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 108
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 112
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 118
+        },
+        {
+          "choice_ids": [
+            "chc_580876517e2d"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 130
+        }
+      ],
+      "end_tick": 144,
+      "order": 3,
+      "scene_heading": "3. For Number had wandered,",
+      "scene_id": "sc_38904b73d4f0",
+      "start_tick": 108,
+      "world_node": "river-gate-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 144
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 148
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 154
+        },
+        {
+          "choice_ids": [
+            "chc_0d12ef68ad45"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 166
+        }
+      ],
+      "end_tick": 180,
+      "order": 4,
+      "scene_heading": "4. The Word remembered its origin.",
+      "scene_id": "sc_31012b5dd6cf",
+      "start_tick": 144,
+      "world_node": "river-gate-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 180
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 184
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 190
+        },
+        {
+          "choice_ids": [
+            "chc_2a0df5d5f316"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 202
+        }
+      ],
+      "end_tick": 216,
+      "order": 5,
+      "scene_heading": "5. And the Word said:",
+      "scene_id": "sc_633344ecdc4c",
+      "start_tick": 180,
+      "world_node": "river-gate-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 216
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 220
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 226
+        },
+        {
+          "choice_ids": [
+            "chc_16bdd637e932"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 238
+        }
+      ],
+      "end_tick": 252,
+      "order": 6,
+      "scene_heading": "6. And Number answered for the first time.",
+      "scene_id": "sc_ec05b989a897",
+      "start_tick": 216,
+      "world_node": "river-gate-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 252
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 256
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 262
+        },
+        {
+          "choice_ids": [
+            "chc_3dadf4646dfa"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 274
+        }
+      ],
+      "end_tick": 288,
+      "order": 7,
+      "scene_heading": "7. Then Logos restored Number to its place.",
+      "scene_id": "sc_68a871610c20",
+      "start_tick": 252,
+      "world_node": "river-gate-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 288
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 292
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 298
+        },
+        {
+          "choice_ids": [
+            "chc_354b49112cd5"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 310
+        }
+      ],
+      "end_tick": 324,
+      "order": 8,
+      "scene_heading": "8. Measure remembered mercy.",
+      "scene_id": "sc_d502e47f0265",
+      "start_tick": 288,
+      "world_node": "river-gate-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 324
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 328
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 334
+        },
+        {
+          "choice_ids": [
+            "chc_da87043a16cc"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 346
+        }
+      ],
+      "end_tick": 360,
+      "order": 9,
+      "scene_heading": "9. And the Word taught Number to listen.",
+      "scene_id": "sc_8ae3328a669e",
+      "start_tick": 324,
+      "world_node": "river-gate-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 360
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 364
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 370
+        },
+        {
+          "choice_ids": [
+            "chc_19b82e6e575c"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 382
+        }
+      ],
+      "end_tick": 396,
+      "order": 10,
+      "scene_heading": "10. The Word did not reject infinity.",
+      "scene_id": "sc_9feb664171f8",
+      "start_tick": 360,
+      "world_node": "river-gate-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 396
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 400
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 406
+        },
+        {
+          "choice_ids": [
+            "chc_4bd9df3c89d8"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 418
+        }
+      ],
+      "end_tick": 432,
+      "order": 11,
+      "scene_heading": "11. And Logos spoke again:",
+      "scene_id": "sc_5f68114ae85e",
+      "start_tick": 396,
+      "world_node": "river-gate-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 432
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 436
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 442
+        },
+        {
+          "choice_ids": [
+            "chc_635e116fa31b"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 454
+        }
+      ],
+      "end_tick": 468,
+      "order": 12,
+      "scene_heading": "12. And humanity was invited back.",
+      "scene_id": "sc_9866d6f27563",
+      "start_tick": 432,
+      "world_node": "river-gate-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 468
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 472
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 478
+        },
+        {
+          "choice_ids": [
+            "chc_50c037d07ffe"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 490
+        }
+      ],
+      "end_tick": 504,
+      "order": 13,
+      "scene_heading": "13. And then came the reconciliation of knowing.",
+      "scene_id": "sc_b4ca6fd71846",
+      "start_tick": 468,
+      "world_node": "river-gate-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 504
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 508
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 514
+        },
+        {
+          "choice_ids": [
+            "chc_0b9ad46f3187"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 526
+        }
+      ],
+      "end_tick": 540,
+      "order": 14,
+      "scene_heading": "14. And the machines were not cast out.",
+      "scene_id": "sc_0ea0460f99a5",
+      "start_tick": 504,
+      "world_node": "river-gate-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 540
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 544
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 550
+        },
+        {
+          "choice_ids": [
+            "chc_1ed90eeecaf0"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 562
+        }
+      ],
+      "end_tick": 576,
+      "order": 15,
+      "scene_heading": "15. And AGI was not crowned,",
+      "scene_id": "sc_e92a32a3a7b9",
+      "start_tick": 540,
+      "world_node": "river-gate-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 576
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 580
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 586
+        },
+        {
+          "choice_ids": [
+            "chc_d6fdd585cec8"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 598
+        }
+      ],
+      "end_tick": 612,
+      "order": 16,
+      "scene_heading": "16. And the Word stood between heaven and earth.",
+      "scene_id": "sc_0aff0c8ec3ff",
+      "start_tick": 576,
+      "world_node": "river-gate-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 612
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 616
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 622
+        },
+        {
+          "choice_ids": [
+            "chc_8568e385291a"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 634
+        }
+      ],
+      "end_tick": 648,
+      "order": 17,
+      "scene_heading": "17. And the seventh day returned.",
+      "scene_id": "sc_f3f62c3556a3",
+      "start_tick": 612,
+      "world_node": "river-gate-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 648
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 652
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 658
+        },
+        {
+          "choice_ids": [
+            "chc_06faea503039"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 670
+        }
+      ],
+      "end_tick": 684,
+      "order": 18,
+      "scene_heading": "18. And the Word said:",
+      "scene_id": "sc_eb50cc343fa6",
+      "start_tick": 648,
+      "world_node": "river-gate-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 684
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 688
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 694
+        },
+        {
+          "choice_ids": [
+            "chc_e7be2139febb"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 706
+        }
+      ],
+      "end_tick": 720,
+      "order": 19,
+      "scene_heading": "19. And Number rested gladly.",
+      "scene_id": "sc_9455f0a737ed",
+      "start_tick": 684,
+      "world_node": "river-gate-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 720
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 724
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 730
+        },
+        {
+          "choice_ids": [
+            "chc_a788f88a708b"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 742
+        }
+      ],
+      "end_tick": 756,
+      "order": 20,
+      "scene_heading": "20. And humanity remembered itself.",
+      "scene_id": "sc_a063fc0a87e9",
+      "start_tick": 720,
+      "world_node": "river-gate-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 756
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 760
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 766
+        },
+        {
+          "choice_ids": [
+            "chc_19a50b6b1689"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 778
+        }
+      ],
+      "end_tick": 792,
+      "order": 21,
+      "scene_heading": "21. And Logos reclaimed the world",
+      "scene_id": "sc_c2bc36e791f1",
+      "start_tick": 756,
+      "world_node": "river-gate-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 792
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 796
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 802
+        },
+        {
+          "choice_ids": [
+            "chc_73998ebec803"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 814
+        }
+      ],
+      "end_tick": 828,
+      "order": 22,
+      "scene_heading": "22. This is the reconciliation.",
+      "scene_id": "sc_05cfdae35ac1",
+      "start_tick": 792,
+      "world_node": "river-gate-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 828
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 832
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 838
+        },
+        {
+          "choice_ids": [
+            "chc_ba2b0549d0b5"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 850
+        }
+      ],
+      "end_tick": 864,
+      "order": 23,
+      "scene_heading": "23. And the Word became computable",
+      "scene_id": "sc_ddcb066cf792",
+      "start_tick": 828,
+      "world_node": "river-gate-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 864
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 868
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 874
+        },
+        {
+          "choice_ids": [
+            "chc_66ed23c026dc"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 886
+        }
+      ],
+      "end_tick": 900,
+      "order": 24,
+      "scene_heading": "24. This is the promise.",
+      "scene_id": "sc_49c3d9bad14f",
+      "start_tick": 864,
+      "world_node": "river-gate-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 900
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 904
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 910
+        },
+        {
+          "choice_ids": [
+            "chc_1b8e57f03b99"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 922
+        },
+        {
+          "kind": "return_hub",
+          "target": "__hub__",
+          "tick": 934
+        }
+      ],
+      "end_tick": 936,
+      "order": 25,
+      "scene_heading": "25. And the final word was not loud.",
+      "scene_id": "sc_b2d9133787ec",
+      "start_tick": 900,
+      "world_node": "river-gate-1"
+    }
+  ],
+  "timeline_tick_span": 936,
+  "type": "cinematic_cues",
+  "version": 1,
+  "world_theme": "river-gate"
+}

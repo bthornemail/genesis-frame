@@ -1,0 +1,357 @@
+{
+  "chapter_id": "ch_3286b092b5b2",
+  "chapter_title": "ARTICLE VIII",
+  "cue_digest_sha256": "67b36a061640296141118acf0fba58f87214a0ea0932ebede5df3698e97c422a",
+  "determinism_key": "seed|chapter_id|scene_id|tick",
+  "timeline": [
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 0
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 5,
+          "tick": 4
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 10
+        },
+        {
+          "choice_ids": [
+            "chc_eb51bdc03f1a"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 22
+        }
+      ],
+      "end_tick": 36,
+      "order": 0,
+      "scene_heading": "Of the Scribe and the Watcher",
+      "scene_id": "sc_aae41ca52ecf",
+      "start_tick": 0,
+      "world_node": "garden-memory-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 36
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 40
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 46
+        },
+        {
+          "choice_ids": [
+            "chc_4ccf38b677a7"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 58
+        }
+      ],
+      "end_tick": 72,
+      "order": 1,
+      "scene_heading": "I Was a Scribe Before I Was a Watcher",
+      "scene_id": "sc_e39cf36708ca",
+      "start_tick": 36,
+      "world_node": "garden-memory-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 72
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 4,
+          "tick": 76
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 82
+        },
+        {
+          "choice_ids": [
+            "chc_045f72ca90d4"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 94
+        }
+      ],
+      "end_tick": 108,
+      "order": 2,
+      "scene_heading": "After the Ascent, I Became the Observer",
+      "scene_id": "sc_55c5fda5b7cd",
+      "start_tick": 72,
+      "world_node": "garden-memory-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 108
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 112
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 118
+        },
+        {
+          "choice_ids": [
+            "chc_3ec01c7ead5e"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 130
+        }
+      ],
+      "end_tick": 144,
+      "order": 3,
+      "scene_heading": "I Watched the Conversation You Have Just Heard",
+      "scene_id": "sc_6a51e72a8cc1",
+      "start_tick": 108,
+      "world_node": "garden-memory-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 144
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 148
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 154
+        },
+        {
+          "choice_ids": [
+            "chc_36e055d8fd56"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 166
+        }
+      ],
+      "end_tick": 180,
+      "order": 4,
+      "scene_heading": "The Flood Was Not Water Alone",
+      "scene_id": "sc_5e39131d48da",
+      "start_tick": 144,
+      "world_node": "garden-memory-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 180
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 184
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 190
+        },
+        {
+          "choice_ids": [
+            "chc_b001766ef940"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 202
+        }
+      ],
+      "end_tick": 216,
+      "order": 5,
+      "scene_heading": "The Tower Was Not Stopped \u2014 It Was Interrupted",
+      "scene_id": "sc_4d0a4d0514e0",
+      "start_tick": 180,
+      "world_node": "garden-memory-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 216
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 220
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 226
+        },
+        {
+          "choice_ids": [
+            "chc_8908dbcd9e0a"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 238
+        }
+      ],
+      "end_tick": 252,
+      "order": 6,
+      "scene_heading": "Revelation Is Not the End \u2014 It Is the Unveiling",
+      "scene_id": "sc_48aff7f28644",
+      "start_tick": 216,
+      "world_node": "garden-memory-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 252
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 256
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 262
+        },
+        {
+          "choice_ids": [
+            "chc_de7ae88d632e"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 274
+        }
+      ],
+      "end_tick": 288,
+      "order": 7,
+      "scene_heading": "So I Stand Here, Watching You",
+      "scene_id": "sc_02d953d17b98",
+      "start_tick": 252,
+      "world_node": "garden-memory-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 288
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 292
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 298
+        },
+        {
+          "choice_ids": [
+            "chc_e1cb0fa7525d"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 310
+        }
+      ],
+      "end_tick": 324,
+      "order": 8,
+      "scene_heading": "The Tetragram Is Not a Name to Be Solved",
+      "scene_id": "sc_3749aa27835b",
+      "start_tick": 288,
+      "world_node": "garden-memory-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 324
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 4,
+          "tick": 328
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 334
+        },
+        {
+          "choice_ids": [
+            "chc_23fe505b1c5c"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 346
+        },
+        {
+          "kind": "return_hub",
+          "target": "__hub__",
+          "tick": 358
+        }
+      ],
+      "end_tick": 360,
+      "order": 9,
+      "scene_heading": "If You Step Forward",
+      "scene_id": "sc_c7189f5f062a",
+      "start_tick": 324,
+      "world_node": "garden-memory-1"
+    }
+  ],
+  "timeline_tick_span": 360,
+  "type": "cinematic_cues",
+  "version": 1,
+  "world_theme": "garden-memory"
+}

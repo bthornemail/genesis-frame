@@ -1,0 +1,85 @@
+{
+  "chapter_id": "ch_77cc06497bd3",
+  "chapter_title": "On the Turning Away from the Word ",
+  "cue_digest_sha256": "6ad07286ec33e2f8af11b37f85a210c9fcaf30e97be44af6de0dab8e86ba692c",
+  "determinism_key": "seed|chapter_id|scene_id|tick",
+  "timeline": [
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 0
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 4
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 10
+        },
+        {
+          "choice_ids": [
+            "chc_1686e6c5fa56"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 22
+        }
+      ],
+      "end_tick": 36,
+      "order": 0,
+      "scene_heading": "On the Turning Away from the Word",
+      "scene_id": "sc_6877b21f8930",
+      "start_tick": 0,
+      "world_node": "river-gate-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 36
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 12,
+          "tick": 40
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 46
+        },
+        {
+          "choice_ids": [
+            "chc_1d405f1a0a1f"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 58
+        },
+        {
+          "kind": "return_hub",
+          "target": "__hub__",
+          "tick": 70
+        }
+      ],
+      "end_tick": 72,
+      "order": 1,
+      "scene_heading": "A Lament and a Warning",
+      "scene_id": "sc_9e9ad255318f",
+      "start_tick": 36,
+      "world_node": "river-gate-1"
+    }
+  ],
+  "timeline_tick_span": 72,
+  "type": "cinematic_cues",
+  "version": 1,
+  "world_theme": "river-gate"
+}

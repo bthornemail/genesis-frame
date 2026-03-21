@@ -1,0 +1,152 @@
+{
+  "asset_ids": [
+    "all_characters",
+    "arena_240606_002",
+    "ccity_building_set_1",
+    "city",
+    "city_pack_8",
+    "lori_and_zack",
+    "low_poly_characters",
+    "lowpoly_city",
+    "lucero_and_nicholas",
+    "park_0914",
+    "park_0926",
+    "persian_city",
+    "steven_and_stacy"
+  ],
+  "assets": [
+    {
+      "attribution_required": true,
+      "entry_glb": "/docs/imports/all_characters.glb",
+      "entry_gltf": "/docs/imports/all_characters/scene.gltf",
+      "id": "all_characters",
+      "kind": "avatar",
+      "license_file": "/docs/imports/all_characters/license.txt",
+      "license_kind": "unknown",
+      "title": "All Characters"
+    },
+    {
+      "attribution_required": true,
+      "entry_glb": "/docs/imports/arena_240606-002.glb",
+      "entry_gltf": "/docs/imports/arena_240606-002/scene.gltf",
+      "id": "arena_240606_002",
+      "kind": "environment",
+      "license_file": "/docs/imports/arena_240606-002/license.txt",
+      "license_kind": "unknown",
+      "title": "Arena 240606 002"
+    },
+    {
+      "attribution_required": true,
+      "entry_glb": "/docs/imports/ccity_building_set_1.glb",
+      "entry_gltf": "/docs/imports/ccity_building_set_1/scene.gltf",
+      "id": "ccity_building_set_1",
+      "kind": "environment",
+      "license_file": "/docs/imports/ccity_building_set_1/license.txt",
+      "license_kind": "unknown",
+      "title": "Ccity Building Set 1"
+    },
+    {
+      "attribution_required": true,
+      "entry_glb": "/docs/imports/city.glb",
+      "entry_gltf": "/docs/imports/city/scene.gltf",
+      "id": "city",
+      "kind": "environment",
+      "license_file": "/docs/imports/city/license.txt",
+      "license_kind": "unknown",
+      "title": "City"
+    },
+    {
+      "attribution_required": true,
+      "entry_glb": "/docs/imports/city_pack_8.glb",
+      "entry_gltf": "/docs/imports/city_pack_8/scene.gltf",
+      "id": "city_pack_8",
+      "kind": "environment",
+      "license_file": "/docs/imports/city_pack_8/license.txt",
+      "license_kind": "unknown",
+      "title": "City Pack 8"
+    },
+    {
+      "attribution_required": true,
+      "entry_glb": null,
+      "entry_gltf": "/docs/imports/lori_and_zack/scene.gltf",
+      "id": "lori_and_zack",
+      "kind": "avatar",
+      "license_file": "/docs/imports/lori_and_zack/license.txt",
+      "license_kind": "unknown",
+      "title": "Lori And Zack"
+    },
+    {
+      "attribution_required": true,
+      "entry_glb": "/docs/imports/low_poly_characters.glb",
+      "entry_gltf": "/docs/imports/low_poly_characters/scene.gltf",
+      "id": "low_poly_characters",
+      "kind": "avatar",
+      "license_file": "/docs/imports/low_poly_characters/license.txt",
+      "license_kind": "unknown",
+      "title": "Low Poly Characters"
+    },
+    {
+      "attribution_required": true,
+      "entry_glb": "/docs/imports/lowpoly_city.glb",
+      "entry_gltf": "/docs/imports/lowpoly_city/scene.gltf",
+      "id": "lowpoly_city",
+      "kind": "environment",
+      "license_file": "/docs/imports/lowpoly_city/license.txt",
+      "license_kind": "unknown",
+      "title": "Lowpoly City"
+    },
+    {
+      "attribution_required": true,
+      "entry_glb": "/docs/imports/lucero_and_nicholas.glb",
+      "entry_gltf": "/docs/imports/lucero_and_nicholas/scene.gltf",
+      "id": "lucero_and_nicholas",
+      "kind": "avatar",
+      "license_file": "/docs/imports/lucero_and_nicholas/license.txt",
+      "license_kind": "unknown",
+      "title": "Lucero And Nicholas"
+    },
+    {
+      "attribution_required": true,
+      "entry_glb": "/docs/imports/park_0914.glb",
+      "entry_gltf": "/docs/imports/park_0914/scene.gltf",
+      "id": "park_0914",
+      "kind": "environment",
+      "license_file": "/docs/imports/park_0914/license.txt",
+      "license_kind": "unknown",
+      "title": "Park 0914"
+    },
+    {
+      "attribution_required": true,
+      "entry_glb": "/docs/imports/park_0926.glb",
+      "entry_gltf": "/docs/imports/park_0926/scene.gltf",
+      "id": "park_0926",
+      "kind": "environment",
+      "license_file": "/docs/imports/park_0926/license.txt",
+      "license_kind": "unknown",
+      "title": "Park 0926"
+    },
+    {
+      "attribution_required": true,
+      "entry_glb": "/docs/imports/persian_city.glb",
+      "entry_gltf": "/docs/imports/persian_city/scene.gltf",
+      "id": "persian_city",
+      "kind": "environment",
+      "license_file": "/docs/imports/persian_city/license.txt",
+      "license_kind": "unknown",
+      "title": "Persian City"
+    },
+    {
+      "attribution_required": true,
+      "entry_glb": null,
+      "entry_gltf": "/docs/imports/steven_and_stacy/scene.gltf",
+      "id": "steven_and_stacy",
+      "kind": "avatar",
+      "license_file": "/docs/imports/steven_and_stacy/license.txt",
+      "license_kind": "unknown",
+      "title": "Steven And Stacy"
+    }
+  ],
+  "policy": "allowlist_only",
+  "type": "public_allowlist",
+  "version": 1
+}

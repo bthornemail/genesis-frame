@@ -64,6 +64,11 @@
         <option value="bench">Bench</option>
         <option value="lamp">Lamp</option>
       </select>
+      <button id="storyPlay" class="on">Story: Play</button>
+      <button id="storyStepIn">Step-In: Off</button>
+      <button id="storyDiverge">Diverge</button>
+      <button id="storyAccept" class="secondary">Accept Proposal</button>
+      <button id="storyReject" class="secondary">Reject</button>
       <button class="secondary" id="resetWorld">Reset Lot</button>
       <a href="/">back to control wall</a>
     </div>
@@ -93,6 +98,10 @@
         <pre id="log" class="log"></pre>
         <div class="k" style="margin-top:14px">Asset Attribution</div>
         <div id="attributionBox" class="meta">No landscape loaded yet.</div>
+        <div class="k" style="margin-top:14px">Story Director</div>
+        <div id="storyState" class="meta">loading...</div>
+        <div id="storyBody" class="meta">No chapter loaded.</div>
+        <div id="proposalList" class="meta">pending proposals: 0</div>
       </div>
 </div>
   </div>
@@ -159,7 +168,23 @@
       avatarAssets: [],
       avatarAssetCursor: 0,
       environmentAssets: [],
-      currentEnvironmentAsset: null
+      currentEnvironmentAsset: null,
+      allowlistIds: new Set()
+    };
+    const narrative = {
+      seed: 'immersive_v1',
+      autoplay: true,
+      stepIn: false,
+      chapterOrder: [],
+      chapters: new Map(),
+      cues: new Map(),
+      chapterIndex: 0,
+      sceneIndex: 0,
+      tick: 0,
+      queue: [],
+      accepted: [],
+      receipts: [],
+      elapsed: 0
     };
     const needKeys = ['hunger','energy','social','fun','hygiene','bladder'];
     const loader = new GLTFLoader();
@@ -214,6 +239,32 @@
       return raw.replace('/docs/imports/', '/assets/imports/');
     }
 
+    async function fetchJsonFirst(urls){
+      for (const url of urls){
+        try {
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) continue;
+          return await res.json();
+        } catch {
+          continue;
+        }
+      }
+      return null;
+    }
+
+    async function fetchTextFirst(urls){
+      for (const url of urls){
+        try {
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) continue;
+          return await res.text();
+        } catch {
+          continue;
+        }
+      }
+      return '';
+    }
+
     function pickAvatarAsset(){
       if (!world.avatarAssets.length) return null;
       const mode = $('avatarPack').value || 'auto';
@@ -247,6 +298,166 @@
         ? `<br><br><b>Selected Avatar:</b> ${selectedAvatar.title || selectedAvatar.id} (${selectedAvatar.id})<br><span class="muted">license=${selectedAvatar.license_kind || 'unknown'} · attribution_required=${String(Boolean(selectedAvatar.attribution_required))}</span>`
         : '<br><br><b>Selected Avatar:</b> none';
       box.innerHTML = `${envLine}${envSource}${envLicense}${avatarLine}`;
+    }
+
+    function updateProposalPanel(){
+      const lines = narrative.queue.slice(0, 6).map((p)=>`- ${p.action} (${p.proposal_id})`);
+      $('proposalList').textContent = lines.length ? `pending proposals: ${narrative.queue.length}\n${lines.join('\n')}` : 'pending proposals: 0';
+    }
+
+    function updateStoryPanel(){
+      const chapterId = narrative.chapterOrder[narrative.chapterIndex] || '';
+      const chapter = chapterId ? narrative.chapters.get(chapterId) : null;
+      const cue = chapterId ? narrative.cues.get(chapterId) : null;
+      const scene = chapter?.scenes?.[narrative.sceneIndex] || null;
+      const cueRow = cue?.timeline?.find((row)=>String(row.scene_id) === String(scene?.id || ''));
+      const stepInOpen = Boolean(
+        narrative.stepIn &&
+        cueRow &&
+        Array.isArray(cueRow.cue_points) &&
+        cueRow.cue_points.some((cp)=>cp.kind === 'step_in')
+      );
+      $('storyState').innerHTML = [
+        `<b>mode:</b> ${narrative.autoplay ? 'movie' : 'manual'}`,
+        `<b>step-in:</b> ${narrative.stepIn ? 'enabled' : 'off'}`,
+        `<b>chapter:</b> ${chapter?.meta?.title || chapterId || '-'}`,
+        `<b>scene:</b> ${scene?.heading || '-'}`,
+        `<b>tick:</b> ${narrative.tick}`,
+        `<b>window:</b> ${stepInOpen ? 'step_in_open' : 'cinematic'}`
+      ].join('<br>');
+      $('storyBody').textContent = scene
+        ? `${scene.heading}\n\n${String(scene.body_text || '...').slice(0, 800)}`
+        : 'No chapter loaded.';
+      updateProposalPanel();
+    }
+
+    function sid(prefix, data){
+      const text = `${prefix}|${JSON.stringify(data)}`;
+      let h = 2166136261;
+      for (let i = 0; i < text.length; i++) {
+        h ^= text.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return `${prefix}_${(h >>> 0).toString(16).padStart(8, '0')}`;
+    }
+
+    function queueProposal(action, payload){
+      const chapterId = narrative.chapterOrder[narrative.chapterIndex] || '';
+      const chapter = chapterId ? narrative.chapters.get(chapterId) : null;
+      const scene = chapter?.scenes?.[narrative.sceneIndex] || null;
+      const proposal = {
+        type: 'immersive_proposal',
+        version: 1,
+        proposal_id: sid('ip', { chapterId, sceneId: scene?.id || '', action, payload, tick: narrative.tick }),
+        chapter_id: chapterId,
+        scene_id: scene?.id || '',
+        tick: narrative.tick,
+        action,
+        payload,
+        status: 'pending',
+        authority: 'advisory'
+      };
+      narrative.queue.push(proposal);
+      log(`proposal queued ${proposal.action} (${proposal.proposal_id})`);
+      updateStoryPanel();
+    }
+
+    function acceptProposal(){
+      const proposal = narrative.queue.shift();
+      if (!proposal) return;
+      proposal.status = 'accepted';
+      narrative.accepted.push(proposal);
+      narrative.receipts.push({
+        type: 'immersive_receipt',
+        version: 1,
+        receipt_id: sid('ir', { proposal_id: proposal.proposal_id, decision: 'accepted', tick: narrative.tick }),
+        proposal_id: proposal.proposal_id,
+        decision: 'accepted',
+        reason: 'accepted_at_frame_boundary',
+        frame_boundary_tick: narrative.tick,
+        authority: 'advisory'
+      });
+      log(`proposal accepted ${proposal.proposal_id}`);
+      updateStoryPanel();
+    }
+
+    function rejectProposal(){
+      const proposal = narrative.queue.shift();
+      if (!proposal) return;
+      narrative.receipts.push({
+        type: 'immersive_receipt',
+        version: 1,
+        receipt_id: sid('ir', { proposal_id: proposal.proposal_id, decision: 'rejected', tick: narrative.tick }),
+        proposal_id: proposal.proposal_id,
+        decision: 'rejected',
+        reason: 'operator_reject',
+        frame_boundary_tick: narrative.tick,
+        authority: 'advisory'
+      });
+      log(`proposal rejected ${proposal.proposal_id}`);
+      updateStoryPanel();
+    }
+
+    function applyAcceptedProposal(){
+      const proposal = narrative.accepted.shift();
+      if (!proposal) return;
+      if (proposal.action === 'choice_select') {
+        stepStoryScene(1);
+      } else if (proposal.action === 'camera_branch') {
+        controls.target.x += 0.8;
+      } else if (proposal.action === 'avatar_swap') {
+        const noun = String(proposal.payload?.noun || '').toLowerCase();
+        const avatarId = String(proposal.payload?.avatar_id || '');
+        const sim = world.sims.find((s)=>String(s.name).toLowerCase() === noun);
+        const asset = world.avatarAssets.find((a)=>a.id === avatarId);
+        if (sim && asset) attachAvatarToResident(sim, asset).catch(()=>{});
+      } else if (proposal.action === 'scene_pace_change') {
+        speed = Math.max(1, Math.min(4, Number(proposal.payload?.speed || 1)));
+      }
+      log(`proposal applied ${proposal.proposal_id}`);
+      updateStoryPanel();
+    }
+
+    function stepStoryScene(delta){
+      const chapterId = narrative.chapterOrder[narrative.chapterIndex] || '';
+      const chapter = chapterId ? narrative.chapters.get(chapterId) : null;
+      if (!chapter || !chapter.scenes.length) return;
+      narrative.sceneIndex += Number(delta) || 1;
+      if (narrative.sceneIndex >= chapter.scenes.length) {
+        narrative.sceneIndex = 0;
+        narrative.chapterIndex = (narrative.chapterIndex + 1) % Math.max(1, narrative.chapterOrder.length);
+      }
+      narrative.tick += 1;
+      updateStoryPanel();
+    }
+
+    async function loadNarrativeSeries(){
+      const chapterIds = [
+        'ch_0185dd34c89e','ch_1d1b90232e14','ch_17ee69f7fe32','ch_277f36609f50','ch_3286b092b5b2','ch_77cc06497bd3','ch_81ddc4c731b3','ch_8d3557f1baeb','ch_954378336484','ch_af53cb38dfaa','ch_b48b924b0464','ch_ba9d45d38bd3','ch_c429d3abd60e','ch_dcdf6301992e'
+      ];
+      for (const chapterId of chapterIds){
+        const cue = await fetchJsonFirst([
+          `/atomic-kernel/narrative_data/cues/${chapterId}.cinematic_cues.v1.json`,
+          `/docs/immersive-data/cues/${chapterId}.cinematic_cues.v1.json`
+        ]);
+        const raw = await fetchTextFirst([
+          `/atomic-kernel/narrative_data/chapters/${chapterId}.ndjson`
+        ]);
+        const rows = raw
+          ? raw.split('\\n').map((line)=>line.trim()).filter(Boolean).map((line)=>JSON.parse(line))
+          : [];
+        const meta = rows.find((r)=>r.type === 'chapter_meta') || { id: chapterId, title: cue?.chapter_title || chapterId };
+        const scenes = rows.filter((r)=>r.type === 'scene');
+        if (!scenes.length && cue?.timeline?.length) {
+          for (const row of cue.timeline) scenes.push({ id: row.scene_id, heading: row.scene_heading, body_text: '...' });
+        }
+        if (!scenes.length) continue;
+        narrative.chapterOrder.push(chapterId);
+        narrative.chapters.set(chapterId, { meta, scenes });
+        if (cue) narrative.cues.set(chapterId, cue);
+      }
+      updateStoryPanel();
+      log(`narrative loaded chapters=${narrative.chapterOrder.length}`);
     }
 
     function buildFallbackResidentVisual(visualRoot){
@@ -287,6 +498,14 @@
       if (!asset) {
         sim.avatarStatus = 'fallback';
         sim.avatarId = null;
+        return;
+      }
+      if (world.allowlistIds.size && !world.allowlistIds.has(asset.id)) {
+        sim.avatarStatus = 'blocked';
+        sim.avatarId = null;
+        clearGroupChildren(sim.visualRoot);
+        buildFallbackResidentVisual(sim.visualRoot);
+        log(`avatar blocked by allowlist ${sim.name} <- ${asset.id}`);
         return;
       }
       attachAvatarToResident(sim, asset)
@@ -487,14 +706,21 @@
         if (!res.ok) throw new Error(`manifest HTTP ${res.status}`);
         const data = await res.json();
         world.manifest = Array.isArray(data.assets) ? data.assets : [];
+        const allowlist = await fetchJsonFirst([
+          '/atomic-kernel/narrative_data/casting/public_allowlist.v1.json',
+          '/docs/immersive-data/casting/public_allowlist.v1.json'
+        ]);
+        world.allowlistIds = new Set(Array.isArray(allowlist?.asset_ids) ? allowlist.asset_ids.map((x)=>String(x)) : []);
         world.avatarAssets = world.manifest.filter((a)=>{
           if (!a || a.redistributable !== true) return false;
           if (String(a.kind || '').toLowerCase() !== 'avatar') return false;
+          if (world.allowlistIds.size && !world.allowlistIds.has(String(a.id || ''))) return false;
           return Boolean(a.entry_glb || a.entry_gltf);
         });
         world.environmentAssets = world.manifest.filter((a)=>{
           if (!a || a.redistributable !== true) return false;
           if (String(a.kind || '').toLowerCase() !== 'environment') return false;
+          if (world.allowlistIds.size && !world.allowlistIds.has(String(a.id || ''))) return false;
           return Boolean(a.entry_glb || a.entry_gltf);
         });
         const avatarSel = $('avatarPack');
@@ -518,6 +744,12 @@
 
         const env = pickEnvironmentAsset();
         if (!env) { log('manifest loaded but no default environment entry'); return; }
+        if (world.allowlistIds.size && !world.allowlistIds.has(String(env.id || ''))) {
+          world.currentEnvironmentAsset = null;
+          log(`environment blocked by allowlist: ${env.id}`);
+          renderAssetAttribution();
+          return;
+        }
         const url = (env.entry_glb || env.entry_gltf || '').replace('/docs/imports/', '/assets/imports/');
         const envModel = await loadGltf(url);
         while (envRoot.children.length) envRoot.remove(envRoot.children[0]);
@@ -546,6 +778,31 @@
     $('speed4').onclick = () => { speed = 4; $('speed4').classList.add('on'); $('speed1').classList.remove('on'); };
     $('spawnSim').onclick = () => { const i = world.sims.length + 1; const sim = makeResident(`Resident ${i}`, rand(-8,8), rand(-8,8)); log(`spawned ${sim.name}`); updateHUD(); };
     $('buildMode').onclick = () => { buildMode = !buildMode; $('buildMode').textContent = `Build Mode: ${buildMode ? 'On':'Off'}`; $('buildMode').classList.toggle('on', buildMode); updateHUD(); };
+    $('storyPlay').onclick = () => {
+      narrative.autoplay = !narrative.autoplay;
+      $('storyPlay').textContent = narrative.autoplay ? 'Story: Play' : 'Story: Pause';
+      $('storyPlay').classList.toggle('on', narrative.autoplay);
+      updateStoryPanel();
+    };
+    $('storyStepIn').onclick = () => {
+      narrative.stepIn = !narrative.stepIn;
+      $('storyStepIn').textContent = narrative.stepIn ? 'Step-In: On' : 'Step-In: Off';
+      $('storyStepIn').classList.toggle('on', narrative.stepIn);
+      updateStoryPanel();
+    };
+    $('storyDiverge').onclick = () => {
+      const chapterId = narrative.chapterOrder[narrative.chapterIndex] || '';
+      const chapter = chapterId ? narrative.chapters.get(chapterId) : null;
+      const scene = chapter?.scenes?.[narrative.sceneIndex] || null;
+      if (!scene) return;
+      const action = narrative.stepIn ? 'choice_select' : 'camera_branch';
+      const payload = action === 'choice_select'
+        ? { scene_id: scene.id, branch: 'alt' }
+        : { basis: '16' };
+      queueProposal(action, payload);
+    };
+    $('storyAccept').onclick = () => acceptProposal();
+    $('storyReject').onclick = () => rejectProposal();
     $('resetWorld').onclick = () => { world.minute = 6*60; world.day = 1; seedWorld(); applyManifestEnvironment(); updateHUD(); };
     $('avatarPack').onchange = () => {
       log(`avatar mode changed: ${$('avatarPack').value}`);
@@ -560,6 +817,12 @@
       }
       try {
         const url = (env.entry_glb || env.entry_gltf || '').replace('/docs/imports/', '/assets/imports/');
+        if (world.allowlistIds.size && !world.allowlistIds.has(String(env.id || ''))) {
+          world.currentEnvironmentAsset = null;
+          log(`landscape blocked: ${env.id}`);
+          renderAssetAttribution();
+          return;
+        }
         const envModel = await loadGltf(url);
         while (envRoot.children.length) envRoot.remove(envRoot.children[0]);
         const box = new THREE.Box3().setFromObject(envModel);
@@ -586,6 +849,15 @@
         world.minute += dt*8; if (world.minute >= 24*60) { world.minute -= 24*60; world.day += 1; }
         for (const sim of world.sims) updateSim(sim, dt);
         if (selected && !world.sims.includes(selected)) selected = null;
+        narrative.elapsed += dt;
+        if (narrative.autoplay && !narrative.stepIn && narrative.elapsed >= 5.0) {
+          narrative.elapsed = 0;
+          stepStoryScene(1);
+        }
+        if (narrative.accepted.length && narrative.elapsed >= 1.2) {
+          narrative.elapsed = 0;
+          applyAcceptedProposal();
+        }
         updateHUD();
       }
       renderer.render(scene, camera);
@@ -593,9 +865,11 @@
 
     seedWorld();
     applyManifestEnvironment();
+    loadNarrativeSeries();
     updateHUD();
+    updateStoryPanel();
     animate();
-    log('portal ready (sims-like prototype, manifest-backed)');
+    log('portal ready (sims-like prototype, manifest-backed, cinematic step-in runtime)');
   </script>
 </body>
 </html>

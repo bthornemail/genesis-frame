@@ -1,0 +1,65 @@
+{
+  "$id": "immersive_proposal.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "enum": [
+        "choice_select",
+        "camera_branch",
+        "avatar_swap",
+        "scene_pace_change"
+      ]
+    },
+    "authority": {
+      "const": "advisory"
+    },
+    "chapter_id": {
+      "minLength": 4,
+      "type": "string"
+    },
+    "payload": {
+      "additionalProperties": true,
+      "type": "object"
+    },
+    "proposal_id": {
+      "minLength": 4,
+      "type": "string"
+    },
+    "scene_id": {
+      "minLength": 4,
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "accepted",
+        "rejected"
+      ]
+    },
+    "tick": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "type": {
+      "const": "immersive_proposal"
+    },
+    "version": {
+      "const": 1
+    }
+  },
+  "required": [
+    "type",
+    "version",
+    "proposal_id",
+    "chapter_id",
+    "scene_id",
+    "tick",
+    "action",
+    "payload",
+    "status",
+    "authority"
+  ],
+  "title": "Immersive Proposal v1",
+  "type": "object"
+}

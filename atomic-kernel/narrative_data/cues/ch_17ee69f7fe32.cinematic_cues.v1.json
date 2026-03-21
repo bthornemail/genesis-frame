@@ -1,0 +1,85 @@
+{
+  "chapter_id": "ch_17ee69f7fe32",
+  "chapter_title": "On the Mark of the Beast: When Numbers Replaced Knowing",
+  "cue_digest_sha256": "93b80136217e4e9fd01ec188f56325594c4c8a39ef5fae0eddd6383db2559e0e",
+  "determinism_key": "seed|chapter_id|scene_id|tick",
+  "timeline": [
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 0
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 4
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 10
+        },
+        {
+          "choice_ids": [
+            "chc_4e69a1e8719e"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 22
+        }
+      ],
+      "end_tick": 36,
+      "order": 0,
+      "scene_heading": "On the Mark of the Beast: When Numbers Replaced Knowing",
+      "scene_id": "sc_4c5d4b8ab5bd",
+      "start_tick": 0,
+      "world_node": "witness-plain-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 36
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 12,
+          "tick": 40
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 46
+        },
+        {
+          "choice_ids": [
+            "chc_8fa44f7583a5"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 58
+        },
+        {
+          "kind": "return_hub",
+          "target": "__hub__",
+          "tick": 70
+        }
+      ],
+      "end_tick": 72,
+      "order": 1,
+      "scene_heading": "A Reflection on Measure, Judgment, and the Loss of Difference",
+      "scene_id": "sc_8d7cf85333f9",
+      "start_tick": 36,
+      "world_node": "witness-plain-1"
+    }
+  ],
+  "timeline_tick_span": 72,
+  "type": "cinematic_cues",
+  "version": 1,
+  "world_theme": "witness-plain"
+}

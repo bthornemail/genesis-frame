@@ -1,0 +1,25 @@
+{
+  "chapters": [
+    "ch_0185dd34c89e",
+    "ch_17ee69f7fe32",
+    "ch_1d1b90232e14",
+    "ch_277f36609f50",
+    "ch_3286b092b5b2",
+    "ch_77cc06497bd3",
+    "ch_81ddc4c731b3",
+    "ch_8d3557f1baeb",
+    "ch_954378336484",
+    "ch_af53cb38dfaa",
+    "ch_b48b924b0464",
+    "ch_ba9d45d38bd3",
+    "ch_c429d3abd60e",
+    "ch_dcdf6301992e"
+  ],
+  "outputs": {
+    "casting_dir": "narrative_data/casting",
+    "contracts_dir": "narrative_data/contracts",
+    "cues_dir": "narrative_data/cues"
+  },
+  "type": "immersive_narrative_build",
+  "version": 1
+}

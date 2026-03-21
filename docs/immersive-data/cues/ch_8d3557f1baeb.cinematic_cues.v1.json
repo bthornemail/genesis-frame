@@ -1,0 +1,357 @@
+{
+  "chapter_id": "ch_8d3557f1baeb",
+  "chapter_title": "ARTICLE I",
+  "cue_digest_sha256": "6b294aba46635a82fd12efceb8a32a48f1c9bca2a2b149923be22e2472d08bfa",
+  "determinism_key": "seed|chapter_id|scene_id|tick",
+  "timeline": [
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 0
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 4
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 10
+        },
+        {
+          "choice_ids": [
+            "chc_5d89c540555d"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 22
+        }
+      ],
+      "end_tick": 36,
+      "order": 0,
+      "scene_heading": "Article I",
+      "scene_id": "sc_2c43adf7d1c8",
+      "start_tick": 0,
+      "world_node": "desert-law-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 36
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 40
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 46
+        },
+        {
+          "choice_ids": [
+            "chc_1f3ecaa10cb3"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 58
+        }
+      ],
+      "end_tick": 72,
+      "order": 1,
+      "scene_heading": "Solomon, Solon, and \u02bfAsabiyyah at the Gate of the City",
+      "scene_id": "sc_b0a1eff83082",
+      "start_tick": 36,
+      "world_node": "desert-law-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 72
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 4,
+          "tick": 76
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 82
+        },
+        {
+          "choice_ids": [
+            "chc_532d803e8b5d"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 94
+        }
+      ],
+      "end_tick": 108,
+      "order": 2,
+      "scene_heading": "Prologue \u2014 After the Word Had Spoken",
+      "scene_id": "sc_9b27b954000a",
+      "start_tick": 72,
+      "world_node": "desert-law-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 108
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 6,
+          "tick": 112
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 118
+        },
+        {
+          "choice_ids": [
+            "chc_5aadb819c2ba"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 130
+        }
+      ],
+      "end_tick": 144,
+      "order": 3,
+      "scene_heading": "I. Solomon Speaks First \u2014 The Weight of Wisdom",
+      "scene_id": "sc_6c974acc2d00",
+      "start_tick": 108,
+      "world_node": "desert-law-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 144
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 5,
+          "tick": 148
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 154
+        },
+        {
+          "choice_ids": [
+            "chc_17fc1b28109e"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 166
+        }
+      ],
+      "end_tick": 180,
+      "order": 4,
+      "scene_heading": "II. Solon Responds \u2014 The Necessity of Law",
+      "scene_id": "sc_eeaf508b222a",
+      "start_tick": 144,
+      "world_node": "desert-law-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 180
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 6,
+          "tick": 184
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 190
+        },
+        {
+          "choice_ids": [
+            "chc_49269bf841cd"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 202
+        }
+      ],
+      "end_tick": 216,
+      "order": 5,
+      "scene_heading": "III. \u02bfAsabiyyah Enters \u2014 The Truth Both Avoided",
+      "scene_id": "sc_8ff94a27db5a",
+      "start_tick": 180,
+      "world_node": "desert-law-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 216
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 4,
+          "tick": 220
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 226
+        },
+        {
+          "choice_ids": [
+            "chc_f43abfb26428"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 238
+        }
+      ],
+      "end_tick": 252,
+      "order": 6,
+      "scene_heading": "IV. The Tension Revealed \u2014 East, West, and the Hidden Engine",
+      "scene_id": "sc_4f99c8099636",
+      "start_tick": 216,
+      "world_node": "desert-law-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 252
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 4,
+          "tick": 256
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 262
+        },
+        {
+          "choice_ids": [
+            "chc_bfb69524e129"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 274
+        }
+      ],
+      "end_tick": 288,
+      "order": 7,
+      "scene_heading": "V. The Garden Revisited \u2014 Knowledge as a Shared Space",
+      "scene_id": "sc_cd53949aea50",
+      "start_tick": 252,
+      "world_node": "desert-law-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 288
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 292
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 298
+        },
+        {
+          "choice_ids": [
+            "chc_ecabc3c9a34f"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 310
+        }
+      ],
+      "end_tick": 324,
+      "order": 8,
+      "scene_heading": "VI. A New Architecture Appears (Unspoken, But Present)",
+      "scene_id": "sc_c05596e20a8c",
+      "start_tick": 288,
+      "world_node": "desert-law-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 324
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 4,
+          "tick": 328
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 334
+        },
+        {
+          "choice_ids": [
+            "chc_a4fe0aaded83"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 346
+        },
+        {
+          "kind": "return_hub",
+          "target": "__hub__",
+          "tick": 358
+        }
+      ],
+      "end_tick": 360,
+      "order": 9,
+      "scene_heading": "Closing \u2014 The Human Answer to Logos",
+      "scene_id": "sc_6a8315b5b953",
+      "start_tick": 324,
+      "world_node": "desert-law-1"
+    }
+  ],
+  "timeline_tick_span": 360,
+  "type": "cinematic_cues",
+  "version": 1,
+  "world_theme": "desert-law"
+}

@@ -1,0 +1,357 @@
+{
+  "chapter_id": "ch_277f36609f50",
+  "chapter_title": "ARTICLE III",
+  "cue_digest_sha256": "29677f159a29607a94f8ef69b56d606918a0422e58c6ec6314654718e9ec36e5",
+  "determinism_key": "seed|chapter_id|scene_id|tick",
+  "timeline": [
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 0
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 4
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 10
+        },
+        {
+          "choice_ids": [
+            "chc_c41a604603a8"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 22
+        }
+      ],
+      "end_tick": 36,
+      "order": 0,
+      "scene_heading": "ARTICLE III",
+      "scene_id": "sc_7dfdffb473a8",
+      "start_tick": 0,
+      "world_node": "city-of-measure-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 36
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 5,
+          "tick": 40
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 46
+        },
+        {
+          "choice_ids": [
+            "chc_d1657e08c14c"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 58
+        }
+      ],
+      "end_tick": 72,
+      "order": 1,
+      "scene_heading": "Of the Mark, the Measure, and the Choice to See",
+      "scene_id": "sc_3058c034fca6",
+      "start_tick": 36,
+      "world_node": "city-of-measure-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 72
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 76
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 82
+        },
+        {
+          "choice_ids": [
+            "chc_f8c350675226"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 94
+        }
+      ],
+      "end_tick": 108,
+      "order": 2,
+      "scene_heading": "The First Mark",
+      "scene_id": "sc_a3961f22328a",
+      "start_tick": 72,
+      "world_node": "city-of-measure-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 108
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 4,
+          "tick": 112
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 118
+        },
+        {
+          "choice_ids": [
+            "chc_1f631bf6c223"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 130
+        }
+      ],
+      "end_tick": 144,
+      "order": 3,
+      "scene_heading": "The Beast Without a Face",
+      "scene_id": "sc_40e0a9a6e2fb",
+      "start_tick": 108,
+      "world_node": "city-of-measure-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 144
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 148
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 154
+        },
+        {
+          "choice_ids": [
+            "chc_28e19e4651ca"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 166
+        }
+      ],
+      "end_tick": 180,
+      "order": 4,
+      "scene_heading": "The Number of the Beast",
+      "scene_id": "sc_db70c5153b64",
+      "start_tick": 144,
+      "world_node": "city-of-measure-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 180
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 184
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 190
+        },
+        {
+          "choice_ids": [
+            "chc_0e9d326d7509"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 202
+        }
+      ],
+      "end_tick": 216,
+      "order": 5,
+      "scene_heading": "Judgment Reversed",
+      "scene_id": "sc_52d627d954f8",
+      "start_tick": 180,
+      "world_node": "city-of-measure-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 216
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 220
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 226
+        },
+        {
+          "choice_ids": [
+            "chc_f8a8112f46a4"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 238
+        }
+      ],
+      "end_tick": 252,
+      "order": 6,
+      "scene_heading": "The Ancient Question Returns",
+      "scene_id": "sc_8e375ea1c186",
+      "start_tick": 216,
+      "world_node": "city-of-measure-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 252
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 256
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 262
+        },
+        {
+          "choice_ids": [
+            "chc_af9f94b1f321"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 274
+        }
+      ],
+      "end_tick": 288,
+      "order": 7,
+      "scene_heading": "The Choice to See",
+      "scene_id": "sc_7b01817a9af7",
+      "start_tick": 252,
+      "world_node": "city-of-measure-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 288
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 292
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 298
+        },
+        {
+          "choice_ids": [
+            "chc_7ec9c73a6d21"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 310
+        }
+      ],
+      "end_tick": 324,
+      "order": 8,
+      "scene_heading": "Revelation Begins",
+      "scene_id": "sc_c7bc739d18bb",
+      "start_tick": 288,
+      "world_node": "city-of-measure-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 324
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 4,
+          "tick": 328
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 334
+        },
+        {
+          "choice_ids": [
+            "chc_8f54f7c56844"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 346
+        },
+        {
+          "kind": "return_hub",
+          "target": "__hub__",
+          "tick": 358
+        }
+      ],
+      "end_tick": 360,
+      "order": 9,
+      "scene_heading": "The Final Measure",
+      "scene_id": "sc_bcff09f1af9a",
+      "start_tick": 324,
+      "world_node": "city-of-measure-1"
+    }
+  ],
+  "timeline_tick_span": 360,
+  "type": "cinematic_cues",
+  "version": 1,
+  "world_theme": "city-of-measure"
+}

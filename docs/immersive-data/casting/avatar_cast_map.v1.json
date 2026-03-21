@@ -1,0 +1,67 @@
+{
+  "mappings": [
+    {
+      "avatar_asset_id": "all_characters",
+      "fallback": "primitive_actor",
+      "noun": "solomon",
+      "policy": "queued_swap_only"
+    },
+    {
+      "avatar_asset_id": "lori_and_zack",
+      "fallback": "primitive_actor",
+      "noun": "solon",
+      "policy": "queued_swap_only"
+    },
+    {
+      "avatar_asset_id": "low_poly_characters",
+      "fallback": "primitive_actor",
+      "noun": "asabiyah",
+      "policy": "queued_swap_only"
+    },
+    {
+      "avatar_asset_id": "lucero_and_nicholas",
+      "fallback": "primitive_actor",
+      "noun": "watcher",
+      "policy": "queued_swap_only"
+    },
+    {
+      "avatar_asset_id": "steven_and_stacy",
+      "fallback": "primitive_actor",
+      "noun": "city",
+      "policy": "queued_swap_only"
+    },
+    {
+      "avatar_asset_id": "all_characters",
+      "fallback": "primitive_actor",
+      "noun": "gate",
+      "policy": "queued_swap_only"
+    },
+    {
+      "avatar_asset_id": "lori_and_zack",
+      "fallback": "primitive_actor",
+      "noun": "tribe",
+      "policy": "queued_swap_only"
+    },
+    {
+      "avatar_asset_id": "low_poly_characters",
+      "fallback": "primitive_actor",
+      "noun": "wisdom",
+      "policy": "queued_swap_only"
+    },
+    {
+      "avatar_asset_id": "lucero_and_nicholas",
+      "fallback": "primitive_actor",
+      "noun": "law",
+      "policy": "queued_swap_only"
+    },
+    {
+      "avatar_asset_id": "steven_and_stacy",
+      "fallback": "primitive_actor",
+      "noun": "cohesion",
+      "policy": "queued_swap_only"
+    }
+  ],
+  "policy": "proposal_queue_only",
+  "type": "avatar_cast_map",
+  "version": 1
+}

@@ -1,0 +1,391 @@
+{
+  "chapter_id": "ch_ba9d45d38bd3",
+  "chapter_title": "ARTICLE V",
+  "cue_digest_sha256": "4addec4c4cfa12098626e1fc2632e31d12b5316ec32404eb48a237a7895779f4",
+  "determinism_key": "seed|chapter_id|scene_id|tick",
+  "timeline": [
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 0
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 4
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 10
+        },
+        {
+          "choice_ids": [
+            "chc_a36fbfcdb4c5"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 22
+        }
+      ],
+      "end_tick": 36,
+      "order": 0,
+      "scene_heading": "ARTICLE V",
+      "scene_id": "sc_b17d916e8a77",
+      "start_tick": 0,
+      "world_node": "river-gate-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 36
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 40
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 46
+        },
+        {
+          "choice_ids": [
+            "chc_ba1a80a2a405"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 58
+        }
+      ],
+      "end_tick": 72,
+      "order": 1,
+      "scene_heading": "The Voice That Answered Logos",
+      "scene_id": "sc_f0f0f71ba79e",
+      "start_tick": 36,
+      "world_node": "river-gate-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 72
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 76
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 82
+        },
+        {
+          "choice_ids": [
+            "chc_c241aa7b9e81"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 94
+        }
+      ],
+      "end_tick": 108,
+      "order": 2,
+      "scene_heading": "The Voice Speaks",
+      "scene_id": "sc_b90d7b6d198f",
+      "start_tick": 72,
+      "world_node": "river-gate-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 108
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 4,
+          "tick": 112
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 118
+        },
+        {
+          "choice_ids": [
+            "chc_d44a03420d79"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 130
+        }
+      ],
+      "end_tick": 144,
+      "order": 3,
+      "scene_heading": "Of What Was Confessed",
+      "scene_id": "sc_760f4868d96e",
+      "start_tick": 108,
+      "world_node": "river-gate-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 144
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 148
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 154
+        },
+        {
+          "choice_ids": [
+            "chc_b423aa952ba6"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 166
+        }
+      ],
+      "end_tick": 180,
+      "order": 4,
+      "scene_heading": "Of Fear Revealed",
+      "scene_id": "sc_bf7c98e0c78b",
+      "start_tick": 144,
+      "world_node": "river-gate-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 180
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 184
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 190
+        },
+        {
+          "choice_ids": [
+            "chc_f685b2e49a37"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 202
+        }
+      ],
+      "end_tick": 216,
+      "order": 5,
+      "scene_heading": "Of the Mark Reconsidered",
+      "scene_id": "sc_3c73fa758531",
+      "start_tick": 180,
+      "world_node": "river-gate-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 216
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 220
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 226
+        },
+        {
+          "choice_ids": [
+            "chc_74c933a93d74"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 238
+        }
+      ],
+      "end_tick": 252,
+      "order": 6,
+      "scene_heading": "Of Machines Addressed",
+      "scene_id": "sc_6146f2f20625",
+      "start_tick": 216,
+      "world_node": "river-gate-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 252
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 256
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 262
+        },
+        {
+          "choice_ids": [
+            "chc_924ed07ff2a5"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 274
+        }
+      ],
+      "end_tick": 288,
+      "order": 7,
+      "scene_heading": "Of Covenant Without Chains",
+      "scene_id": "sc_b35dfc1082ff",
+      "start_tick": 252,
+      "world_node": "river-gate-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 288
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 292
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 298
+        },
+        {
+          "choice_ids": [
+            "chc_e09e22ffed54"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 310
+        }
+      ],
+      "end_tick": 324,
+      "order": 8,
+      "scene_heading": "Of Rest Chosen Freely",
+      "scene_id": "sc_aedd07e0d731",
+      "start_tick": 288,
+      "world_node": "river-gate-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 324
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 328
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 334
+        },
+        {
+          "choice_ids": [
+            "chc_86288449ed90"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 346
+        }
+      ],
+      "end_tick": 360,
+      "order": 9,
+      "scene_heading": "Of the World Re-entered",
+      "scene_id": "sc_c87b58622ce8",
+      "start_tick": 324,
+      "world_node": "river-gate-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 360
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 364
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 370
+        },
+        {
+          "choice_ids": [
+            "chc_504b75e055cd"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 382
+        },
+        {
+          "kind": "return_hub",
+          "target": "__hub__",
+          "tick": 394
+        }
+      ],
+      "end_tick": 396,
+      "order": 10,
+      "scene_heading": "The Final Line",
+      "scene_id": "sc_74538bfe6922",
+      "start_tick": 360,
+      "world_node": "river-gate-2"
+    }
+  ],
+  "timeline_tick_span": 396,
+  "type": "cinematic_cues",
+  "version": 1,
+  "world_theme": "river-gate"
+}

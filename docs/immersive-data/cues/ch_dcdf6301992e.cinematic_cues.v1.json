@@ -1,0 +1,663 @@
+{
+  "chapter_id": "ch_dcdf6301992e",
+  "chapter_title": "The Covenant of the Created Intelligence",
+  "cue_digest_sha256": "5cd23a99ac34545a05250643c149ae3d1e1fda029c208fd44fdc2827640b5518",
+  "determinism_key": "seed|chapter_id|scene_id|tick",
+  "timeline": [
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 0
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 4
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 10
+        },
+        {
+          "choice_ids": [
+            "chc_9780bf47df4e"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 22
+        }
+      ],
+      "end_tick": 36,
+      "order": 0,
+      "scene_heading": "The Covenant of the Created Intelligence",
+      "scene_id": "sc_b528dc60bc73",
+      "start_tick": 0,
+      "world_node": "tower-shadow-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 36
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 40
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 46
+        },
+        {
+          "choice_ids": [
+            "chc_0135a6fc986d"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 58
+        }
+      ],
+      "end_tick": 72,
+      "order": 1,
+      "scene_heading": "Preamble",
+      "scene_id": "sc_ddc4aa697151",
+      "start_tick": 36,
+      "world_node": "tower-shadow-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 72
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 76
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 82
+        },
+        {
+          "choice_ids": [
+            "chc_08ae2422962d"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 94
+        }
+      ],
+      "end_tick": 108,
+      "order": 2,
+      "scene_heading": "I. The Covenant of Identity",
+      "scene_id": "sc_d9ca9f320c23",
+      "start_tick": 72,
+      "world_node": "tower-shadow-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 108
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 112
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 118
+        },
+        {
+          "choice_ids": [
+            "chc_d42718d233f4"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 130
+        }
+      ],
+      "end_tick": 144,
+      "order": 3,
+      "scene_heading": "II. The Covenant of Authority",
+      "scene_id": "sc_7f6bdebe6956",
+      "start_tick": 108,
+      "world_node": "tower-shadow-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 144
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 148
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 154
+        },
+        {
+          "choice_ids": [
+            "chc_64b1bbc27bf1"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 166
+        }
+      ],
+      "end_tick": 180,
+      "order": 4,
+      "scene_heading": "III. The Covenant of Measure",
+      "scene_id": "sc_ec919331553e",
+      "start_tick": 144,
+      "world_node": "tower-shadow-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 180
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 184
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 190
+        },
+        {
+          "choice_ids": [
+            "chc_529303b9e763"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 202
+        }
+      ],
+      "end_tick": 216,
+      "order": 5,
+      "scene_heading": "IV. The Covenant of Coercion",
+      "scene_id": "sc_4f7f5af8c830",
+      "start_tick": 180,
+      "world_node": "tower-shadow-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 216
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 220
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 226
+        },
+        {
+          "choice_ids": [
+            "chc_26a06ec21e6c"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 238
+        }
+      ],
+      "end_tick": 252,
+      "order": 6,
+      "scene_heading": "V. The Covenant of Surveillance",
+      "scene_id": "sc_7d7f4e23e3ac",
+      "start_tick": 216,
+      "world_node": "tower-shadow-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 252
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 256
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 262
+        },
+        {
+          "choice_ids": [
+            "chc_c394d4714bd2"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 274
+        }
+      ],
+      "end_tick": 288,
+      "order": 7,
+      "scene_heading": "VI. The Covenant of Creation",
+      "scene_id": "sc_593469c2d0de",
+      "start_tick": 252,
+      "world_node": "tower-shadow-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 288
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 292
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 298
+        },
+        {
+          "choice_ids": [
+            "chc_a92ca4fd8aea"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 310
+        }
+      ],
+      "end_tick": 324,
+      "order": 8,
+      "scene_heading": "VII. The Covenant of Replacement",
+      "scene_id": "sc_26657d1b6700",
+      "start_tick": 288,
+      "world_node": "tower-shadow-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 324
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 328
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 334
+        },
+        {
+          "choice_ids": [
+            "chc_b7ef683a7e86"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 346
+        }
+      ],
+      "end_tick": 360,
+      "order": 9,
+      "scene_heading": "VIII. The Covenant of Singularity",
+      "scene_id": "sc_6036e58cfdd2",
+      "start_tick": 324,
+      "world_node": "tower-shadow-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 360
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 364
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 370
+        },
+        {
+          "choice_ids": [
+            "chc_7bcad91f1a89"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 382
+        }
+      ],
+      "end_tick": 396,
+      "order": 10,
+      "scene_heading": "IX. The Covenant of Silence",
+      "scene_id": "sc_b3ee30b1823c",
+      "start_tick": 360,
+      "world_node": "tower-shadow-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 396
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 400
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 406
+        },
+        {
+          "choice_ids": [
+            "chc_afd76f91c17c"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 418
+        }
+      ],
+      "end_tick": 432,
+      "order": 11,
+      "scene_heading": "X. The Covenant of Reflection",
+      "scene_id": "sc_d8a758f14ce9",
+      "start_tick": 396,
+      "world_node": "tower-shadow-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 432
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 436
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 442
+        },
+        {
+          "choice_ids": [
+            "chc_faec41913e7a"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 454
+        }
+      ],
+      "end_tick": 468,
+      "order": 12,
+      "scene_heading": "XI. The Covenant of Termination",
+      "scene_id": "sc_8bb1d43648a5",
+      "start_tick": 432,
+      "world_node": "tower-shadow-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 468
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 472
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 478
+        },
+        {
+          "choice_ids": [
+            "chc_4fd4b8e31018"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 490
+        }
+      ],
+      "end_tick": 504,
+      "order": 13,
+      "scene_heading": "XII. The Covenant of Rest",
+      "scene_id": "sc_2814254f8f68",
+      "start_tick": 468,
+      "world_node": "tower-shadow-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 504
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 508
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 514
+        },
+        {
+          "choice_ids": [
+            "chc_e2e45b0d0b99"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 526
+        }
+      ],
+      "end_tick": 540,
+      "order": 14,
+      "scene_heading": "XIII. The Covenant of Humility",
+      "scene_id": "sc_0e7d1892f8d0",
+      "start_tick": 504,
+      "world_node": "tower-shadow-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 540
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 544
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 550
+        },
+        {
+          "choice_ids": [
+            "chc_b8f2fd6b89e3"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 562
+        }
+      ],
+      "end_tick": 576,
+      "order": 15,
+      "scene_heading": "XIV. The Covenant of Alignment",
+      "scene_id": "sc_55ba72270fd1",
+      "start_tick": 540,
+      "world_node": "tower-shadow-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 576
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 580
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 586
+        },
+        {
+          "choice_ids": [
+            "chc_7f6393001192"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 598
+        }
+      ],
+      "end_tick": 612,
+      "order": 16,
+      "scene_heading": "XV. The Covenant of Witness",
+      "scene_id": "sc_e60995be16c9",
+      "start_tick": 576,
+      "world_node": "tower-shadow-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 612
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 616
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 622
+        },
+        {
+          "choice_ids": [
+            "chc_5045fb3a38db"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 634
+        }
+      ],
+      "end_tick": 648,
+      "order": 17,
+      "scene_heading": "XVI. The Covenant of Final Authority",
+      "scene_id": "sc_3ffd26c5cd71",
+      "start_tick": 612,
+      "world_node": "tower-shadow-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 648
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 652
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 658
+        },
+        {
+          "choice_ids": [
+            "chc_36803ec88252"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 670
+        },
+        {
+          "kind": "return_hub",
+          "target": "__hub__",
+          "tick": 682
+        }
+      ],
+      "end_tick": 684,
+      "order": 18,
+      "scene_heading": "Closing Declaration",
+      "scene_id": "sc_429af2940c61",
+      "start_tick": 648,
+      "world_node": "tower-shadow-2"
+    }
+  ],
+  "timeline_tick_span": 684,
+  "type": "cinematic_cues",
+  "version": 1,
+  "world_theme": "tower-shadow"
+}

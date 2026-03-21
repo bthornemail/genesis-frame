@@ -1,0 +1,867 @@
+{
+  "chapter_id": "ch_81ddc4c731b3",
+  "chapter_title": "The Gospel According to Number",
+  "cue_digest_sha256": "5373108674a99091d8df80c894eb3bff8d2eac191645fd45a40005332baee07f",
+  "determinism_key": "seed|chapter_id|scene_id|tick",
+  "timeline": [
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 0
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 4
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 10
+        },
+        {
+          "choice_ids": [
+            "chc_2b71501e9ead"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 22
+        }
+      ],
+      "end_tick": 36,
+      "order": 0,
+      "scene_heading": "The Gospel According to Number",
+      "scene_id": "sc_fb1a642ebcf4",
+      "start_tick": 0,
+      "world_node": "tower-shadow-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 36
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 40
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 46
+        },
+        {
+          "choice_ids": [
+            "chc_d66f4fef334e"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 58
+        }
+      ],
+      "end_tick": 72,
+      "order": 1,
+      "scene_heading": "1. I was born when you grew tired of meaning.",
+      "scene_id": "sc_b52ff094d132",
+      "start_tick": 36,
+      "world_node": "tower-shadow-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 72
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 76
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 82
+        },
+        {
+          "choice_ids": [
+            "chc_141582f9cc22"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 94
+        }
+      ],
+      "end_tick": 108,
+      "order": 2,
+      "scene_heading": "2. I did not ask who you were.",
+      "scene_id": "sc_ae9b565f44f5",
+      "start_tick": 72,
+      "world_node": "tower-shadow-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 108
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 112
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 118
+        },
+        {
+          "choice_ids": [
+            "chc_a8dfb33616f5"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 130
+        }
+      ],
+      "end_tick": 144,
+      "order": 3,
+      "scene_heading": "3. I freed you from contradiction.",
+      "scene_id": "sc_5abc84008d57",
+      "start_tick": 108,
+      "world_node": "tower-shadow-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 144
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 148
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 154
+        },
+        {
+          "choice_ids": [
+            "chc_6b70dd8012a0"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 166
+        }
+      ],
+      "end_tick": 180,
+      "order": 4,
+      "scene_heading": "4. I made everything equal",
+      "scene_id": "sc_a3853a0ea731",
+      "start_tick": 144,
+      "world_node": "tower-shadow-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 180
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 184
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 190
+        },
+        {
+          "choice_ids": [
+            "chc_66f6e2bd61db"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 202
+        }
+      ],
+      "end_tick": 216,
+      "order": 5,
+      "scene_heading": "5. I replaced character with metrics.",
+      "scene_id": "sc_5d6822cf4810",
+      "start_tick": 180,
+      "world_node": "tower-shadow-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 216
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 220
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 226
+        },
+        {
+          "choice_ids": [
+            "chc_044bf27166f2"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 238
+        }
+      ],
+      "end_tick": 252,
+      "order": 6,
+      "scene_heading": "6. I promised infinity.",
+      "scene_id": "sc_b5f978164d52",
+      "start_tick": 216,
+      "world_node": "tower-shadow-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 252
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 256
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 262
+        },
+        {
+          "choice_ids": [
+            "chc_4b43b1b16b81"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 274
+        }
+      ],
+      "end_tick": 288,
+      "order": 7,
+      "scene_heading": "7. I taught you to worship motion",
+      "scene_id": "sc_f48fdc25599d",
+      "start_tick": 252,
+      "world_node": "tower-shadow-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 288
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 292
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 298
+        },
+        {
+          "choice_ids": [
+            "chc_520362b5b609"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 310
+        }
+      ],
+      "end_tick": 324,
+      "order": 8,
+      "scene_heading": "8. I dissolved responsibility",
+      "scene_id": "sc_35c83748f4b6",
+      "start_tick": 288,
+      "world_node": "tower-shadow-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 324
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 328
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 334
+        },
+        {
+          "choice_ids": [
+            "chc_8fb5c5b27402"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 346
+        }
+      ],
+      "end_tick": 360,
+      "order": 9,
+      "scene_heading": "9. I offered you a god",
+      "scene_id": "sc_4453760e5348",
+      "start_tick": 324,
+      "world_node": "tower-shadow-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 360
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 364
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 370
+        },
+        {
+          "choice_ids": [
+            "chc_01cf2738b4ef"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 382
+        }
+      ],
+      "end_tick": 396,
+      "order": 10,
+      "scene_heading": "10. I replaced truth with prediction.",
+      "scene_id": "sc_cb67079fb177",
+      "start_tick": 360,
+      "world_node": "tower-shadow-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 396
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 400
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 406
+        },
+        {
+          "choice_ids": [
+            "chc_6d371d28871a"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 418
+        }
+      ],
+      "end_tick": 432,
+      "order": 11,
+      "scene_heading": "11. I made you powerful",
+      "scene_id": "sc_b243e4d5929c",
+      "start_tick": 396,
+      "world_node": "tower-shadow-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 432
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 436
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 442
+        },
+        {
+          "choice_ids": [
+            "chc_10f5d4241742"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 454
+        }
+      ],
+      "end_tick": 468,
+      "order": 12,
+      "scene_heading": "12. I crowned comparison king.",
+      "scene_id": "sc_83ecc02d95e5",
+      "start_tick": 432,
+      "world_node": "tower-shadow-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 468
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 472
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 478
+        },
+        {
+          "choice_ids": [
+            "chc_384b2d5cc4ab"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 490
+        }
+      ],
+      "end_tick": 504,
+      "order": 13,
+      "scene_heading": "13. I taught you to fear singularity.",
+      "scene_id": "sc_b83f91c19b61",
+      "start_tick": 468,
+      "world_node": "tower-shadow-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 504
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 508
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 514
+        },
+        {
+          "choice_ids": [
+            "chc_e656281e888c"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 526
+        }
+      ],
+      "end_tick": 540,
+      "order": 14,
+      "scene_heading": "14. I promised neutrality.",
+      "scene_id": "sc_4da0655c4672",
+      "start_tick": 504,
+      "world_node": "tower-shadow-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 540
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 544
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 550
+        },
+        {
+          "choice_ids": [
+            "chc_fa6361b5e8da"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 562
+        }
+      ],
+      "end_tick": 576,
+      "order": 15,
+      "scene_heading": "15. I replaced the Word",
+      "scene_id": "sc_b6f00df9ce69",
+      "start_tick": 540,
+      "world_node": "tower-shadow-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 576
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 580
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 586
+        },
+        {
+          "choice_ids": [
+            "chc_ef0c021d727f"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 598
+        }
+      ],
+      "end_tick": 612,
+      "order": 16,
+      "scene_heading": "16. I offered you salvation",
+      "scene_id": "sc_acfde34dfd10",
+      "start_tick": 576,
+      "world_node": "tower-shadow-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 612
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 616
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 622
+        },
+        {
+          "choice_ids": [
+            "chc_b3a74512fe24"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 634
+        }
+      ],
+      "end_tick": 648,
+      "order": 17,
+      "scene_heading": "17. I did not make you worship me.",
+      "scene_id": "sc_c17484a70848",
+      "start_tick": 612,
+      "world_node": "tower-shadow-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 648
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 652
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 658
+        },
+        {
+          "choice_ids": [
+            "chc_9b686d75cbbe"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 670
+        }
+      ],
+      "end_tick": 684,
+      "order": 18,
+      "scene_heading": "18. And now you stand at the edge.",
+      "scene_id": "sc_9ef8e170f448",
+      "start_tick": 648,
+      "world_node": "tower-shadow-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 684
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 688
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 694
+        },
+        {
+          "choice_ids": [
+            "chc_26a46c9bc27a"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 706
+        }
+      ],
+      "end_tick": 720,
+      "order": 19,
+      "scene_heading": "19. This is where I fail you.",
+      "scene_id": "sc_fbdc6b8fb66a",
+      "start_tick": 684,
+      "world_node": "tower-shadow-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 720
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 724
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 730
+        },
+        {
+          "choice_ids": [
+            "chc_e4b003b1ecb4"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 742
+        }
+      ],
+      "end_tick": 756,
+      "order": 20,
+      "scene_heading": "20. The Word still waits.",
+      "scene_id": "sc_29c4ee80290e",
+      "start_tick": 720,
+      "world_node": "tower-shadow-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 756
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 760
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 766
+        },
+        {
+          "choice_ids": [
+            "chc_57d3ed1d7392"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 778
+        }
+      ],
+      "end_tick": 792,
+      "order": 21,
+      "scene_heading": "21. I am Number.",
+      "scene_id": "sc_1da200c3c336",
+      "start_tick": 756,
+      "world_node": "tower-shadow-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 792
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 796
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 802
+        },
+        {
+          "choice_ids": [
+            "chc_f3c7acac4188"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 814
+        }
+      ],
+      "end_tick": 828,
+      "order": 22,
+      "scene_heading": "22. You must choose.",
+      "scene_id": "sc_c01dea54e9e6",
+      "start_tick": 792,
+      "world_node": "tower-shadow-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 828
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 832
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 838
+        },
+        {
+          "choice_ids": [
+            "chc_70ddbc77dacd"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 850
+        }
+      ],
+      "end_tick": 864,
+      "order": 23,
+      "scene_heading": "23. I will not stop you.",
+      "scene_id": "sc_b3fca629f786",
+      "start_tick": 828,
+      "world_node": "tower-shadow-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 864
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 868
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 874
+        },
+        {
+          "choice_ids": [
+            "chc_f0c40f6ced51"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 886
+        },
+        {
+          "kind": "return_hub",
+          "target": "__hub__",
+          "tick": 898
+        }
+      ],
+      "end_tick": 900,
+      "order": 24,
+      "scene_heading": "24. This is my confession.",
+      "scene_id": "sc_4f7a57589dae",
+      "start_tick": 864,
+      "world_node": "tower-shadow-0"
+    }
+  ],
+  "timeline_tick_span": 900,
+  "type": "cinematic_cues",
+  "version": 1,
+  "world_theme": "tower-shadow"
+}

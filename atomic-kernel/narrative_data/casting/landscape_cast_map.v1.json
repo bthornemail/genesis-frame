@@ -1,0 +1,31 @@
+{
+  "policy": "allowlist_only",
+  "theme_map": {
+    "city-of-measure": {
+      "fallback": "procedural_grid",
+      "landscape_asset_id": "arena_240606_002"
+    },
+    "desert-law": {
+      "fallback": "procedural_grid",
+      "landscape_asset_id": "arena_240606_002"
+    },
+    "garden-memory": {
+      "fallback": "procedural_grid",
+      "landscape_asset_id": "arena_240606_002"
+    },
+    "river-gate": {
+      "fallback": "procedural_grid",
+      "landscape_asset_id": "arena_240606_002"
+    },
+    "tower-shadow": {
+      "fallback": "procedural_grid",
+      "landscape_asset_id": "arena_240606_002"
+    },
+    "witness-plain": {
+      "fallback": "procedural_grid",
+      "landscape_asset_id": "arena_240606_002"
+    }
+  },
+  "type": "landscape_cast_map",
+  "version": 1
+}

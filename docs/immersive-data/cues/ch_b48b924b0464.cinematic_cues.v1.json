@@ -1,0 +1,51 @@
+{
+  "chapter_id": "ch_b48b924b0464",
+  "chapter_title": "ASIDE",
+  "cue_digest_sha256": "dfae71a286f86b10b3e4447b8859ffdae3d34382c324ce1d38466b6fef6bc752",
+  "determinism_key": "seed|chapter_id|scene_id|tick",
+  "timeline": [
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 0
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 6,
+          "tick": 4
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 10
+        },
+        {
+          "choice_ids": [
+            "chc_ee46ea4008d1"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 22
+        },
+        {
+          "kind": "return_hub",
+          "target": "__hub__",
+          "tick": 34
+        }
+      ],
+      "end_tick": 36,
+      "order": 0,
+      "scene_heading": "ASIDE",
+      "scene_id": "sc_4b226e06d780",
+      "start_tick": 0,
+      "world_node": "city-of-measure-0"
+    }
+  ],
+  "timeline_tick_span": 36,
+  "type": "cinematic_cues",
+  "version": 1,
+  "world_theme": "city-of-measure"
+}

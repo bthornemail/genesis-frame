@@ -754,8 +754,14 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
               <h2 id="story-title" class="story-title">Boot Sequence</h2>
               <div class="row">
                 <button id="btn-story-next" class="primary">Continue</button>
+                <button id="btn-story-director-play" class="good">Movie: On</button>
+                <button id="btn-story-director-stepin">Step-In: Off</button>
+                <button id="btn-story-director-diverge">Diverge</button>
+                <button id="btn-story-director-accept" class="good">Accept Proposal</button>
+                <button id="btn-story-director-reject">Reject</button>
                 <button id="btn-open-codex">Codex</button>
               </div>
+              <div id="story-director-meta" class="mono-note" style="margin-top:6px;">director=loading · queue=0 · step-in=off</div>
             </div>
             <div id="story-body" class="story-body" data-plane-scope="RS"></div>
             <div id="story-actions" class="story-actions" data-plane-scope="US"></div>
@@ -970,6 +976,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
     let manifestRuntimeArtifacts = [];
     let manifestStartupArtifacts = [];
     let characterAvatarLibrary = [];
+    let importManifestSource = '';
 
     const SAVE_VERSION = 2;
     const TEMPLATE_STORE_KEY = "ak_progression_templates_custom_v1";
@@ -1025,6 +1032,20 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
     const futureBranchState = {
       events: [],
       preview: null,
+    };
+    const narrativeDirectorState = {
+      autoplay: true,
+      stepIn: false,
+      tick: 0,
+      queue: [],
+      accepted: [],
+      cueCache: new Map(),
+      cueTickByScene: {},
+      casting: {
+        avatarMap: {},
+        landscapeMap: {},
+        allowlist: new Set(),
+      },
     };
 
     function cloneState(state) {
@@ -1553,6 +1574,27 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         return (requirements || []).every((r) => this.state.inventory.includes(r));
       },
 
+      chapterTitle(chapterId) {
+        const meta = this.chapterMap[chapterId]?.meta;
+        return meta?.title || chapterId || 'Unknown chapter';
+      },
+
+      chapterForArtifact(artifactId) {
+        const aid = String(artifactId || '');
+        if (!aid) return null;
+        for (const chapterId of this.chapterOrder) {
+          const chapter = this.chapterMap[chapterId];
+          if (!chapter || !Array.isArray(chapter.records)) continue;
+          const direct = chapter.records.some((r) => r?.type === 'artifact' && String(r.id) === aid);
+          if (direct) return chapterId;
+          const grantedByScene = chapter.records.some((r) => r?.type === 'scene' && Array.isArray(r.grants_artifacts) && r.grants_artifacts.includes(aid));
+          if (grantedByScene) return chapterId;
+          const grantedByChoice = chapter.records.some((r) => r?.type === 'choice' && Array.isArray(r.grants_artifacts) && r.grants_artifacts.includes(aid));
+          if (grantedByChoice) return chapterId;
+        }
+        return null;
+      },
+
       applyEvent(event) {
         const payload = event.payload || {};
         if (event.type === 'boot_advanced') {
@@ -1875,8 +1917,17 @@ Enter the Prologue and begin reconciliation.`
 
         if (!this.hasRequired(scene.requires_artifacts)) {
           const missing = scene.requires_artifacts.filter((x) => !this.state.inventory.includes(x));
+          const guidance = missing.map((aid) => {
+            const sourceChapterId = this.chapterForArtifact(aid);
+            if (!sourceChapterId) return `- ${aid}: source chapter not indexed in current bundle`;
+            return `- ${aid}: unlock via "${this.chapterTitle(sourceChapterId)}"`;
+          });
           setStoryTitle('Chapter Gate Blocked');
-          setStoryBody(`Missing artifacts: ${missing.join(', ')}\n\nReturn to hub and explore other worlds.`);
+          setStoryBody(
+            `Missing artifacts: ${missing.join(', ')}\n\n` +
+            `Where to unlock:\n${guidance.join('\n')}\n\n` +
+            `Return to hub and explore those chapter paths first.`
+          );
           setStoryActions([
             { label: 'Return to Hub', action: () => this.renderHub(true) }
           ]);
@@ -2383,6 +2434,243 @@ Enter the Prologue and begin reconciliation.`
         idleStoryAutoplayStep();
         idleStoryAutoplayInterval = setInterval(idleStoryAutoplayStep, IDLE_STORY_AUTOPLAY_STEP_MS);
       }, IDLE_STORY_AUTOPLAY_START_MS);
+    }
+
+    async function fetchJsonFirst(urls) {
+      for (const url of urls) {
+        try {
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) continue;
+          return await res.json();
+        } catch {
+          continue;
+        }
+      }
+      return null;
+    }
+
+    async function loadNarrativeDirectorArtifacts() {
+      const avatarMap = await fetchJsonFirst([
+        './narrative_data/casting/avatar_cast_map.v1.json',
+        '/docs/immersive-data/casting/avatar_cast_map.v1.json',
+      ]);
+      const landscapeMap = await fetchJsonFirst([
+        './narrative_data/casting/landscape_cast_map.v1.json',
+        '/docs/immersive-data/casting/landscape_cast_map.v1.json',
+      ]);
+      const allowlist = await fetchJsonFirst([
+        './narrative_data/casting/public_allowlist.v1.json',
+        '/docs/immersive-data/casting/public_allowlist.v1.json',
+      ]);
+      if (avatarMap && Array.isArray(avatarMap.mappings)) {
+        const next = {};
+        for (const row of avatarMap.mappings) {
+          const noun = String(row?.noun || '').trim().toLowerCase();
+          const avatarId = String(row?.avatar_asset_id || '').trim();
+          if (noun && avatarId) next[noun] = avatarId;
+        }
+        narrativeDirectorState.casting.avatarMap = next;
+      }
+      if (landscapeMap && landscapeMap.theme_map && typeof landscapeMap.theme_map === 'object') {
+        narrativeDirectorState.casting.landscapeMap = cloneState(landscapeMap.theme_map);
+      }
+      narrativeDirectorState.casting.allowlist = new Set(
+        Array.isArray(allowlist?.asset_ids) ? allowlist.asset_ids.map((x) => String(x)) : []
+      );
+      updateNarrativeDirectorReadout();
+    }
+
+    async function loadChapterCues(chapterId) {
+      const cid = String(chapterId || '').trim();
+      if (!cid) return null;
+      if (narrativeDirectorState.cueCache.has(cid)) return narrativeDirectorState.cueCache.get(cid);
+      const cue = await fetchJsonFirst([
+        `./narrative_data/cues/${cid}.cinematic_cues.v1.json`,
+        `/docs/immersive-data/cues/${cid}.cinematic_cues.v1.json`,
+      ]);
+      if (!cue || !Array.isArray(cue.timeline)) return null;
+      narrativeDirectorState.cueCache.set(cid, cue);
+      return cue;
+    }
+
+    function updateNarrativeDirectorReadout() {
+      const el = document.getElementById('story-director-meta');
+      if (!el) return;
+      const phase = String(GameDirector.state.current_phase || '-');
+      const chapterId = String(GameDirector.state.current_chapter || '-');
+      const sceneId = String(GameDirector.state.current_scene_id || '-');
+      const mode = narrativeDirectorState.autoplay ? 'movie' : 'manual';
+      const stepIn = narrativeDirectorState.stepIn ? 'on' : 'off';
+      const queued = narrativeDirectorState.queue.length;
+      const accepted = narrativeDirectorState.accepted.length;
+      el.textContent = `director=${mode} · step-in=${stepIn} · phase=${phase} · chapter=${chapterId} · scene=${sceneId} · queue=${queued} accepted=${accepted}`;
+    }
+
+    function buildImmersiveProposal(action, payload) {
+      const base = {
+        type: 'immersive_proposal',
+        version: 1,
+        chapter_id: String(GameDirector.state.current_chapter || ''),
+        scene_id: String(GameDirector.state.current_scene_id || ''),
+        tick: Math.max(0, Number(GameDirector.state.timeline_index) || 0),
+        action: String(action || 'choice_select'),
+        payload: cloneState(payload || {}),
+        status: 'pending',
+        authority: 'advisory',
+      };
+      const proposalId = sid(stableStringify(base), 'ip');
+      return { ...base, proposal_id: proposalId };
+    }
+
+    function queueImmersiveProposal(action, payload) {
+      const proposal = buildImmersiveProposal(action, payload);
+      narrativeDirectorState.queue.push(proposal);
+      GameDirector.appendEvent('immersive_proposal_queued', { proposal }, 'witness');
+      emitRuntimeWitnessReceipt('immersive_proposal_queued');
+      updateNarrativeDirectorReadout();
+      setStatus(`Proposal queued (${proposal.action}) · ${proposal.proposal_id}`);
+      return proposal;
+    }
+
+    function acceptImmersiveProposal() {
+      const proposal = narrativeDirectorState.queue.shift();
+      if (!proposal) return setStatus('No pending immersive proposal.');
+      const accepted = { ...proposal, status: 'accepted' };
+      narrativeDirectorState.accepted.push(accepted);
+      const receipt = {
+        type: 'immersive_receipt',
+        version: 1,
+        receipt_id: sid(`${accepted.proposal_id}:accepted:${GameDirector.state.timeline_index}`, 'ir'),
+        proposal_id: accepted.proposal_id,
+        decision: 'accepted',
+        reason: 'accepted_at_frame_boundary',
+        frame_boundary_tick: Math.max(0, Number(GameDirector.state.timeline_index) || 0),
+        authority: 'advisory',
+      };
+      GameDirector.appendEvent('immersive_receipt', receipt, 'witness');
+      emitRuntimeWitnessReceipt('immersive_proposal_accepted');
+      updateNarrativeDirectorReadout();
+      setStatus(`Proposal accepted: ${accepted.proposal_id}`);
+    }
+
+    function rejectImmersiveProposal() {
+      const proposal = narrativeDirectorState.queue.shift();
+      if (!proposal) return setStatus('No pending immersive proposal.');
+      const receipt = {
+        type: 'immersive_receipt',
+        version: 1,
+        receipt_id: sid(`${proposal.proposal_id}:rejected:${GameDirector.state.timeline_index}`, 'ir'),
+        proposal_id: proposal.proposal_id,
+        decision: 'rejected',
+        reason: 'operator_reject',
+        frame_boundary_tick: Math.max(0, Number(GameDirector.state.timeline_index) || 0),
+        authority: 'advisory',
+      };
+      GameDirector.appendEvent('immersive_receipt', receipt, 'witness');
+      emitRuntimeWitnessReceipt('immersive_proposal_rejected');
+      updateNarrativeDirectorReadout();
+      setStatus(`Proposal rejected: ${proposal.proposal_id}`);
+    }
+
+    function applyImmersiveProposalAtBoundary(proposal) {
+      if (!proposal || typeof proposal !== 'object') return;
+      const action = String(proposal.action || '');
+      if (action === 'choice_select') {
+        const choiceId = String(proposal.payload?.choice_id || '');
+        if (choiceId) {
+          GameDirector.choose(choiceId);
+        } else {
+          const chapterId = String(GameDirector.state.current_chapter || '');
+          const sceneId = String(GameDirector.state.current_scene_id || '');
+          const options = GameDirector.getRecords(chapterId, 'choice')
+            .filter((c) => c.from_scene_id === sceneId && GameDirector.hasRequired(c.requires_artifacts));
+          if (options.length) GameDirector.choose(options[0].id);
+        }
+      } else if (action === 'camera_branch') {
+        const basis = String(proposal.payload?.basis || '10');
+        try {
+          const built = buildFutureBranchEvent('control_set_basis', basis);
+          futureBranchState.events.push({
+            id: `fb_${Date.now()}_${Math.random().toString(16).slice(2, 6)}`,
+            kind: 'control_set_basis',
+            label: built.label,
+            event: built.event,
+          });
+          futureBranchState.preview = null;
+          updateFutureBranchUI();
+        } catch {
+          // fail-closed: ignore invalid basis request
+        }
+      } else if (action === 'avatar_swap') {
+        const noun = String(proposal.payload?.noun || '').trim().toLowerCase();
+        const avatarId = String(proposal.payload?.avatar_id || '').trim();
+        if (noun && avatarId && queueCharacterAvatarSwap(noun, avatarId)) {
+          commitQueuedCharacterAvatarSwaps('immersive_proposal');
+        }
+      } else if (action === 'scene_pace_change') {
+        const ms = Math.max(1200, Math.min(90000, Number(proposal.payload?.pause_ms) || 9000));
+        markIdleStoryTouched(ms);
+      }
+      GameDirector.appendEvent('immersive_proposal_applied', { proposal_id: proposal.proposal_id, action }, 'witness');
+      emitRuntimeWitnessReceipt('immersive_proposal_applied');
+    }
+
+    async function narrativeDirectorStep() {
+      if (String(GameDirector.state.current_phase || '') !== 'chapter_scene') {
+        updateNarrativeDirectorReadout();
+        return;
+      }
+      const chapterId = String(GameDirector.state.current_chapter || '');
+      const sceneId = String(GameDirector.state.current_scene_id || '');
+      const cue = await loadChapterCues(chapterId);
+      if (cue && Array.isArray(cue.timeline)) {
+        const row = cue.timeline.find((x) => String(x.scene_id) === sceneId);
+        if (row && Number.isFinite(row.start_tick)) {
+          narrativeDirectorState.cueTickByScene[sceneId] = Number(row.start_tick) || 0;
+        }
+      }
+      if (narrativeDirectorState.accepted.length) {
+        const proposal = narrativeDirectorState.accepted.shift();
+        applyImmersiveProposalAtBoundary(proposal);
+      }
+      updateNarrativeDirectorReadout();
+    }
+
+    function toggleNarrativeDirectorAutoplay() {
+      narrativeDirectorState.autoplay = !narrativeDirectorState.autoplay;
+      const btn = document.getElementById('btn-story-director-play');
+      if (btn) {
+        btn.textContent = narrativeDirectorState.autoplay ? 'Movie: On' : 'Movie: Off';
+        btn.classList.toggle('good', narrativeDirectorState.autoplay);
+      }
+      if (narrativeDirectorState.autoplay && !narrativeDirectorState.stepIn) startIdleStoryAutoplay();
+      else stopIdleStoryAutoplay();
+      updateNarrativeDirectorReadout();
+    }
+
+    function toggleNarrativeStepIn() {
+      narrativeDirectorState.stepIn = !narrativeDirectorState.stepIn;
+      const btn = document.getElementById('btn-story-director-stepin');
+      if (btn) btn.textContent = narrativeDirectorState.stepIn ? 'Step-In: On' : 'Step-In: Off';
+      if (narrativeDirectorState.stepIn) stopIdleStoryAutoplay();
+      else if (narrativeDirectorState.autoplay) startIdleStoryAutoplay();
+      updateNarrativeDirectorReadout();
+    }
+
+    function proposeDefaultDivergence() {
+      const chapterId = String(GameDirector.state.current_chapter || '');
+      const sceneId = String(GameDirector.state.current_scene_id || '');
+      const choices = GameDirector.getRecords(chapterId, 'choice')
+        .filter((c) => c.from_scene_id === sceneId && GameDirector.hasRequired(c.requires_artifacts));
+      if (choices.length > 1) {
+        queueImmersiveProposal('choice_select', { choice_id: choices[1].id });
+        return;
+      }
+      if (choices.length === 1) {
+        queueImmersiveProposal('scene_pace_change', { pause_ms: 12000 });
+        return;
+      }
+      queueImmersiveProposal('camera_branch', { basis: '16' });
     }
 
     const FANO_LINES = [
@@ -5490,21 +5778,39 @@ Enter the Prologue and begin reconciliation.`
     }
 
     async function loadImportAssetManifest() {
-      try {
-        const res = await fetch('/assets/imports/asset-manifest.json');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        const entries = Array.isArray(data?.assets) ? data.assets : [];
-        importManifestAssets = entries.filter((x) => x && typeof x === 'object');
-        refreshManifestAssetViews();
-        refreshArtifactCards();
-        refreshCharacterAvatarControls();
-        ensureStartupTempleScene();
-        maybeUpgradeStartupFromManifest();
-      } catch {
+      const candidates = [
+        '/assets/imports/asset-manifest.json',
+        './assets/imports/asset-manifest.json',
+        '/docs/imports/asset-manifest.json',
+        './docs/imports/asset-manifest.json',
+        '../docs/imports/asset-manifest.json',
+      ];
+      let loaded = false;
+      for (const path of candidates) {
+        try {
+          const res = await fetch(path);
+          if (!res.ok) continue;
+          const data = await res.json();
+          const entries = Array.isArray(data?.assets) ? data.assets : [];
+          importManifestAssets = entries.filter((x) => x && typeof x === 'object');
+          importManifestSource = path;
+          loaded = true;
+          break;
+        } catch {
+          // try next path candidate
+        }
+      }
+      refreshManifestAssetViews();
+      refreshArtifactCards();
+      refreshCharacterAvatarControls();
+      ensureStartupTempleScene();
+      maybeUpgradeStartupFromManifest();
+      if (loaded) {
+        setStatus(`Imported asset manifest loaded (${importManifestAssets.length}) from ${importManifestSource}`);
+      } else {
         importManifestAssets = [];
-        refreshManifestAssetViews();
-        ensureStartupTempleScene();
+        importManifestSource = '';
+        setStatus('Imported asset manifest not found; running with built-in scene assets only.');
       }
     }
 
@@ -6701,6 +7007,11 @@ Enter the Prologue and begin reconciliation.`
       emitRuntimeWitnessReceipt('story_continue');
       GameDirector.render();
     });
+    document.getElementById('btn-story-director-play')?.addEventListener('click', toggleNarrativeDirectorAutoplay);
+    document.getElementById('btn-story-director-stepin')?.addEventListener('click', toggleNarrativeStepIn);
+    document.getElementById('btn-story-director-diverge')?.addEventListener('click', proposeDefaultDivergence);
+    document.getElementById('btn-story-director-accept')?.addEventListener('click', acceptImmersiveProposal);
+    document.getElementById('btn-story-director-reject')?.addEventListener('click', rejectImmersiveProposal);
     document.getElementById('btn-cp-esc').addEventListener('click', cpEmitEsc);
     document.getElementById('btn-cp-literal').addEventListener('click', cpEmitLiteralEsc);
     document.getElementById('btn-cp-apply').addEventListener('click', cpApplyFrameFromUI);
@@ -7264,6 +7575,7 @@ Enter the Prologue and begin reconciliation.`
     build3DMenuArtifacts();
     loadProgressionTemplates();
     loadImportAssetManifest();
+    loadNarrativeDirectorArtifacts();
     setAppMode('story');
 
     if (localStorage.getItem(AUTOSAVE_KEY)) {
@@ -7278,6 +7590,7 @@ Enter the Prologue and begin reconciliation.`
       GameDirector.startNewGame(0);
     }
     startIdleStoryAutoplay();
+    updateNarrativeDirectorReadout();
 
     window.addEventListener('pointerdown', markIdleStoryTouched, { passive: true });
     window.addEventListener('wheel', markIdleStoryTouched, { passive: true });
@@ -7296,6 +7609,7 @@ Enter the Prologue and begin reconciliation.`
           } else {
             GameDirector.replayTo(GameDirector.state.timeline_index + 1);
           }
+          narrativeDirectorStep();
         }
       } else if (GameDirector.state.play_state === 'rewinding') {
         const stepEvery = 0.35 / Math.max(0.25, GameDirector.state.play_speed || 1);
@@ -7306,7 +7620,11 @@ Enter the Prologue and begin reconciliation.`
           } else {
             GameDirector.replayTo(GameDirector.state.timeline_index - 1);
           }
+          narrativeDirectorStep();
         }
+      } else if (playAccumulator >= 0.8) {
+        playAccumulator = 0;
+        narrativeDirectorStep();
       }
       controls.update(dt);
       const t = clock.elapsedTime;

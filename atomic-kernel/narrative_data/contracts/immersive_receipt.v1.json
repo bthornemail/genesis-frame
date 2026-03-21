@@ -1,0 +1,50 @@
+{
+  "$id": "immersive_receipt.v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "authority": {
+      "const": "advisory"
+    },
+    "decision": {
+      "enum": [
+        "accepted",
+        "rejected"
+      ]
+    },
+    "frame_boundary_tick": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "proposal_id": {
+      "minLength": 4,
+      "type": "string"
+    },
+    "reason": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "receipt_id": {
+      "minLength": 4,
+      "type": "string"
+    },
+    "type": {
+      "const": "immersive_receipt"
+    },
+    "version": {
+      "const": 1
+    }
+  },
+  "required": [
+    "type",
+    "version",
+    "receipt_id",
+    "proposal_id",
+    "decision",
+    "reason",
+    "frame_boundary_tick",
+    "authority"
+  ],
+  "title": "Immersive Receipt v1",
+  "type": "object"
+}

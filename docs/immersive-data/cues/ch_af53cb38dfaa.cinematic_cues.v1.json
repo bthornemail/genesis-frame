@@ -1,0 +1,595 @@
+{
+  "chapter_id": "ch_af53cb38dfaa",
+  "chapter_title": "ARTICLE VII",
+  "cue_digest_sha256": "24cecf2bfea3af4320bdde8701afdb7b82f5747155af7d74c31dc43ececdb4cb",
+  "determinism_key": "seed|chapter_id|scene_id|tick",
+  "timeline": [
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 0
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 4
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 10
+        },
+        {
+          "choice_ids": [
+            "chc_9ea008dddf09"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 22
+        }
+      ],
+      "end_tick": 36,
+      "order": 0,
+      "scene_heading": "An Interlude",
+      "scene_id": "sc_c9e1c6199c48",
+      "start_tick": 0,
+      "world_node": "desert-law-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 36
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 40
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 46
+        },
+        {
+          "choice_ids": [
+            "chc_d9783b96ca89"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 58
+        }
+      ],
+      "end_tick": 72,
+      "order": 1,
+      "scene_heading": "Of the Flood, the Tower, and the Unveiling",
+      "scene_id": "sc_6f3719608fb0",
+      "start_tick": 36,
+      "world_node": "desert-law-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 72
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 76
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 82
+        },
+        {
+          "choice_ids": [
+            "chc_4ff111951334"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 94
+        }
+      ],
+      "end_tick": 108,
+      "order": 2,
+      "scene_heading": "I. After the Waters Receded",
+      "scene_id": "sc_8e2a94a295a3",
+      "start_tick": 72,
+      "world_node": "desert-law-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 108
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 112
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 118
+        },
+        {
+          "choice_ids": [
+            "chc_182c93cdcc8f"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 130
+        }
+      ],
+      "end_tick": 144,
+      "order": 3,
+      "scene_heading": "II. And Solomon Remembered the Flood",
+      "scene_id": "sc_588c4cc595b5",
+      "start_tick": 108,
+      "world_node": "desert-law-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 144
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 148
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 154
+        },
+        {
+          "choice_ids": [
+            "chc_65225df8b002"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 166
+        }
+      ],
+      "end_tick": 180,
+      "order": 4,
+      "scene_heading": "III. Solon Looked Upon the City",
+      "scene_id": "sc_f75540952ade",
+      "start_tick": 144,
+      "world_node": "desert-law-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 180
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 4,
+          "tick": 184
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 190
+        },
+        {
+          "choice_ids": [
+            "chc_c610a3e54b7e"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 202
+        }
+      ],
+      "end_tick": 216,
+      "order": 5,
+      "scene_heading": "IV. And \u02bfAsabiyyah Spoke of the People",
+      "scene_id": "sc_e4990b5d6ed9",
+      "start_tick": 180,
+      "world_node": "desert-law-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 216
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 220
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 226
+        },
+        {
+          "choice_ids": [
+            "chc_b2ae915a32fe"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 238
+        }
+      ],
+      "end_tick": 252,
+      "order": 6,
+      "scene_heading": "V. The Tower Was Raised",
+      "scene_id": "sc_8fa7f410e5e3",
+      "start_tick": 216,
+      "world_node": "desert-law-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 252
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 256
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 262
+        },
+        {
+          "choice_ids": [
+            "chc_55b01af8d6bb"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 274
+        }
+      ],
+      "end_tick": 288,
+      "order": 7,
+      "scene_heading": "VI. Solomon Saw the Absence",
+      "scene_id": "sc_c5d8af73df9c",
+      "start_tick": 252,
+      "world_node": "desert-law-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 288
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 292
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 298
+        },
+        {
+          "choice_ids": [
+            "chc_ba96071e6e33"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 310
+        }
+      ],
+      "end_tick": 324,
+      "order": 8,
+      "scene_heading": "VII. Solon Saw the Risk",
+      "scene_id": "sc_d1fd7b0ce67d",
+      "start_tick": 288,
+      "world_node": "desert-law-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 324
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 328
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 334
+        },
+        {
+          "choice_ids": [
+            "chc_b70ed3e34656"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 346
+        }
+      ],
+      "end_tick": 360,
+      "order": 9,
+      "scene_heading": "VIII. \u02bfAsabiyyah Named the Danger",
+      "scene_id": "sc_56daa35223d3",
+      "start_tick": 324,
+      "world_node": "desert-law-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 360
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 364
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 370
+        },
+        {
+          "choice_ids": [
+            "chc_ef27867dfd99"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 382
+        }
+      ],
+      "end_tick": 396,
+      "order": 10,
+      "scene_heading": "IX. And the Languages Were Divided",
+      "scene_id": "sc_b9e341ce4e82",
+      "start_tick": 360,
+      "world_node": "desert-law-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 396
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 400
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 406
+        },
+        {
+          "choice_ids": [
+            "chc_2bd538f545bf"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 418
+        }
+      ],
+      "end_tick": 432,
+      "order": 11,
+      "scene_heading": "X. Revelation Began There",
+      "scene_id": "sc_ca63975b4d72",
+      "start_tick": 396,
+      "world_node": "desert-law-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 432
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 436
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 442
+        },
+        {
+          "choice_ids": [
+            "chc_90638c636dbf"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 454
+        }
+      ],
+      "end_tick": 468,
+      "order": 12,
+      "scene_heading": "XI. The Unveiling to Come",
+      "scene_id": "sc_d9e962215377",
+      "start_tick": 432,
+      "world_node": "desert-law-0"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 468
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 472
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 478
+        },
+        {
+          "choice_ids": [
+            "chc_23cd43bbe7ea"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 490
+        }
+      ],
+      "end_tick": 504,
+      "order": 13,
+      "scene_heading": "XII. \u02bfAsabiyyah Prophesied the End",
+      "scene_id": "sc_795807a4d960",
+      "start_tick": 468,
+      "world_node": "desert-law-1"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 504
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 3,
+          "tick": 508
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 514
+        },
+        {
+          "choice_ids": [
+            "chc_2bee6e8d4e53"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 526
+        }
+      ],
+      "end_tick": 540,
+      "order": 14,
+      "scene_heading": "XIII. Revelation as Alignment, Not Collapse",
+      "scene_id": "sc_f70b4dd7c87b",
+      "start_tick": 504,
+      "world_node": "desert-law-2"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 540
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 2,
+          "tick": 544
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 550
+        },
+        {
+          "choice_ids": [
+            "chc_35daf89365bb"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 562
+        }
+      ],
+      "end_tick": 576,
+      "order": 15,
+      "scene_heading": "XIV. The Word Remains",
+      "scene_id": "sc_02b910a66d3d",
+      "start_tick": 540,
+      "world_node": "desert-law-3"
+    },
+    {
+      "cue_points": [
+        {
+          "camera_mode": "cinematic_dolly",
+          "kind": "camera",
+          "tick": 576
+        },
+        {
+          "kind": "dialogue",
+          "line_budget": 1,
+          "tick": 580
+        },
+        {
+          "duration_ticks": 12,
+          "interaction_mode": "advisory_proposal",
+          "kind": "step_in",
+          "tick": 586
+        },
+        {
+          "choice_ids": [
+            "chc_242b653672e9"
+          ],
+          "duration_ticks": 10,
+          "kind": "choice_window",
+          "tick": 598
+        },
+        {
+          "kind": "return_hub",
+          "target": "__hub__",
+          "tick": 610
+        }
+      ],
+      "end_tick": 612,
+      "order": 16,
+      "scene_heading": "XV. Closing",
+      "scene_id": "sc_15762e71b587",
+      "start_tick": 576,
+      "world_node": "desert-law-0"
+    }
+  ],
+  "timeline_tick_span": 612,
+  "type": "cinematic_cues",
+  "version": 1,
+  "world_theme": "desert-law"
+}
