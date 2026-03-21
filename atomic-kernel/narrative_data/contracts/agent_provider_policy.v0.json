@@ -1,0 +1,32 @@
+{
+  "authority": "advisory",
+  "profiles": {
+    "large": [
+      "ollama",
+      "opencode",
+      "openclaw_adapter",
+      "mock"
+    ],
+    "medium": [
+      "opencode",
+      "ollama",
+      "openclaw_adapter",
+      "mock"
+    ],
+    "small": [
+      "opencode",
+      "openclaw_adapter",
+      "mock"
+    ]
+  },
+  "replay_hash": "af69a3fb5507afeadf3283c9676c7ca0cbdf01df4b2c61e9e995f2af81bb78eb",
+  "runtime_probe": {
+    "ollama_binary": false,
+    "ollama_server": false,
+    "openclaw_adapter": false,
+    "opencode": false
+  },
+  "selected_profile": "small",
+  "selected_provider": "mock",
+  "v": "agent_provider_policy.v0"
+}

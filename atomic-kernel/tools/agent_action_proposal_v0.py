@@ -2,6 +2,8 @@
 import argparse
 import hashlib
 import json
+import os
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -42,7 +44,55 @@ def ollama_provider_output(model: str, intent: str) -> str:
     return line[0].strip() if line else ""
 
 
-def build(provider: str, world_id: str, agent_id: str, canonical_tick: int, intent: str, ollama_model: str) -> dict:
+def opencode_provider_output(intent: str) -> str:
+    # v0 keeps this bounded/deterministic-envelope-first.
+    cmd = ["opencode", "run", f"Return one concise action line only. Intent: {intent}"]
+    out = subprocess.run(cmd, check=True, capture_output=True, text=True, timeout=30)
+    line = out.stdout.strip().splitlines()
+    return line[0].strip() if line else ""
+
+
+def command_exists(name: str) -> bool:
+    return shutil.which(name) is not None
+
+
+def ollama_ready() -> bool:
+    if not command_exists("ollama"):
+        return False
+    try:
+        r = subprocess.run(["ollama", "list"], capture_output=True, text=True, timeout=3)
+        return r.returncode == 0
+    except Exception:
+        return False
+
+
+def resolve_provider(provider: str, profile: str) -> str:
+    if provider != "auto":
+        return provider
+
+    if profile == "large":
+        order = ["ollama", "opencode", "openclaw_adapter", "mock"]
+    elif profile == "medium":
+        order = ["opencode", "ollama", "openclaw_adapter", "mock"]
+    elif profile == "small":
+        order = ["opencode", "openclaw_adapter", "mock"]
+    else:
+        raise SystemExit(f"unknown profile: {profile}")
+
+    for p in order:
+        if p == "mock":
+            return p
+        if p == "opencode" and command_exists("opencode"):
+            return p
+        if p == "ollama" and ollama_ready():
+            return p
+        if p == "openclaw_adapter" and (command_exists("openclaw") or os.getenv("OPENCLAW_ADAPTER_CMD", "").strip()):
+            return p
+    return "mock"
+
+
+def build(provider: str, world_id: str, agent_id: str, canonical_tick: int, intent: str, ollama_model: str, profile: str) -> dict:
+    provider = resolve_provider(provider, profile)
     if provider not in ALLOWED_PROVIDERS:
         raise SystemExit(f"unsupported provider: {provider}")
     if canonical_tick < 0:
@@ -61,7 +111,15 @@ def build(provider: str, world_id: str, agent_id: str, canonical_tick: int, inte
     elif provider == "ollama":
         if not ollama_model:
             raise SystemExit("--ollama-model is required when provider=ollama")
-        provider_output = ollama_provider_output(ollama_model, intent)
+        try:
+            provider_output = ollama_provider_output(ollama_model, intent)
+        except Exception:
+            provider_output = "OLLAMA_CALL_FAILED"
+    elif provider == "opencode":
+        try:
+            provider_output = opencode_provider_output(intent)
+        except Exception:
+            provider_output = "OPENCODE_CALL_FAILED"
     else:
         # Adapter providers are accepted by contract, but execution stays external in v0.
         provider_output = "EXTERNAL_ADAPTER_REQUIRED"
@@ -121,7 +179,8 @@ def validate_shape(obj: dict) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--provider", default="mock")
+    ap.add_argument("--provider", default="auto")
+    ap.add_argument("--profile", default=os.getenv("AGENT_BANDWIDTH_PROFILE", "small"))
     ap.add_argument("--world-id", default="world.v0:orchard_garden_lattice")
     ap.add_argument("--agent-id", default="writer.proposal.constructive")
     ap.add_argument("--canonical-tick", type=int, default=42)
@@ -139,6 +198,7 @@ def main() -> None:
         canonical_tick=args.canonical_tick,
         intent=args.intent,
         ollama_model=args.ollama_model,
+        profile=args.profile,
     )
     validate_shape(obj)
 
