@@ -198,6 +198,12 @@ Companion schemas:
 - `docs/schemas/artifact_projection_view.v0.schema.json`
 - `docs/schemas/artifact_projection_manifest.v0.schema.json`
 
+Algorithm-first tool partitioning (8x7x2):
+
+- `docs/ROLE_TOOLSET_MATRIX_v0.md`
+- `docs/schemas/role_toolset_matrix_112.v0.schema.json`
+- `narrative_data/contracts/role_toolset_matrix_112.v0.json`
+
 ## The algorithm
 
 ```
