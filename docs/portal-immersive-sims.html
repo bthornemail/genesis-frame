@@ -97,10 +97,19 @@
 </div>
   </div>
 
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.161.0/examples/jsm/"
+      }
+    }
+  </script>
+
   <script type="module">
-    import * as THREE from 'https://unpkg.com/three@0.161.0/build/three.module.js?module';
-    import { OrbitControls } from 'https://unpkg.com/three@0.161.0/examples/jsm/controls/OrbitControls.js?module';
-    import { GLTFLoader } from 'https://unpkg.com/three@0.161.0/examples/jsm/loaders/GLTFLoader.js?module';
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
     const $ = (id) => document.getElementById(id);
     const logEl = $('log');
@@ -167,12 +176,32 @@
       return clone;
     }
 
+    function normalizeMaterial(material){
+      if (!material) return new THREE.MeshStandardMaterial({ color: 0xb8c7db });
+      if (typeof material.onBeforeCompile !== 'function') material.onBeforeCompile = () => {};
+      if (typeof material.customProgramCacheKey !== 'function') material.customProgramCacheKey = () => '';
+      if (typeof material.onBuild !== 'function') material.onBuild = () => {};
+      return material;
+    }
+
+    function normalizeSceneMaterials(root){
+      root.traverse((obj)=>{
+        if (!obj.isMesh) return;
+        if (Array.isArray(obj.material)) {
+          obj.material = obj.material.map((m)=>normalizeMaterial(m));
+        } else {
+          obj.material = normalizeMaterial(obj.material);
+        }
+      });
+    }
+
     async function loadGltf(url){
       if (gltfCache.has(url)) return cloneGltfScene(gltfCache.get(url));
       return new Promise((resolve, reject)=>{
         loader.load(url, (gltf)=>{
           const src = gltf.scene || gltf.scenes?.[0];
           if (!src) return reject(new Error('empty gltf'));
+          normalizeSceneMaterials(src);
           gltfCache.set(url, src);
           resolve(cloneGltfScene(src));
         }, undefined, reject);
