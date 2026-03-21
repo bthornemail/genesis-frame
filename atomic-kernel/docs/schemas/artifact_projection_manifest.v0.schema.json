@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "artifact_projection_manifest.v0.schema.json",
+  "title": "Artifact Projection Manifest v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "version",
+    "manifest_id",
+    "authority",
+    "allowed_targets",
+    "loaders",
+    "allowlist_policy",
+    "resource_bounds",
+    "attribution_policy"
+  ],
+  "properties": {
+    "type": { "const": "artifact_projection_manifest" },
+    "version": { "const": 0 },
+    "manifest_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "authority": { "enum": ["advisory", "canonical"] },
+    "allowed_targets": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["3d_scene", "2d_canvas", "workflow_editor", "graph_view", "document_view", "minimap", "stream"]
+      }
+    },
+    "loaders": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["loader_id", "version", "targets"],
+        "properties": {
+          "loader_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "version": { "type": "string", "minLength": 1, "maxLength": 32 },
+          "targets": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "enum": ["3d_scene", "2d_canvas", "workflow_editor", "graph_view", "document_view", "minimap", "stream"]
+            }
+          }
+        }
+      }
+    },
+    "allowlist_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["public_mode", "on_blocked"],
+      "properties": {
+        "public_mode": { "type": "boolean" },
+        "on_blocked": { "type": "string", "enum": ["reject", "fallback"] }
+      }
+    },
+    "resource_bounds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_asset_mb", "max_instances"],
+      "properties": {
+        "max_asset_mb": { "type": "integer", "minimum": 1 },
+        "max_instances": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "attribution_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "surface"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "surface": { "type": "string", "enum": ["inline", "panel", "both"] }
+      }
+    }
+  }
+}

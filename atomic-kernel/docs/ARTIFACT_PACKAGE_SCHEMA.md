@@ -16,6 +16,10 @@ Required fields:
   - `progression_template`
   - `control_diagram_artifact`
   - `header8_artifact`
+  - `canonical_embedded_artifact`
+  - `artifact_activation_receipt`
+  - `artifact_projection_view`
+  - `artifact_projection_manifest`
 - `payload_encoding`: must be `"utf8-json"`
 - `payload_b64`: base64 of canonical UTF-8 JSON payload bytes
 - `fingerprint_algo`: must be `"sha256"`

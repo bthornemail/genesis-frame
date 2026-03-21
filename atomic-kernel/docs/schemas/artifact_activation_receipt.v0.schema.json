@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "artifact_activation_receipt.v0.schema.json",
+  "title": "Artifact Activation Receipt v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "version",
+    "authority",
+    "activation_id",
+    "artifact_fingerprint",
+    "projection_target",
+    "loader_id",
+    "decision",
+    "replay_hash"
+  ],
+  "properties": {
+    "type": { "const": "artifact_activation_receipt" },
+    "version": { "const": 0 },
+    "authority": { "enum": ["advisory", "canonical"] },
+    "activation_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "artifact_fingerprint": { "type": "string", "pattern": "^sha256:[0-9a-fA-F]{64}$" },
+    "projection_target": {
+      "type": "string",
+      "enum": ["3d_scene", "2d_canvas", "workflow_editor", "graph_view", "document_view", "minimap", "stream"]
+    },
+    "loader_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "decision": { "type": "string", "enum": ["accepted", "rejected"] },
+    "tick_ref": { "type": ["integer", "null"], "minimum": 0 },
+    "proposal_id": { "type": ["string", "null"], "maxLength": 128 },
+    "receipt_id": { "type": ["string", "null"], "maxLength": 128 },
+    "replay_hash": { "type": "string", "pattern": "^[0-9a-fA-F]{64}$" }
+  }
+}

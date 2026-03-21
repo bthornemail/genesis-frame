@@ -1,0 +1,14 @@
+{
+  "type": "artifact_activation_receipt",
+  "version": 0,
+  "authority": "advisory",
+  "activation_id": "act_20260321_0001",
+  "artifact_fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "projection_target": "3d_scene",
+  "loader_id": "threejs.gltf_loader.v1",
+  "decision": "accepted",
+  "tick_ref": 42,
+  "proposal_id": "prop_20260321_0001",
+  "receipt_id": "rcpt_20260321_0001",
+  "replay_hash": "2222222222222222222222222222222222222222222222222222222222222222"
+}

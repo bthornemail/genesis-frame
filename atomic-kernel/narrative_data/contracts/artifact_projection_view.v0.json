@@ -1,0 +1,14 @@
+{
+  "type": "artifact_projection_view",
+  "version": 0,
+  "authority": "advisory",
+  "source_fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "projection_target": "2d_canvas",
+  "loader_id": "canvas.graph_renderer.v1",
+  "context_hash": "3333333333333333333333333333333333333333333333333333333333333333",
+  "output_descriptor": {
+    "node_ids": ["n1", "n2"],
+    "edge_ids": ["e1"]
+  },
+  "replay_hash": "4444444444444444444444444444444444444444444444444444444444444444"
+}

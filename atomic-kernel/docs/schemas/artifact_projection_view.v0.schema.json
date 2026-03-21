@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "artifact_projection_view.v0.schema.json",
+  "title": "Artifact Projection View v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "version",
+    "authority",
+    "source_fingerprint",
+    "projection_target",
+    "loader_id",
+    "context_hash",
+    "output_descriptor",
+    "replay_hash"
+  ],
+  "properties": {
+    "type": { "const": "artifact_projection_view" },
+    "version": { "const": 0 },
+    "authority": { "const": "advisory" },
+    "source_fingerprint": { "type": "string", "pattern": "^sha256:[0-9a-fA-F]{64}$" },
+    "projection_target": {
+      "type": "string",
+      "enum": ["3d_scene", "2d_canvas", "workflow_editor", "graph_view", "document_view", "minimap", "stream"]
+    },
+    "loader_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "context_hash": { "type": "string", "pattern": "^[0-9a-fA-F]{64}$" },
+    "output_descriptor": { "type": "object" },
+    "replay_hash": { "type": "string", "pattern": "^[0-9a-fA-F]{64}$" }
+  }
+}

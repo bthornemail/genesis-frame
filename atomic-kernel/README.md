@@ -176,6 +176,28 @@ Formal reduction spec:
 Recommended reading path:
 - Read the Normative Core first, then the Proof Notes, then the Combined Draft only if full derivational context is needed.
 
+## Dormant canonical artifact model
+
+Canonical artifact state is dormant-first:
+
+- canonical carrier: uncompressed Aztec-embedded artifact (`artifact_package.v1` based)
+- activation: bounded verify/decode/propose/receipt flow
+- projection: local non-authoritative renderings (3D, 2D, workflow, graph, document, minimap)
+
+New spec stack:
+
+- `docs/CANONICAL_EMBEDDED_ARTIFACT_v0.md`
+- `docs/ARTIFACT_ACTIVATION_LAW_v0.md`
+- `docs/ARTIFACT_PROJECTION_VIEW_v0.md`
+- `docs/ARTIFACT_PROJECTION_MANIFEST_v0.md`
+
+Companion schemas:
+
+- `docs/schemas/canonical_embedded_artifact.v0.schema.json`
+- `docs/schemas/artifact_activation_receipt.v0.schema.json`
+- `docs/schemas/artifact_projection_view.v0.schema.json`
+- `docs/schemas/artifact_projection_manifest.v0.schema.json`
+
 ## The algorithm
 
 ```

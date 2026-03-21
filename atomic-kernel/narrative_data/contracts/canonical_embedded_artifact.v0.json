@@ -1,0 +1,9 @@
+{
+  "type": "canonical_embedded_artifact",
+  "version": 0,
+  "authority": "canonical",
+  "carrier": "artifact_package.v1",
+  "transport_projection": "aztec_png",
+  "fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "dormant": true
+}

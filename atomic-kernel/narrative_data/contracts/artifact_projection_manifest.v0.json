@@ -1,0 +1,39 @@
+{
+  "type": "artifact_projection_manifest",
+  "version": 0,
+  "manifest_id": "projection_manifest_public_v0",
+  "authority": "advisory",
+  "allowed_targets": [
+    "3d_scene",
+    "2d_canvas",
+    "workflow_editor",
+    "graph_view",
+    "document_view",
+    "minimap",
+    "stream"
+  ],
+  "loaders": [
+    {
+      "loader_id": "threejs.gltf_loader",
+      "version": "1",
+      "targets": ["3d_scene", "minimap"]
+    },
+    {
+      "loader_id": "canvas.graph_renderer",
+      "version": "1",
+      "targets": ["2d_canvas", "graph_view", "workflow_editor", "document_view", "stream"]
+    }
+  ],
+  "allowlist_policy": {
+    "public_mode": true,
+    "on_blocked": "fallback"
+  },
+  "resource_bounds": {
+    "max_asset_mb": 256,
+    "max_instances": 4096
+  },
+  "attribution_policy": {
+    "required": true,
+    "surface": "panel"
+  }
+}

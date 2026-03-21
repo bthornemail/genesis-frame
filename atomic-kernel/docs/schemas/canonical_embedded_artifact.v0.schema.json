@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "canonical_embedded_artifact.v0.schema.json",
+  "title": "Canonical Embedded Artifact v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "version",
+    "authority",
+    "carrier",
+    "transport_projection",
+    "fingerprint",
+    "dormant"
+  ],
+  "properties": {
+    "type": { "const": "canonical_embedded_artifact" },
+    "version": { "const": 0 },
+    "authority": { "const": "canonical" },
+    "carrier": { "const": "artifact_package.v1" },
+    "transport_projection": { "enum": ["aztec_png", "aztec_symbol"] },
+    "fingerprint": { "type": "string", "pattern": "^sha256:[0-9a-fA-F]{64}$" },
+    "dormant": { "const": true }
+  }
+}
