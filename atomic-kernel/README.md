@@ -204,6 +204,13 @@ Algorithm-first tool partitioning (8x7x2):
 - `docs/schemas/role_toolset_matrix_112.v0.schema.json`
 - `narrative_data/contracts/role_toolset_matrix_112.v0.json`
 
+Canonical time authority contract:
+
+- `docs/CANONICAL_TIME_ALGORITHM_v0.md`
+- `docs/schemas/canonical_time_policy.v0.schema.json`
+- `narrative_data/contracts/canonical_time_policy.v0.json`
+- `npm run -s canonical-time:v0:gate`
+
 ## The algorithm
 
 ```

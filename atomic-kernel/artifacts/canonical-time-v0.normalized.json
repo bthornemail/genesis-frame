@@ -1,0 +1,18 @@
+{
+  "authority": "algorithmic",
+  "canonical_time_source": "algorithmic_tick",
+  "eligibility_function": "eligible(action,state,canonical_tick)",
+  "ordering_authority": "chirality_within_tick_only",
+  "proposal_acceptance_boundary": "lawful_tick_boundary",
+  "reject_conditions": [
+    "multiple_canonical_time_sources",
+    "acceptance_by_wallclock_arrival",
+    "projection_lag_changes_truth",
+    "server_clock_drift_changes_order",
+    "chirality_defines_independent_clock",
+    "acceptance_without_receipt_lineage"
+  ],
+  "replay_hash": "80b7978648fb7e5cfa5189d7043208a3f479d594ff62c626310407f026ee1740",
+  "type": "canonical_time_v0_gate",
+  "version": 1
+}

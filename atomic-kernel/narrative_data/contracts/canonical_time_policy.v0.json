@@ -1,0 +1,18 @@
+{
+  "type": "canonical_time_policy",
+  "version": 0,
+  "authority": "algorithmic",
+  "canonical_time_source": "algorithmic_tick",
+  "tick_advancement": "tick_next = tick_current + 1",
+  "ordering_authority": "chirality_within_tick_only",
+  "eligibility_function": "eligible(action,state,canonical_tick)",
+  "proposal_acceptance_boundary": "lawful_tick_boundary",
+  "reject_conditions": [
+    "multiple_canonical_time_sources",
+    "acceptance_by_wallclock_arrival",
+    "projection_lag_changes_truth",
+    "server_clock_drift_changes_order",
+    "chirality_defines_independent_clock",
+    "acceptance_without_receipt_lineage"
+  ]
+}
