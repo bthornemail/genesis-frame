@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ULP Portal | Sims-like World Prototype</title>
+  <style>
+    :root { --bg:#0a0f1a; --ink:#eaf2ff; --muted:#9fb0d1; --edge:#2d3f66; --ok:#39d98a; --warn:#ffb020; --bad:#ff5f6d; --accent:#6fd6ff; }
+    *{box-sizing:border-box}
+    body{margin:0;color:var(--ink);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:radial-gradient(1200px 680px at 12% -10%,#1b3162 0%,transparent 62%),radial-gradient(900px 520px at 100% 0%,#22335a 0%,transparent 55%),var(--bg)}
+    .wrap{max-width:1400px;margin:0 auto;padding:14px}
+    h1{margin:0 0 6px;font-size:26px}
+    .sub{margin:0 0 12px;color:var(--muted)}
+    .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+    button,select{border:1px solid #4c75b3;background:#122a49;color:#e8f5ff;padding:8px 10px;border-radius:8px;font:inherit}
+    button.secondary{border-color:#4f5f84;background:#1a263f}
+    button.on{border-color:#78e5ff;box-shadow:0 0 0 2px #78e5ff33 inset}
+    .grid{display:grid;grid-template-columns:1.45fr .85fr;gap:12px}
+    @media (max-width:1180px){.grid{grid-template-columns:1fr}}
+    .card{border:1px solid var(--edge);border-radius:12px;padding:10px;background:linear-gradient(180deg,#121c34,#0f162a)}
+    .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+    #world3d{height:620px;border:1px solid var(--edge);border-radius:10px;overflow:hidden;background:#0a1221}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+    @media (max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
+    .tile{border:1px solid var(--edge);border-radius:8px;padding:8px;background:#0a1225}
+    .t1{font-size:11px;color:var(--muted);text-transform:uppercase}
+    .t2{font-size:14px;margin-top:4px}
+    .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)} .muted{color:var(--muted)}
+    .needs{display:grid;gap:7px;margin-top:8px}
+    .need{display:grid;grid-template-columns:90px 1fr 40px;align-items:center;gap:8px}
+    .bar{height:8px;border-radius:999px;border:1px solid #35517d;background:#0b1427;overflow:hidden}
+    .fill{height:100%;background:linear-gradient(90deg,#4b86ff,#6fd6ff)}
+    .log{margin-top:10px;max-height:250px;overflow:auto;border:1px solid var(--edge);border-radius:8px;background:#081020;padding:8px;font-size:12px;white-space:pre-wrap}
+    .hint{font-size:12px;color:var(--muted)}
+    .meta{margin-top:10px;padding:8px;border:1px solid var(--edge);border-radius:8px;background:#081020;font-size:12px;line-height:1.45}
+    .chip{display:inline-block;padding:3px 6px;border-radius:999px;border:1px solid #4c75b3;font-size:11px;margin-left:6px}
+    .chip.ok{color:var(--ok);border-color:#39d98a}
+    .chip.warn{color:var(--warn);border-color:#ffb020}
+    .chip.bad{color:var(--bad);border-color:#ff5f6d}
+    a{color:var(--accent)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>ULP Portal: Sims-like World Prototype</h1>
+    <p class="sub">Asset-backed world simulation with autonomous residents, needs, build mode, and scene composition from your import manifest.</p>
+
+    <div class="toolbar">
+      <button id="playBtn" class="on">Pause</button>
+      <button id="speed1" class="on">1x</button>
+      <button id="speed4">4x</button>
+      <button id="spawnSim">Spawn Resident</button>
+      <select id="avatarPack">
+        <option value="auto">Avatar: Auto</option>
+      </select>
+      <select id="landscapePack">
+        <option value="auto">Landscape: Auto</option>
+      </select>
+      <button id="applyLandscape">Load Landscape</button>
+      <button id="buildMode">Build Mode: Off</button>
+      <select id="buildType">
+        <option value="house">House</option>
+        <option value="tree">Tree</option>
+        <option value="bench">Bench</option>
+        <option value="lamp">Lamp</option>
+      </select>
+      <button class="secondary" id="resetWorld">Reset Lot</button>
+      <a href="/">back to control wall</a>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="k">3D Lot</div>
+        <div id="world3d"></div>
+        <div class="stats">
+          <div class="tile"><div class="t1">Residents</div><div id="statPop" class="t2">0</div></div>
+          <div class="tile"><div class="t1">World Time</div><div id="statTime" class="t2">Day 1 · 06:00</div></div>
+          <div class="tile"><div class="t1">Mode</div><div id="statMode" class="t2">Live</div></div>
+          <div class="tile"><div class="t1">Manifest Assets</div><div id="statManifest" class="t2">loading</div></div>
+          <div class="tile"><div class="t1">Avg Hunger</div><div id="statHunger" class="t2">100</div></div>
+          <div class="tile"><div class="t1">Avg Energy</div><div id="statEnergy" class="t2">100</div></div>
+          <div class="tile"><div class="t1">Avg Social</div><div id="statSocial" class="t2">100</div></div>
+          <div class="tile"><div class="t1">Projection</div><div id="statProjection" class="t2">3D</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="k">Selected Resident</div>
+        <div id="selName" class="t2 muted">none</div>
+        <div class="needs" id="needsBox"></div>
+        <p class="hint" style="margin-top:10px">Click a resident to inspect. In build mode, click ground to place selected object.</p>
+        <div class="k" style="margin-top:14px">Runtime Log</div>
+        <pre id="log" class="log"></pre>
+        <div class="k" style="margin-top:14px">Asset Attribution</div>
+        <div id="attributionBox" class="meta">No landscape loaded yet.</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/OrbitControls.js';
+    import { GLTFLoader } from 'https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/loaders/GLTFLoader.js';
+
+    const $ = (id) => document.getElementById(id);
+    const logEl = $('log');
+    const log = (m) => { logEl.textContent = `${new Date().toISOString()} ${m}\n` + logEl.textContent; };
+
+    const worldEl = $('world3d');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x9db1c9);
+    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 500);
+    camera.position.set(18, 14, 18);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    worldEl.appendChild(renderer.domElement);
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 0, 0);
+    controls.enableDamping = true;
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x4c6d84, 1.0));
+    const dir = new THREE.DirectionalLight(0xffffff, 0.9);
+    dir.position.set(18, 24, 8); dir.castShadow = true; dir.shadow.mapSize.set(2048, 2048); scene.add(dir);
+
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(120, 120), new THREE.MeshStandardMaterial({ color: 0x99abc0, roughness: 1 }));
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
+    ground.name = 'ground';
+    scene.add(ground);
+    scene.add(new THREE.GridHelper(120, 120, 0xcdd9e8, 0xb6c6d8));
+
+    const envRoot = new THREE.Group();
+    const lotRoot = new THREE.Group();
+    const simRoot = new THREE.Group();
+    scene.add(envRoot); scene.add(lotRoot); scene.add(simRoot);
+
+    function fit(){ const w = worldEl.clientWidth || 1000; const h = worldEl.clientHeight || 620; renderer.setSize(w,h,false); camera.aspect = w/h; camera.updateProjectionMatrix(); }
+    window.addEventListener('resize', fit); fit();
+
+    const clock = new THREE.Clock();
+    let paused = false, speed = 1, buildMode = false, selected = null;
+
+    const world = {
+      minute: 6*60,
+      day: 1,
+      sims: [],
+      objects: [],
+      idCounter: 1,
+      manifest: [],
+      avatarAssets: [],
+      avatarAssetCursor: 0,
+      environmentAssets: [],
+      currentEnvironmentAsset: null
+    };
+    const needKeys = ['hunger','energy','social','fun','hygiene','bladder'];
+    const loader = new GLTFLoader();
+    const gltfCache = new Map();
+
+    const mkNeed = (v=100) => Math.max(0, Math.min(100, v));
+    const rand = (a,b) => a + Math.random()*(b-a);
+
+    function cloneGltfScene(scene3d){
+      const clone = scene3d.clone(true);
+      clone.traverse((obj)=>{
+        if (obj.isMesh) { obj.castShadow = true; obj.receiveShadow = true; }
+      });
+      return clone;
+    }
+
+    async function loadGltf(url){
+      if (gltfCache.has(url)) return cloneGltfScene(gltfCache.get(url));
+      return new Promise((resolve, reject)=>{
+        loader.load(url, (gltf)=>{
+          const src = gltf.scene || gltf.scenes?.[0];
+          if (!src) return reject(new Error('empty gltf'));
+          gltfCache.set(url, src);
+          resolve(cloneGltfScene(src));
+        }, undefined, reject);
+      });
+    }
+
+    function avatarAssetUrl(asset) {
+      const raw = (asset?.entry_glb || asset?.entry_gltf || '').trim();
+      if (!raw) return '';
+      return raw.replace('/docs/imports/', '/assets/imports/');
+    }
+
+    function pickAvatarAsset(){
+      if (!world.avatarAssets.length) return null;
+      const mode = $('avatarPack').value || 'auto';
+      if (mode === 'random') return world.avatarAssets[Math.floor(Math.random() * world.avatarAssets.length)];
+      if (mode !== 'auto') return world.avatarAssets.find((a) => a.id === mode) || null;
+      const asset = world.avatarAssets[world.avatarAssetCursor % world.avatarAssets.length];
+      world.avatarAssetCursor += 1;
+      return asset;
+    }
+
+    function pickEnvironmentAsset(){
+      if (!world.environmentAssets.length) return null;
+      const mode = $('landscapePack').value || 'auto';
+      if (mode === 'random') return world.environmentAssets[Math.floor(Math.random() * world.environmentAssets.length)];
+      if (mode !== 'auto') return world.environmentAssets.find((a) => a.id === mode) || null;
+      return world.environmentAssets.find((a) => a.default_enabled === true) || world.environmentAssets[0];
+    }
+
+    function renderAssetAttribution(){
+      const box = $('attributionBox');
+      const env = world.currentEnvironmentAsset;
+      const selectedAvatar = selected?.avatarId
+        ? world.avatarAssets.find((a)=>a.id===selected.avatarId) || null
+        : null;
+      const envLine = env
+        ? `<b>Landscape:</b> ${env.title || env.id} (${env.id})<br><span class="muted">license=${env.license_kind || 'unknown'} · attribution_required=${String(Boolean(env.attribution_required))}</span>`
+        : '<b>Landscape:</b> none';
+      const envSource = env?.source_url ? `<br><b>Source:</b> <a href="${env.source_url}" target="_blank" rel="noreferrer">link</a>` : '';
+      const envLicense = env?.license_file ? `<br><b>License File:</b> ${String(env.license_file).replace('/docs/imports/', '/assets/imports/')}` : '';
+      const avatarLine = selectedAvatar
+        ? `<br><br><b>Selected Avatar:</b> ${selectedAvatar.title || selectedAvatar.id} (${selectedAvatar.id})<br><span class="muted">license=${selectedAvatar.license_kind || 'unknown'} · attribution_required=${String(Boolean(selectedAvatar.attribution_required))}</span>`
+        : '<br><br><b>Selected Avatar:</b> none';
+      box.innerHTML = `${envLine}${envSource}${envLicense}${avatarLine}`;
+    }
+
+    function buildFallbackResidentVisual(visualRoot){
+      const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.25, 0.8, 6, 10), new THREE.MeshStandardMaterial({ color: new THREE.Color().setHSL(Math.random(), 0.45, 0.55) }));
+      torso.castShadow = true;
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 12), new THREE.MeshStandardMaterial({ color: 0xf0d6bf }));
+      head.position.y = 0.8;
+      head.castShadow = true;
+      visualRoot.add(torso, head);
+    }
+
+    function clearGroupChildren(group){
+      while (group.children.length) group.remove(group.children[0]);
+    }
+
+    async function attachAvatarToResident(sim, asset){
+      const url = avatarAssetUrl(asset);
+      if (!url) return false;
+      const avatarModel = await loadGltf(url);
+      const box = new THREE.Box3().setFromObject(avatarModel);
+      const size = box.getSize(new THREE.Vector3());
+      const height = Math.max(size.y, 0.001);
+      const targetHeight = 1.65;
+      const scale = targetHeight / height;
+      avatarModel.scale.setScalar(scale);
+      const box2 = new THREE.Box3().setFromObject(avatarModel);
+      avatarModel.position.y -= box2.min.y;
+      avatarModel.position.y -= 0.58;
+      clearGroupChildren(sim.visualRoot);
+      sim.visualRoot.add(avatarModel);
+      sim.avatarId = asset.id;
+      sim.avatarStatus = 'loaded';
+      return true;
+    }
+
+    function applyAvatarPlan(sim, reason){
+      const asset = pickAvatarAsset();
+      if (!asset) {
+        sim.avatarStatus = 'fallback';
+        sim.avatarId = null;
+        return;
+      }
+      attachAvatarToResident(sim, asset)
+        .then((ok)=>{
+          if (!ok) return;
+          log(`avatar attached ${sim.name} <- ${asset.id} (${reason})`);
+          if (selected?.id === sim.id) updateHUD();
+        })
+        .catch((err)=>{
+          sim.avatarStatus = 'fallback';
+          sim.avatarId = null;
+          clearGroupChildren(sim.visualRoot);
+          buildFallbackResidentVisual(sim.visualRoot);
+          log(`avatar load fallback for ${sim.name}: ${String(err)}`);
+        });
+    }
+
+    function makeResident(name, x, z) {
+      const body = new THREE.Group();
+      const visualRoot = new THREE.Group();
+      body.add(visualRoot);
+      buildFallbackResidentVisual(visualRoot);
+      const marker = new THREE.Mesh(new THREE.CircleGeometry(0.35, 24), new THREE.MeshBasicMaterial({ color: 0x6fd6ff, transparent:true, opacity:0.0 }));
+      marker.rotation.x = -Math.PI/2; marker.position.y = -0.58; body.add(marker);
+      body.position.set(x, 0.58, z);
+      body.userData.simId = `sim_${world.idCounter++}`;
+      simRoot.add(body);
+      const sim = {
+        id: body.userData.simId, name, mesh: body, marker, visualRoot, avatarId: null, avatarStatus: 'fallback',
+        speed: rand(1.1, 1.7), target: new THREE.Vector3(rand(-10,10), 0.58, rand(-10,10)), task: 'wander', cooldown: 0,
+        needs: { hunger: mkNeed(rand(60,100)), energy: mkNeed(rand(55,100)), social: mkNeed(rand(45,100)), fun: mkNeed(rand(50,100)), hygiene: mkNeed(rand(65,100)), bladder: mkNeed(rand(70,100)) }
+      };
+      world.sims.push(sim);
+      applyAvatarPlan(sim, 'spawn');
+      return sim;
+    }
+
+    function addLotObject(type, x, z) {
+      let mesh;
+      if (type === 'house') {
+        mesh = new THREE.Group();
+        const base = new THREE.Mesh(new THREE.BoxGeometry(3.6,1.8,2.8), new THREE.MeshStandardMaterial({ color:0xd2cab8 })); base.position.y=0.9; base.castShadow=base.receiveShadow=true; mesh.add(base);
+        const roof = new THREE.Mesh(new THREE.ConeGeometry(2.4,1.4,4), new THREE.MeshStandardMaterial({ color:0x8a4d4d })); roof.rotation.y=Math.PI/4; roof.position.y=2.4; roof.castShadow=true; mesh.add(roof);
+      } else if (type === 'tree') {
+        mesh = new THREE.Group();
+        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.15,0.18,1.0,10), new THREE.MeshStandardMaterial({ color:0x6f533a })); trunk.position.y=0.5; trunk.castShadow=true; mesh.add(trunk);
+        const leaf = new THREE.Mesh(new THREE.ConeGeometry(0.9,1.8,12), new THREE.MeshStandardMaterial({ color:0x4ea45f })); leaf.position.y=1.7; leaf.castShadow=true; mesh.add(leaf);
+      } else if (type === 'lamp') {
+        mesh = new THREE.Group();
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.06,0.06,1.8,12), new THREE.MeshStandardMaterial({ color:0x8894a1 })); pole.position.y=0.9; mesh.add(pole);
+        const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.14,14,12), new THREE.MeshStandardMaterial({ color:0xffeb99, emissive:0xffd46a, emissiveIntensity:0.65 })); bulb.position.y=1.85; mesh.add(bulb);
+      } else {
+        mesh = new THREE.Group();
+        const seat = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.25,0.55), new THREE.MeshStandardMaterial({ color:0x4f6d8d })); seat.position.y=0.55; mesh.add(seat);
+        const back = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.65,0.18), new THREE.MeshStandardMaterial({ color:0x4f6d8d })); back.position.set(0,0.9,-0.2); mesh.add(back);
+      }
+      mesh.position.set(x,0,z);
+      mesh.traverse((o)=>{ if (o.isMesh){ o.castShadow=true; o.receiveShadow=true; }});
+      lotRoot.add(mesh);
+      const id = `obj_${world.idCounter++}`;
+      world.objects.push({ id, type, mesh, pos:new THREE.Vector3(x,0,z) });
+      return id;
+    }
+
+    const nearestObject = (type, from) => world.objects.filter((o)=>o.type===type).sort((a,b)=>from.distanceTo(a.pos)-from.distanceTo(b.pos))[0] || null;
+
+    function pickTask(sim){
+      const pairs = Object.entries(sim.needs).sort((a,b)=>a[1]-b[1]);
+      const [need, value] = pairs[0];
+      if (value > 65) { sim.task='wander'; sim.target.set(rand(-14,14),0.58,rand(-14,14)); return; }
+      const house = nearestObject('house', sim.mesh.position);
+      const bench = nearestObject('bench', sim.mesh.position);
+      if (need === 'hunger' && house) { sim.task='eat'; sim.target.set(house.pos.x+1.5,0.58,house.pos.z+0.5); return; }
+      if (need === 'energy' && house) { sim.task='sleep'; sim.target.set(house.pos.x-1.2,0.58,house.pos.z-0.6); return; }
+      if ((need === 'social' || need === 'fun') && bench) { sim.task='chat'; sim.target.set(bench.pos.x,0.58,bench.pos.z+0.8); return; }
+      if ((need === 'hygiene' || need === 'bladder') && house) { sim.task='recover'; sim.target.set(house.pos.x,0.58,house.pos.z); return; }
+      sim.task='wander'; sim.target.set(rand(-14,14),0.58,rand(-14,14));
+    }
+
+    function decayNeeds(sim, dt){
+      const r = dt * 3.6;
+      sim.needs.hunger = mkNeed(sim.needs.hunger - r*1.2);
+      sim.needs.energy = mkNeed(sim.needs.energy - r*0.9);
+      sim.needs.social = mkNeed(sim.needs.social - r*0.7);
+      sim.needs.fun = mkNeed(sim.needs.fun - r*0.8);
+      sim.needs.hygiene = mkNeed(sim.needs.hygiene - r*0.5);
+      sim.needs.bladder = mkNeed(sim.needs.bladder - r*0.6);
+    }
+
+    function applyTaskRecovery(sim, dt){
+      const r = 22 * dt;
+      if (sim.task === 'eat') sim.needs.hunger = mkNeed(sim.needs.hunger + r);
+      else if (sim.task === 'sleep') sim.needs.energy = mkNeed(sim.needs.energy + r*1.2);
+      else if (sim.task === 'chat') { sim.needs.social = mkNeed(sim.needs.social + r); sim.needs.fun = mkNeed(sim.needs.fun + r*0.6); }
+      else if (sim.task === 'recover') { sim.needs.hygiene = mkNeed(sim.needs.hygiene + r); sim.needs.bladder = mkNeed(sim.needs.bladder + r); }
+      else sim.needs.fun = mkNeed(sim.needs.fun + r*0.18);
+    }
+
+    function updateSim(sim, dt){
+      decayNeeds(sim, dt);
+      sim.cooldown -= dt;
+      const pos = sim.mesh.position;
+      const dist = pos.distanceTo(sim.target);
+      if (dist < 0.25 || sim.cooldown <= 0) {
+        if (dist < 0.5) applyTaskRecovery(sim, dt*4);
+        pickTask(sim);
+        sim.cooldown = rand(3,7);
+      }
+      const dir = new THREE.Vector3().subVectors(sim.target, pos); dir.y=0;
+      const d = dir.length();
+      if (d > 0.02) {
+        dir.normalize();
+        pos.addScaledVector(dir, Math.min(d, sim.speed * dt));
+        sim.mesh.rotation.y = Math.atan2(dir.x, dir.z);
+      }
+    }
+
+    function avgNeed(k){ return world.sims.length ? world.sims.reduce((a,s)=>a+s.needs[k],0)/world.sims.length : 0; }
+
+    function updateHUD(){
+      $('statPop').textContent = String(world.sims.length);
+      $('statHunger').textContent = avgNeed('hunger').toFixed(0);
+      $('statEnergy').textContent = avgNeed('energy').toFixed(0);
+      $('statSocial').textContent = avgNeed('social').toFixed(0);
+      $('statMode').textContent = buildMode ? 'Build' : (paused ? 'Paused' : 'Live');
+      const h = Math.floor(world.minute / 60) % 24, m = Math.floor(world.minute % 60);
+      $('statTime').textContent = `Day ${world.day} · ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+      if (!selected) {
+        $('selName').textContent = 'none'; $('selName').className = 't2 muted'; $('needsBox').innerHTML = '';
+      } else {
+        const avatarTag = selected.avatarId ? ` · avatar=${selected.avatarId}` : '';
+        const cls = selected.avatarStatus === 'loaded' ? 'ok' : (selected.avatarStatus === 'fallback' ? 'warn' : 'bad');
+        const chip = `<span class="chip ${cls}">avatar:${selected.avatarStatus || 'none'}</span>`;
+        $('selName').innerHTML = `${selected.name} · task=${selected.task}${avatarTag} ${chip}`;
+        $('selName').className = 't2 ok';
+        $('needsBox').innerHTML = '';
+        for (const key of needKeys) {
+          const v = selected.needs[key], pct = Math.max(0, Math.min(100, v));
+          const color = pct > 60 ? '#39d98a' : (pct > 30 ? '#ffb020' : '#ff5f6d');
+          const row = document.createElement('div'); row.className = 'need';
+          row.innerHTML = `<div>${key}</div><div class="bar"><div class="fill" style="width:${pct}%; background:${color}"></div></div><div>${pct.toFixed(0)}</div>`;
+          $('needsBox').appendChild(row);
+        }
+      }
+      renderAssetAttribution();
+    }
+
+    function selectSim(sim){
+      selected = sim;
+      for (const s of world.sims) s.marker.material.opacity = (s === sim ? 0.7 : 0.0);
+      updateHUD();
+      if (sim) log(`selected ${sim.name}`);
+    }
+
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    const drag = { down:false, x:0, y:0 };
+    renderer.domElement.addEventListener('pointerdown', (ev)=>{ drag.down = true; drag.x = ev.clientX; drag.y = ev.clientY; });
+    renderer.domElement.addEventListener('pointerup', (ev)=>{
+      const moved = Math.hypot(ev.clientX-drag.x, ev.clientY-drag.y) > 5; drag.down = false; if (moved) return;
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((ev.clientX-rect.left)/rect.width)*2-1;
+      mouse.y = -((ev.clientY-rect.top)/rect.height)*2+1;
+      raycaster.setFromCamera(mouse, camera);
+      if (buildMode) {
+        const hit = raycaster.intersectObject(ground, false)[0];
+        if (hit) {
+          const t = $('buildType').value; const x = Math.round(hit.point.x*2)/2; const z = Math.round(hit.point.z*2)/2;
+          const id = addLotObject(t, x, z); log(`placed ${t} ${id} @ (${x.toFixed(1)},${z.toFixed(1)})`);
+        }
+        return;
+      }
+      const hits = raycaster.intersectObjects(world.sims.map((s)=>s.mesh), true);
+      if (!hits.length) { selectSim(null); return; }
+      let n = hits[0].object; while (n && !n.userData.simId) n = n.parent;
+      const sim = n ? world.sims.find((s)=>s.id===n.userData.simId) : null;
+      selectSim(sim || null);
+    });
+
+    function seedWorld(){
+      world.sims = []; world.objects = []; world.idCounter = 1;
+      while (lotRoot.children.length) lotRoot.remove(lotRoot.children[0]);
+      while (simRoot.children.length) simRoot.remove(simRoot.children[0]);
+      while (envRoot.children.length) envRoot.remove(envRoot.children[0]);
+
+      addLotObject('house', -6, -4); addLotObject('house', 6, 5);
+      addLotObject('bench', -2, 3); addLotObject('bench', 4, -1);
+      addLotObject('tree', -10, 8); addLotObject('tree', 10, -8); addLotObject('lamp', 0, 0);
+
+      makeResident('Solomon', -3, -2); makeResident('Solon', 2, 2); makeResident('Asabiyah', -1, 4); makeResident('Watcher', 4, -4);
+      selectSim(world.sims[0] || null);
+      log('world seeded');
+    }
+
+    async function applyManifestEnvironment(){
+      try {
+        const res = await fetch('/assets/imports/asset-manifest.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error(`manifest HTTP ${res.status}`);
+        const data = await res.json();
+        world.manifest = Array.isArray(data.assets) ? data.assets : [];
+        world.avatarAssets = world.manifest.filter((a)=>{
+          if (!a || a.redistributable !== true) return false;
+          if (String(a.kind || '').toLowerCase() !== 'avatar') return false;
+          return Boolean(a.entry_glb || a.entry_gltf);
+        });
+        world.environmentAssets = world.manifest.filter((a)=>{
+          if (!a || a.redistributable !== true) return false;
+          if (String(a.kind || '').toLowerCase() !== 'environment') return false;
+          return Boolean(a.entry_glb || a.entry_gltf);
+        });
+        const avatarSel = $('avatarPack');
+        avatarSel.innerHTML = '<option value="auto">Avatar: Auto</option><option value="random">Avatar: Random</option>';
+        for (const avatar of world.avatarAssets) {
+          const opt = document.createElement('option');
+          opt.value = avatar.id;
+          opt.textContent = `Avatar: ${avatar.title || avatar.id}`;
+          avatarSel.appendChild(opt);
+        }
+        const landscapeSel = $('landscapePack');
+        landscapeSel.innerHTML = '<option value="auto">Landscape: Auto</option><option value="random">Landscape: Random</option>';
+        for (const envItem of world.environmentAssets) {
+          const opt = document.createElement('option');
+          opt.value = envItem.id;
+          opt.textContent = `Landscape: ${envItem.title || envItem.id}`;
+          landscapeSel.appendChild(opt);
+        }
+        $('statManifest').textContent = String(world.manifest.length);
+        $('statManifest').className = 't2 ok';
+
+        const env = pickEnvironmentAsset();
+        if (!env) { log('manifest loaded but no default environment entry'); return; }
+        const url = (env.entry_glb || env.entry_gltf || '').replace('/docs/imports/', '/assets/imports/');
+        const envModel = await loadGltf(url);
+        while (envRoot.children.length) envRoot.remove(envRoot.children[0]);
+        const box = new THREE.Box3().setFromObject(envModel);
+        const size = box.getSize(new THREE.Vector3());
+        const maxSide = Math.max(size.x, size.y, size.z, 0.001);
+        const target = 26;
+        const s = target / maxSide;
+        envModel.scale.setScalar(s);
+        const box2 = new THREE.Box3().setFromObject(envModel);
+        envModel.position.y -= box2.min.y;
+        envRoot.add(envModel);
+        world.currentEnvironmentAsset = env;
+        for (const sim of world.sims) applyAvatarPlan(sim, 'manifest-ready');
+        log(`environment loaded: ${env.id} · avatars=${world.avatarAssets.length}`);
+        renderAssetAttribution();
+      } catch (err) {
+        $('statManifest').textContent = '0';
+        $('statManifest').className = 't2 bad';
+        log(`manifest/env load fallback: ${String(err)}`);
+      }
+    }
+
+    $('playBtn').onclick = () => { paused = !paused; $('playBtn').textContent = paused ? 'Play' : 'Pause'; $('playBtn').classList.toggle('on', !paused); updateHUD(); };
+    $('speed1').onclick = () => { speed = 1; $('speed1').classList.add('on'); $('speed4').classList.remove('on'); };
+    $('speed4').onclick = () => { speed = 4; $('speed4').classList.add('on'); $('speed1').classList.remove('on'); };
+    $('spawnSim').onclick = () => { const i = world.sims.length + 1; const sim = makeResident(`Resident ${i}`, rand(-8,8), rand(-8,8)); log(`spawned ${sim.name}`); updateHUD(); };
+    $('buildMode').onclick = () => { buildMode = !buildMode; $('buildMode').textContent = `Build Mode: ${buildMode ? 'On':'Off'}`; $('buildMode').classList.toggle('on', buildMode); updateHUD(); };
+    $('resetWorld').onclick = () => { world.minute = 6*60; world.day = 1; seedWorld(); applyManifestEnvironment(); updateHUD(); };
+    $('avatarPack').onchange = () => {
+      log(`avatar mode changed: ${$('avatarPack').value}`);
+      for (const sim of world.sims) applyAvatarPlan(sim, 'mode-change');
+      updateHUD();
+    };
+    $('applyLandscape').onclick = async () => {
+      const env = pickEnvironmentAsset();
+      if (!env) {
+        log('no environment selected');
+        return;
+      }
+      try {
+        const url = (env.entry_glb || env.entry_gltf || '').replace('/docs/imports/', '/assets/imports/');
+        const envModel = await loadGltf(url);
+        while (envRoot.children.length) envRoot.remove(envRoot.children[0]);
+        const box = new THREE.Box3().setFromObject(envModel);
+        const size = box.getSize(new THREE.Vector3());
+        const maxSide = Math.max(size.x, size.y, size.z, 0.001);
+        const target = 26;
+        envModel.scale.setScalar(target / maxSide);
+        const box2 = new THREE.Box3().setFromObject(envModel);
+        envModel.position.y -= box2.min.y;
+        envRoot.add(envModel);
+        world.currentEnvironmentAsset = env;
+        log(`landscape switched: ${env.id}`);
+        renderAssetAttribution();
+      } catch (err) {
+        log(`landscape switch failed: ${String(err)}`);
+      }
+    };
+
+    function animate(){
+      requestAnimationFrame(animate);
+      const dt = Math.min(0.05, clock.getDelta()) * speed;
+      controls.update();
+      if (!paused) {
+        world.minute += dt*8; if (world.minute >= 24*60) { world.minute -= 24*60; world.day += 1; }
+        for (const sim of world.sims) updateSim(sim, dt);
+        if (selected && !world.sims.includes(selected)) selected = null;
+        updateHUD();
+      }
+      renderer.render(scene, camera);
+    }
+
+    seedWorld();
+    applyManifestEnvironment();
+    updateHUD();
+    animate();
+    log('portal ready (sims-like prototype, manifest-backed)');
+  </script>
+</body>
+</html>
