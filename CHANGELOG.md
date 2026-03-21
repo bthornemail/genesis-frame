@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.2 - 2026-03-20
+
+### Release readiness (immediate use)
+- full strict suite green: `140/140` (`python3 atomic-kernel/tests/test_all.py`)
+- A13 ESC-depth mixed-radix header wired and verified
+- Header8 canonical algorithm added as first-class artifact
+- runtime and schema aligned to accept `header8_artifact` carriers
+- incidence collapse/divergence deterministic proof lane added
+- deterministic past/present/future reconciliation proof lane added
+- witness role model finalized (5 canonical roles, 3 operational agents)
+
+### Presentation completion
+- publish checklist added at repo root: `PUBLISH_IMMEDIATE_USE.md`
+- one-command walkthrough launcher added: `./start-walkthrough`
+- public release text added: `RELEASE_ANNOUNCEMENT.md`
+- root `README.md` updated with current verified lane and publish path
+
 ## v1.1 - 2026-03-20
 
 ### Law and spec alignment
@@ -31,4 +48,3 @@
 - city presets available in scene workflow
 - remote GLB URL import path enabled
 - camera framing and scene-first defaults improved
-

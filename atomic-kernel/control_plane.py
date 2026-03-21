@@ -39,6 +39,26 @@ NUMSYS_NAMES = {
     3: "B36",
 }
 
+ALLOWED_ESCAPE_SCOPES = {
+    "next-unit",
+    "next-record",
+    "next-group",
+    "next-file",
+    "quoted-literal",
+    "structural-region",
+}
+
+FORBIDDEN_ESCAPE_SCOPES = {
+    "time-based",
+    "time",
+    "silence-based",
+    "silence",
+    "external-state",
+    "external",
+    "implicit-infinite",
+    "infinite",
+}
+
 
 class ControlPlaneError(ValueError):
     """Deterministic fail-closed parse error."""
@@ -46,6 +66,30 @@ class ControlPlaneError(ValueError):
     def __init__(self, code: str, message: str):
         super().__init__(f"{code}: {message}")
         self.code = code
+
+
+def validate_escape_scope(scope: str) -> str:
+    """Validate escape scope label under Escape Access Law.
+
+    Time/silence/external/implicit-infinite forms are rejected fail-closed.
+    """
+    normalized = str(scope or "").strip().lower()
+    if normalized in FORBIDDEN_ESCAPE_SCOPES:
+        raise ControlPlaneError("ESC_SCOPE_FORBIDDEN", f"forbidden scope form: {normalized}")
+    if normalized not in ALLOWED_ESCAPE_SCOPES:
+        raise ControlPlaneError("ESC_SCOPE_UNKNOWN", f"unknown scope form: {normalized}")
+    return normalized
+
+
+def canonical_escape_scope_active(mode: str, scope_depth: int = 0, projection_paused: bool = False) -> bool:
+    """Canonical scope authority function.
+
+    `projection_paused` is intentionally ignored to enforce:
+    local UI/projection pause MUST NOT define canonical escape scope.
+    """
+    _ = projection_paused
+    m = str(mode or "").strip().upper()
+    return m in {"ESCAPE_PENDING", "CONTROL", "QUOTED_LITERAL"} or int(scope_depth) > 0
 
 
 @dataclass(frozen=True)

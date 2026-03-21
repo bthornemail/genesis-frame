@@ -1,3 +1,5 @@
 dev-docs
 node_modules
 imports
+__pycache__/
+*.pyc

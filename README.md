@@ -18,13 +18,21 @@ This repository is a framed distribution built from my `atomic-kernel` work and 
 
 If you want the fastest path into the system:
 
+0. One-command walkthrough launch:
+
+```bash
+./start-walkthrough
+```
+
+This serves `atomic-kernel/world.html` and prints the live walkthrough sequence.
+
 1. Run the full validation suite:
 
 ```bash
 python3 atomic-kernel/tests/test_all.py
 ```
 
-Current frozen lane: `113/113 passed`.
+Current frozen lane: `140/140 passed`.
 
 2. Open the world runtime:
 
@@ -47,11 +55,20 @@ Default UI reference screenshot:
 * `docs/screenshots/default-ui-v1.1.png`
 * `docs/screenshots/ui-strict-startup-v2.png`
 * `CHANGELOG.md` for v1.1 publication notes
+* `PUBLISH_IMMEDIATE_USE.md` for immediate launch checklist
+* `RELEASE_ANNOUNCEMENT.md` for public release text
+* `LIVE_DEMO_TALK_TRACK.md` for operator narration script
 
 Core law references:
 
-* `atomic-kernel/dev-docs/ATOMIC_PROJECTION_LAW.md`
-* `atomic-kernel/dev-docs/WITNESS_PLANE_SPEC.md`
+* `atomic-kernel/docs/ATOMIC_PROJECTION_LAW.md`
+* `atomic-kernel/docs/WITNESS_PLANE_SPEC.md`
+* `atomic-kernel/docs/ESCAPE_ACCESS_LAW.md`
+* `atomic-kernel/docs/ALGORITHM_A13_ESC_DEPTH_MIXED_RADIX.md`
+* `atomic-kernel/docs/HEADER8_CANONICAL_ALGORITHM.md`
+* `atomic-kernel/docs/ESCAPE_MANIFESTO.md`
+* `atomic-kernel/docs/112_PROOFS_MATRIX.md`
+* `atomic-kernel/docs/DOCS_POLICY.md`
 * `atomic-kernel/docs/UI_ATTENTION_LAW.md`
 * `formal_spec.html`
 
@@ -303,11 +320,15 @@ Normative sentence:
 
 Formal reduction spec:
 - HTML formal view: `formal_spec.html`
-- Pure algorithms (single-file minimal form): `atomic-kernel/dev-docs/PURE_ALGORITHMS.md`
-- Normative core: `atomic-kernel/dev-docs/ATOMIC_KERNEL_NORMATIVE_CORE_v1_2.md`
-- Proof notes: `atomic-kernel/dev-docs/ATOMIC_KERNEL_PROOF_NOTES_v1_2.md`
-- Combined draft: `atomic-kernel/dev-docs/ATOMIC_KERNEL_REDUCTION_SPEC_v1_2.md`
-- Law/code traceability: `atomic-kernel/dev-docs/LAW_TO_CODE_TRACEABILITY.md`
+- Pure algorithms (single-file minimal form): `atomic-kernel/docs/PURE_ALGORITHMS.md`
+- Escape/interrupt semantics: `atomic-kernel/docs/ESCAPE_ACCESS_LAW.md`
+- A13 ESC-depth mixed-radix header: `atomic-kernel/docs/ALGORITHM_A13_ESC_DEPTH_MIXED_RADIX.md`
+- Escape manifesto (human-readable law): `atomic-kernel/docs/ESCAPE_MANIFESTO.md`
+- 112 proofs matrix (8×7×2): `atomic-kernel/docs/112_PROOFS_MATRIX.md`
+- Normative core: `atomic-kernel/docs/ATOMIC_KERNEL_NORMATIVE_CORE_v1_2.md`
+- Proof notes: `atomic-kernel/docs/ATOMIC_KERNEL_PROOF_NOTES_v1_2.md`
+- Combined draft: `atomic-kernel/docs/ATOMIC_KERNEL_REDUCTION_SPEC_v1_2.md`
+- Law/code traceability: `atomic-kernel/docs/LAW_TO_CODE_TRACEABILITY.md`
 
 Recommended reading path:
 - Read the Normative Core first, then the Proof Notes, then the Combined Draft only if full derivational context is needed.

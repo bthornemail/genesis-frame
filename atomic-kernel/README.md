@@ -85,6 +85,7 @@ xdg-open world.html      # Linux
   - `semantic_graph_artifact`
   - `progression_template`
   - `control_diagram_artifact`
+  - `header8_artifact`
 - Canonical package schema: `docs/ARTIFACT_PACKAGE_SCHEMA.md`.
 - Control-plane UML/XML builder: XML-style or line-style node/edge specs extruded into 3D control-plane geometry.
 - Recursive 4-plane node GUI: every selected artifact is projected through exactly `FS`/`GS`/`RS`/`US`.

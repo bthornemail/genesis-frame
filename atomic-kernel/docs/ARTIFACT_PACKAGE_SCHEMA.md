@@ -15,6 +15,7 @@ Required fields:
   - `semantic_graph_artifact`
   - `progression_template`
   - `control_diagram_artifact`
+  - `header8_artifact`
 - `payload_encoding`: must be `"utf8-json"`
 - `payload_b64`: base64 of canonical UTF-8 JSON payload bytes
 - `fingerprint_algo`: must be `"sha256"`

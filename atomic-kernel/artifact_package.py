@@ -16,6 +16,7 @@ ALLOWED_ARTIFACT_KINDS = (
     "semantic_graph_artifact",
     "progression_template",
     "control_diagram_artifact",
+    "header8_artifact",
 )
 
 

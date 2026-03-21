@@ -8,6 +8,7 @@ import os
 import shutil
 import subprocess
 import sys
+import hashlib
 from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -23,6 +24,30 @@ from artifact import (
 )
 from aztec_geometry import coordinates_for, validate_coordinate_table
 from artifact_package import ALLOWED_ARTIFACT_KINDS, create_artifact_package, verify_artifact_package
+from branch_reconciliation import (
+    branch_reconciliation_valid,
+    materialize_branch_artifact,
+    reconcile_temporal_views,
+    replay_branch,
+    return_to_canonical,
+)
+from esc_depth import ESC_CODE, count_leading_esc, esc_decode, esc_encode, radices_for_depth, transylvania_coverage_report
+from header8 import (
+    ESC_AXIS,
+    FS_AXIS,
+    GS_AXIS,
+    INVARIANT_AXES,
+    NULL_AXIS,
+    RS_AXIS,
+    US_AXIS,
+    classify_block,
+    classify_structural,
+    create_header8_artifact,
+    interpret_header,
+    make_header8,
+    pack16,
+    unpack16,
+)
 from basis_spec import (
     basis_spec_fingerprint,
     canonical_basis_spec_json,
@@ -33,7 +58,15 @@ from basis_spec import (
     normalize_basis_spec,
     project_value,
 )
-from control_plane import ControlPlaneError, cobs_decode, cobs_encode, encode_control, parse_control_stream
+from control_plane import (
+    ControlPlaneError,
+    canonical_escape_scope_active,
+    cobs_decode,
+    cobs_encode,
+    encode_control,
+    parse_control_stream,
+    validate_escape_scope,
+)
 from crystal import tick, position_at, read, state_at, run, W, T, B, MASK
 from incidence_projection import (
     FANO_LINES,
@@ -49,6 +82,8 @@ from incidence_projection import (
 from identity import clock, sid, sid_for_object, oid_step, ObjectChain, replay_chain, GENESIS_STATE as GENESIS
 from kernel import delta, replay, SUPPORTED_WIDTHS, check_parity
 from observer import observe, SEEDS
+from proposal_receipt import accept_proposal, commit_proposal, defer_proposal
+from projection_receipt import multi_projection_receipt, projection_receipt_anchored, projection_receipt_equivalent
 from world import frame, trace
 
 PASS = 0
@@ -214,6 +249,20 @@ except ControlPlaneError as exc:
     bad_ct11 = exc.code == "CT11_ALGO_MISMATCH"
 check("fail closed CT11 mismatch",       bad_ct11)
 
+# 112-proof executable lanes (initial)
+# Q5 / Escape / falsification: time-based closure forbidden
+try:
+    validate_escape_scope("time-based")
+    scope_forbidden_ok = False
+except ControlPlaneError as exc:
+    scope_forbidden_ok = exc.code == "ESC_SCOPE_FORBIDDEN"
+check("112 Q5 Escape falsification: time-based scope rejected", scope_forbidden_ok)
+scope_local_pause_ok = (
+    canonical_escape_scope_active("DATA", 0, projection_paused=False)
+    == canonical_escape_scope_active("DATA", 0, projection_paused=True)
+)
+check("112 Q5 Projection falsification: local pause non-authority", scope_local_pause_ok)
+
 freeze_reference()
 check("reference stream frozen",         REF_STREAM_PATH.exists())
 check("reference hash frozen",           REF_HASH_PATH.exists())
@@ -314,6 +363,59 @@ check("continuation surface non-empty", len(surf) >= 1)
 check("continuation deterministic select", select_continuation(surf, 5) == surf[5 % len(surf)])
 check("classification is collapsed or divergent", classify_entity({"entity": "watcher", "seed": 1}, frame16) in {"collapsed", "divergent"})
 check("step projection kind valid", step_out["kind"] in {"collapsed", "divergent"})
+incidence_resolution_ok = True
+entity_inc = {"entity": "watcher", "seed": 1}
+pv1 = projection_vector(entity_inc, frame16)
+pv2 = projection_vector(entity_inc, frame16)
+if pv1 != pv2:
+    incidence_resolution_ok = False
+klass = classify_entity(entity_inc, frame16)
+surf_inc = continuation_surface(entity_inc, frame16)
+if klass == "collapsed" and len(surf_inc) != 1:
+    incidence_resolution_ok = False
+if klass == "divergent" and len(surf_inc) < 2:
+    incidence_resolution_ok = False
+check("112 Q8 Incidence constructive: deterministic collapse/divergence resolution", incidence_resolution_ok)
+
+# ── Algorithm A13: ESC-depth mixed-radix header ──────────────────
+print("\nESC-depth (A13):")
+a13_roundtrip_ok = True
+for d, v in ((1, 0x42), (2, 0x1B), (3, 12345), (4, 987654)):
+    enc = esc_encode(v, d)
+    dec = esc_decode(enc)
+    if dec["value"] != v or dec["depth"] != d:
+        a13_roundtrip_ok = False
+        break
+check("A13 roundtrip depth 1..4", a13_roundtrip_ok)
+check("A13 depth count from ESC prefix", count_leading_esc([ESC_CODE, ESC_CODE, ESC_CODE, 0x10]) == 3)
+check("A13 radices depth=3", radices_for_depth(3) == [36, 8])
+check("A13 radices depth=4", radices_for_depth(4) == [256, 65536])
+cov = transylvania_coverage_report()
+check("A13 transylvania tickets = 14", cov["ticket_count"] == 14)
+check("A13 NULL only in low set", cov["null_only_low"] is True)
+check("A13 active symbol pair coverage", cov["active_pair_coverage"] is True)
+
+# ── Header8 canonical algorithm ───────────────────────────────────
+print("\nHeader8 canonical algorithm:")
+h = make_header8(0x1B, 0x00)
+check(
+    "Header8 invariant axes fixed",
+    (h.null_axis, h.esc_axis, h.fs_axis, h.gs_axis, h.rs_axis, h.us_axis) == INVARIANT_AXES,
+)
+check("Header8 axis constants canonical", INVARIANT_AXES == (NULL_AXIS, ESC_AXIS, FS_AXIS, GS_AXIS, RS_AXIS, US_AXIS))
+check("Header8 structural ESC", classify_structural(0x1B) == "ESC")
+check("Header8 structural payload", classify_structural(0x41) == "PAYLOAD")
+check("Header8 block C0", classify_block(0x00) == "C0")
+check("Header8 block extension", classify_block(0x80) == "EXTENSION")
+check("Header8 block custom extended", classify_block(0x1_0000) == "CUSTOM_EXTENDED")
+p16 = pack16(0x1B, 0x00)
+u8 = unpack16(p16)
+check("Header8 pack/unpack roundtrip", u8 == (0x1B, 0x00))
+ih = interpret_header(0x1B, 0x00)
+check("Header8 interpret deterministic", ih == interpret_header(0x1B, 0x00))
+check("Header8 interpret role", ih["structural_role"] == "ESC")
+header_art = create_header8_artifact(0x1B, 0x00)
+check("Header8 artifact type/version", header_art["type"] == "header8_artifact" and header_art["version"] == 1)
 
 # ── Artifact package carrier fixtures ─────────────────────────────
 print("\nArtifact package carrier:")
@@ -335,7 +437,16 @@ check("artifact kinds allowlist", set(ALLOWED_ARTIFACT_KINDS) == {
     "semantic_graph_artifact",
     "progression_template",
     "control_diagram_artifact",
+    "header8_artifact",
 })
+header_pkg_ok = True
+try:
+    header_pkg = create_artifact_package("header8_artifact", header_art, created_at="2026-03-20T00:00:00Z")
+    ok_h, dec_h = verify_artifact_package(header_pkg)
+    header_pkg_ok = bool(ok_h and dec_h["type"] == "header8_artifact")
+except Exception:
+    header_pkg_ok = False
+check("header8 artifact package create/verify", header_pkg_ok)
 
 pkg_fixture_builder = repo_root / "atomic-kernel" / "tools" / "build_artifact_package_fixture.py"
 pkg_fixture_verify = subprocess.run(
@@ -490,6 +601,96 @@ if wn_verify.stderr.strip():
 check("wordnet index deterministic verify", wn_verify.returncode == 0)
 check("wordnet index exists", wordnet_index.exists())
 check("nlp browser bundle exists", wordnet_bundle.exists())
+
+# Q1 / Transition / constructive: deterministic replay receipt
+seed_q1 = 0xACE1
+steps_q1 = 16
+trace_a = replay(16, seed_q1, steps_q1)
+trace_b = replay(16, seed_q1, steps_q1)
+digest = hashlib.sha256(",".join(f"{x:04X}" for x in trace_a).encode("utf-8")).hexdigest()
+receipt_q1 = {
+    "question": "Q1",
+    "algorithm": "transition",
+    "proof_type": "constructive",
+    "seed": f"0x{seed_q1:04X}",
+    "steps": steps_q1,
+    "deterministic": trace_a == trace_b,
+    "trace_sha256": digest,
+}
+check("112 Q1 Transition constructive: deterministic replay receipt", bool(receipt_q1["deterministic"] and receipt_q1["trace_sha256"]))
+
+# Q6 / Proposal-Receipt / constructive: accepted proposal applies only at next lawful tick
+proposal = defer_proposal("wp_q6_001", {"target": "avatar_policy", "value": "queued"}, current_tick=12)
+accepted = accept_proposal(proposal)
+applied_same_tick, receipt_same_tick = commit_proposal(accepted, tick=12)
+applied_next_tick, receipt_next_tick = commit_proposal(accepted, tick=13)
+q6_ok = (applied_same_tick is False and receipt_same_tick is None and applied_next_tick is True and receipt_next_tick is not None)
+check("112 Q6 Proposal/Receipt constructive: deferred next-tick commit", q6_ok)
+
+# Q7 / Branch-Reconciliation / constructive: explicit base+delta+return replayable
+canonical_log = [
+    {"t": 0, "type": "new_game", "payload": {"slot": 0}},
+    {"t": 1, "type": "chapter_entered", "payload": {"chapter_id": "article_i"}},
+    {"t": 2, "type": "choice_selected", "payload": {"choice_id": "c1"}},
+    {"t": 3, "type": "scene_entered", "payload": {"scene_id": "s2"}},
+]
+deltas = [
+    {"t": 2, "type": "artifact_granted", "payload": {"artifact_id": "a1"}},
+    {"t": 3, "type": "choice_selected", "payload": {"choice_id": "c_branch"}},
+]
+fork = materialize_branch_artifact(canonical_log, 2, deltas, parent_lineage_id="mainline")
+branch_ok = (
+    branch_reconciliation_valid(canonical_log, fork)
+    and replay_branch(canonical_log, fork) == (canonical_log[:2] + deltas)
+    and return_to_canonical(canonical_log, fork) == canonical_log[:2]
+)
+check("112 Q7 Branch/Reconciliation constructive: base+delta+return replayable", branch_ok)
+
+# Q7 / Branch-Reconciliation / constructive: deterministic past/present/future reconciliation
+reconcile_a = reconcile_temporal_views(
+    canonical_log,
+    fork,
+    pending_proposals=[
+        {
+            "proposal_id": accepted.proposal_id,
+            "apply_at_tick": accepted.apply_at_tick,
+            "payload": dict(accepted.payload),
+            "accepted": accepted.accepted,
+        }
+    ],
+)
+reconcile_b = reconcile_temporal_views(
+    canonical_log,
+    fork,
+    pending_proposals=[
+        {
+            "proposal_id": accepted.proposal_id,
+            "apply_at_tick": accepted.apply_at_tick,
+            "payload": dict(accepted.payload),
+            "accepted": accepted.accepted,
+        }
+    ],
+)
+q7_temporal_ok = (
+    reconcile_a == reconcile_b
+    and reconcile_a["past_len"] == 2
+    and reconcile_a["present_len"] == 4
+    and reconcile_a["future_len"] == 1
+)
+check("112 Q7 Branch/Reconciliation constructive: deterministic past/present/future reconciliation", q7_temporal_ok)
+
+# Q4 / Projection / constructive: same canonical state -> equivalent multi-projection receipts
+canon_state = {
+    "tick": 42,
+    "phase": "chapter_scene",
+    "chapter": "article_iv",
+    "scene": "scene_2",
+    "inventory": ["artifact_a", "artifact_b"],
+}
+proj_a = multi_projection_receipt(canon_state)
+proj_b = multi_projection_receipt(canon_state)
+q4_ok = projection_receipt_equivalent(proj_a, proj_b) and projection_receipt_anchored(proj_a)
+check("112 Q4 Projection constructive: equivalent multi-projection receipts", q4_ok)
 
 # ── Final ─────────────────────────────────────────────────────────
 print()

@@ -664,6 +664,9 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
             <button id="btn-strip-attention-expanded">Expand</button>
             <button id="btn-strip-more">More</button>
           </div>
+          <div id="interrupt-readout" class="mono-note" style="margin-top:6px;" data-plane-scope="FS,GS,RS,US">
+            mode=DATA · source=canonical · pending=0 · next_commit=t1
+          </div>
           <div class="row stage-extra hidden" style="margin-top:6px;" data-plane-scope="FS,GS,RS,US">
             <button id="btn-toggle-complexity-stage">Advanced</button>
           </div>
@@ -957,6 +960,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
     let idleStoryAutoplayTimer = null;
     let idleStoryAutoplayInterval = null;
     let idleStoryAutoplayPausedUntil = 0;
+    let interruptReadoutLastMs = 0;
     let idleStoryArticleOrder = [];
     let idleStoryArticleIndex = 0;
     let characterAvatarCurrentAssignments = {};
@@ -1065,6 +1069,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
       'semantic_graph_artifact',
       'progression_template',
       'control_diagram_artifact',
+      'header8_artifact',
     ]);
 
     async function sha256Hex(bytes) {
@@ -1290,6 +1295,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         ui_sidebar_expanded: false,
         menu_ring_spec: DEFAULT_MENU_RING_SPEC,
         cp_diagram_spec: '',
+        header8_artifact: null,
         semantic_graph_artifact: null,
         semantic_artifact_meta: null,
         semantic_compaction: cloneState(SEMANTIC_COMPACTION_DEFAULT),
@@ -1424,6 +1430,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         this.state.current_scene_id = this.getIntroScene(chapterId)?.id || null;
         this.state.current_phase = 'chapter_scene';
         this.appendEvent('chapter_entered', { chapter_id: chapterId, reason: 'jump' }, 'debug');
+        emitRuntimeWitnessReceipt('jump_chapter');
         this.render();
       },
 
@@ -1743,6 +1750,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         this.state.current_phase = 'chapter_scene';
         cpResolveBoundary('group');
         this.appendEvent('chapter_entered', { chapter_id: chapterId });
+        emitRuntimeWitnessReceipt('enter_chapter');
         this.autosave();
         this.render();
       },
@@ -1759,6 +1767,7 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
         }
 
         this.appendEvent('choice_selected', { chapter_id: chapterId, choice_id: choice.id });
+        emitRuntimeWitnessReceipt('choice_selected');
         for (const aid of choice.grants_artifacts || []) this.addArtifactToInventory(aid);
 
         this.state.choice_history.push({
@@ -1961,6 +1970,7 @@ Enter the Prologue and begin reconciliation.`
         refreshSemanticInspector();
         refreshProjectionPipelineUI('render');
         updateFanoEnvelopeReadout();
+        updateInterruptReadout();
         buildRuntimeNodeIndex();
         if (!uiSelectedNodeId || !getNode(uiSelectedNodeId)) {
           uiSelectedNodeId = this.state.ui_selected_node_id || currentFrameRootId();
@@ -2309,6 +2319,7 @@ Enter the Prologue and begin reconciliation.`
       const ms = Math.max(1200, Number(pauseMs) || IDLE_STORY_AUTOPLAY_PAUSE_MS);
       const until = Date.now() + ms;
       if (until > idleStoryAutoplayPausedUntil) idleStoryAutoplayPausedUntil = until;
+      updateInterruptReadout();
     }
 
     function idleStoryNextArticleJump() {
@@ -2364,6 +2375,7 @@ Enter the Prologue and begin reconciliation.`
       idleStoryAutoplayPausedUntil = 0;
       idleStoryArticleOrder = computeArticleAutoplayOrder();
       idleStoryArticleIndex = 0;
+      updateInterruptReadout();
       if (!idleStoryArticleOrder.length) return;
 
       idleStoryAutoplayTimer = setTimeout(() => {
@@ -2816,6 +2828,55 @@ Enter the Prologue and begin reconciliation.`
         const z = -7.5 + (Math.floor(safe / 256) / 255) * 15;
         cpCodepointMarker.position.set(x, 0.3, z);
       }
+      updateInterruptReadout();
+    }
+
+    function pendingProposalCounts() {
+      const branchPending = Array.isArray(futureBranchState.events) ? futureBranchState.events.length : 0;
+      const avatarPending = characterAvatarQueuedAssignments && typeof characterAvatarQueuedAssignments === 'object'
+        ? Object.keys(characterAvatarQueuedAssignments).length
+        : 0;
+      const biasPending = Array.isArray(GameDirector?.state?.fano_path_bias_queue) ? GameDirector.state.fano_path_bias_queue.length : 0;
+      const total = branchPending + avatarPending + biasPending;
+      return { total, branchPending, avatarPending, biasPending };
+    }
+
+    function getInterruptSnapshot() {
+      const mode = String(controlPlaneState.mode || 'DATA');
+      const canonicalInterruptActive = mode === 'ESCAPE_PENDING' || mode === 'CONTROL' || mode === 'QUOTED_LITERAL';
+      const projectionPauseActive = Date.now() < Number(idleStoryAutoplayPausedUntil || 0);
+      const source = projectionPauseActive && !canonicalInterruptActive ? 'projection-local' : 'canonical';
+      const pending = pendingProposalCounts();
+      const nextCommitTick = Math.max(0, Number(GameDirector?.state?.timeline_index || 0)) + 1;
+      return {
+        mode,
+        source,
+        pending,
+        next_commit_tick: nextCommitTick,
+      };
+    }
+
+    function updateInterruptReadout() {
+      const el = document.getElementById('interrupt-readout');
+      if (!el) return;
+      const snap = getInterruptSnapshot();
+      el.textContent =
+        `mode=${snap.mode} · source=${snap.source} · pending=${snap.pending.total} (branch:${snap.pending.branchPending} avatar:${snap.pending.avatarPending} bias:${snap.pending.biasPending}) · next_commit=t${snap.next_commit_tick}`;
+    }
+
+    function emitRuntimeWitnessReceipt(reason = 'frame_transition') {
+      if (isReplaying) return;
+      const snap = getInterruptSnapshot();
+      GameDirector.appendEvent('witness_receipt', {
+        reason,
+        mode: snap.mode,
+        source: snap.source,
+        pending: cloneState(snap.pending),
+        next_commit_tick: snap.next_commit_tick,
+        timeline_index: Number(GameDirector.state.timeline_index || 0),
+        phase: String(GameDirector.state.current_phase || ''),
+        frame: String(GameDirector.state.ui_frame || UI_FRAMES.WORLD),
+      }, 'witness');
     }
 
     function applyUIFrameVisibility() {
@@ -6637,6 +6698,7 @@ Enter the Prologue and begin reconciliation.`
         GameDirector.state.boot_index = (GameDirector.state.boot_index || 0) + 1;
         GameDirector.appendEvent('boot_advanced', { boot_index: GameDirector.state.boot_index });
       }
+      emitRuntimeWitnessReceipt('story_continue');
       GameDirector.render();
     });
     document.getElementById('btn-cp-esc').addEventListener('click', cpEmitEsc);
@@ -6926,6 +6988,14 @@ Enter the Prologue and begin reconciliation.`
           GameDirector.appendEvent('control_plane', { action: 'uml_render', spec: GameDirector.state.cp_diagram_spec }, 'share');
           setUIFrame(UI_FRAMES.CONTROL);
           GameDirector.render();
+        } else if (pkg.artifact_kind === 'header8_artifact') {
+          if (!payload || typeof payload !== 'object' || String(payload.type || '') !== 'header8_artifact') {
+            throw new Error('invalid header8 artifact payload');
+          }
+          GameDirector.state.header8_artifact = cloneState(payload);
+          GameDirector.appendEvent('header8', { action: 'import', artifact: GameDirector.state.header8_artifact }, 'share');
+          setUIFrame(UI_FRAMES.CODEPOINT);
+          GameDirector.render();
         } else {
           throw new Error(`unsupported artifact kind: ${pkg.artifact_kind}`);
         }
@@ -7060,6 +7130,9 @@ Enter the Prologue and begin reconciliation.`
     window.grantArtifact = (artifactId) => GameDirector.grantArtifact(artifactId);
     window.jumpToEvent = (index = 0) => GameDirector.replayTo(Number(index) || 0);
     window.exportEventLog = () => GameDirector.state.event_log.slice();
+    window.listWitnessReceipts = () => GameDirector.state.event_log
+      .filter((e) => e && e.type === 'witness_receipt')
+      .map((e) => cloneState(e));
     window.previewFuture = (horizon = 24) => previewFutureBranch(Number(horizon) || 24);
     window.injectFuture = (kind = 'artifact_granted', value = '') => {
       const built = buildFutureBranchEvent(String(kind), String(value));
@@ -7090,6 +7163,7 @@ Enter the Prologue and begin reconciliation.`
     };
     window.getSemanticAttention = () => semanticAttentionMode;
     window.setSemanticAttention = (mode = 'narrow') => setSemanticAttentionMode(mode);
+    window.getInterruptSnapshot = () => cloneState(getInterruptSnapshot());
     window.registerDocument = (documentId, text, source = 'uploaded') => registerSemanticDocument(documentId, text, source);
     window.listDocuments = () => Array.from(semanticDocuments.values()).map((d) => ({ document_id: d.document_id, source: d.source, paragraph_count: d.paragraph_count }));
     window.analyzeDocument = (request) => analyzeSemanticDocument(request || {});
@@ -7273,6 +7347,11 @@ Enter the Prologue and begin reconciliation.`
         child.rotation.y += dt * (0.35 + speed * 0.35);
       }
       renderer.render(scene, camera);
+      const nowPerf = performance.now();
+      if ((nowPerf - interruptReadoutLastMs) > 250) {
+        updateInterruptReadout();
+        interruptReadoutLastMs = nowPerf;
+      }
       requestAnimationFrame(animate);
     }
     animate();
