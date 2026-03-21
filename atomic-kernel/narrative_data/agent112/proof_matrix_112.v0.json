@@ -1,0 +1,1693 @@
+{
+  "algorithm_count": 7,
+  "authority": "advisory",
+  "cell_count": 112,
+  "cells": [
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q1_A1_constructive",
+      "cell_index": 0,
+      "expected_invariant": "source_of_truth:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q1_A1_falsification",
+      "cell_index": 1,
+      "expected_invariant": "source_of_truth:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q1_A2_constructive",
+      "cell_index": 2,
+      "expected_invariant": "source_of_truth:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q1_A2_falsification",
+      "cell_index": 3,
+      "expected_invariant": "source_of_truth:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q1_A3_constructive",
+      "cell_index": 4,
+      "expected_invariant": "source_of_truth:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q1_A3_falsification",
+      "cell_index": 5,
+      "expected_invariant": "source_of_truth:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q1_A4_constructive",
+      "cell_index": 6,
+      "expected_invariant": "source_of_truth:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q1_A4_falsification",
+      "cell_index": 7,
+      "expected_invariant": "source_of_truth:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q1_A5_constructive",
+      "cell_index": 8,
+      "expected_invariant": "source_of_truth:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q1_A5_falsification",
+      "cell_index": 9,
+      "expected_invariant": "source_of_truth:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q1_A6_constructive",
+      "cell_index": 10,
+      "expected_invariant": "source_of_truth:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q1_A6_falsification",
+      "cell_index": 11,
+      "expected_invariant": "source_of_truth:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q1_A7_constructive",
+      "cell_index": 12,
+      "expected_invariant": "source_of_truth:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q1_A7_falsification",
+      "cell_index": 13,
+      "expected_invariant": "source_of_truth:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q2_A1_constructive",
+      "cell_index": 14,
+      "expected_invariant": "system_motion:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q2_A1_falsification",
+      "cell_index": 15,
+      "expected_invariant": "system_motion:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q2_A2_constructive",
+      "cell_index": 16,
+      "expected_invariant": "system_motion:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q2_A2_falsification",
+      "cell_index": 17,
+      "expected_invariant": "system_motion:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q2_A3_constructive",
+      "cell_index": 18,
+      "expected_invariant": "system_motion:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q2_A3_falsification",
+      "cell_index": 19,
+      "expected_invariant": "system_motion:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q2_A4_constructive",
+      "cell_index": 20,
+      "expected_invariant": "system_motion:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q2_A4_falsification",
+      "cell_index": 21,
+      "expected_invariant": "system_motion:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q2_A5_constructive",
+      "cell_index": 22,
+      "expected_invariant": "system_motion:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q2_A5_falsification",
+      "cell_index": 23,
+      "expected_invariant": "system_motion:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q2_A6_constructive",
+      "cell_index": 24,
+      "expected_invariant": "system_motion:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q2_A6_falsification",
+      "cell_index": 25,
+      "expected_invariant": "system_motion:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q2_A7_constructive",
+      "cell_index": 26,
+      "expected_invariant": "system_motion:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q2_A7_falsification",
+      "cell_index": 27,
+      "expected_invariant": "system_motion:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q2",
+      "question_slug": "system_motion"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q3_A1_constructive",
+      "cell_index": 28,
+      "expected_invariant": "payload_control_separation:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q3_A1_falsification",
+      "cell_index": 29,
+      "expected_invariant": "payload_control_separation:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q3_A2_constructive",
+      "cell_index": 30,
+      "expected_invariant": "payload_control_separation:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q3_A2_falsification",
+      "cell_index": 31,
+      "expected_invariant": "payload_control_separation:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q3_A3_constructive",
+      "cell_index": 32,
+      "expected_invariant": "payload_control_separation:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q3_A3_falsification",
+      "cell_index": 33,
+      "expected_invariant": "payload_control_separation:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q3_A4_constructive",
+      "cell_index": 34,
+      "expected_invariant": "payload_control_separation:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q3_A4_falsification",
+      "cell_index": 35,
+      "expected_invariant": "payload_control_separation:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q3_A5_constructive",
+      "cell_index": 36,
+      "expected_invariant": "payload_control_separation:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q3_A5_falsification",
+      "cell_index": 37,
+      "expected_invariant": "payload_control_separation:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q3_A6_constructive",
+      "cell_index": 38,
+      "expected_invariant": "payload_control_separation:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q3_A6_falsification",
+      "cell_index": 39,
+      "expected_invariant": "payload_control_separation:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q3_A7_constructive",
+      "cell_index": 40,
+      "expected_invariant": "payload_control_separation:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q3_A7_falsification",
+      "cell_index": 41,
+      "expected_invariant": "payload_control_separation:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q4_A1_constructive",
+      "cell_index": 42,
+      "expected_invariant": "projection_meaning_preservation:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q4_A1_falsification",
+      "cell_index": 43,
+      "expected_invariant": "projection_meaning_preservation:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q4_A2_constructive",
+      "cell_index": 44,
+      "expected_invariant": "projection_meaning_preservation:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q4_A2_falsification",
+      "cell_index": 45,
+      "expected_invariant": "projection_meaning_preservation:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q4_A3_constructive",
+      "cell_index": 46,
+      "expected_invariant": "projection_meaning_preservation:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q4_A3_falsification",
+      "cell_index": 47,
+      "expected_invariant": "projection_meaning_preservation:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q4_A4_constructive",
+      "cell_index": 48,
+      "expected_invariant": "projection_meaning_preservation:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q4_A4_falsification",
+      "cell_index": 49,
+      "expected_invariant": "projection_meaning_preservation:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q4_A5_constructive",
+      "cell_index": 50,
+      "expected_invariant": "projection_meaning_preservation:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q4_A5_falsification",
+      "cell_index": 51,
+      "expected_invariant": "projection_meaning_preservation:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q4_A6_constructive",
+      "cell_index": 52,
+      "expected_invariant": "projection_meaning_preservation:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q4_A6_falsification",
+      "cell_index": 53,
+      "expected_invariant": "projection_meaning_preservation:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q4_A7_constructive",
+      "cell_index": 54,
+      "expected_invariant": "projection_meaning_preservation:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q4_A7_falsification",
+      "cell_index": 55,
+      "expected_invariant": "projection_meaning_preservation:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q5_A1_constructive",
+      "cell_index": 56,
+      "expected_invariant": "intervention_without_replay_loss:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q5_A1_falsification",
+      "cell_index": 57,
+      "expected_invariant": "intervention_without_replay_loss:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q5_A2_constructive",
+      "cell_index": 58,
+      "expected_invariant": "intervention_without_replay_loss:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q5_A2_falsification",
+      "cell_index": 59,
+      "expected_invariant": "intervention_without_replay_loss:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q5_A3_constructive",
+      "cell_index": 60,
+      "expected_invariant": "intervention_without_replay_loss:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q5_A3_falsification",
+      "cell_index": 61,
+      "expected_invariant": "intervention_without_replay_loss:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q5_A4_constructive",
+      "cell_index": 62,
+      "expected_invariant": "intervention_without_replay_loss:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q5_A4_falsification",
+      "cell_index": 63,
+      "expected_invariant": "intervention_without_replay_loss:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q5_A5_constructive",
+      "cell_index": 64,
+      "expected_invariant": "intervention_without_replay_loss:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q5_A5_falsification",
+      "cell_index": 65,
+      "expected_invariant": "intervention_without_replay_loss:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q5_A6_constructive",
+      "cell_index": 66,
+      "expected_invariant": "intervention_without_replay_loss:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q5_A6_falsification",
+      "cell_index": 67,
+      "expected_invariant": "intervention_without_replay_loss:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q5_A7_constructive",
+      "cell_index": 68,
+      "expected_invariant": "intervention_without_replay_loss:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q5_A7_falsification",
+      "cell_index": 69,
+      "expected_invariant": "intervention_without_replay_loss:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q6_A1_constructive",
+      "cell_index": 70,
+      "expected_invariant": "collaboration_without_hidden_authority:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q6_A1_falsification",
+      "cell_index": 71,
+      "expected_invariant": "collaboration_without_hidden_authority:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q6_A2_constructive",
+      "cell_index": 72,
+      "expected_invariant": "collaboration_without_hidden_authority:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q6_A2_falsification",
+      "cell_index": 73,
+      "expected_invariant": "collaboration_without_hidden_authority:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q6_A3_constructive",
+      "cell_index": 74,
+      "expected_invariant": "collaboration_without_hidden_authority:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q6_A3_falsification",
+      "cell_index": 75,
+      "expected_invariant": "collaboration_without_hidden_authority:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q6_A4_constructive",
+      "cell_index": 76,
+      "expected_invariant": "collaboration_without_hidden_authority:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q6_A4_falsification",
+      "cell_index": 77,
+      "expected_invariant": "collaboration_without_hidden_authority:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q6_A5_constructive",
+      "cell_index": 78,
+      "expected_invariant": "collaboration_without_hidden_authority:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q6_A5_falsification",
+      "cell_index": 79,
+      "expected_invariant": "collaboration_without_hidden_authority:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q6_A6_constructive",
+      "cell_index": 80,
+      "expected_invariant": "collaboration_without_hidden_authority:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q6_A6_falsification",
+      "cell_index": 81,
+      "expected_invariant": "collaboration_without_hidden_authority:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q6_A7_constructive",
+      "cell_index": 82,
+      "expected_invariant": "collaboration_without_hidden_authority:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q6_A7_falsification",
+      "cell_index": 83,
+      "expected_invariant": "collaboration_without_hidden_authority:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q7_A1_constructive",
+      "cell_index": 84,
+      "expected_invariant": "branch_return_without_fragmentation:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q7_A1_falsification",
+      "cell_index": 85,
+      "expected_invariant": "branch_return_without_fragmentation:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q7_A2_constructive",
+      "cell_index": 86,
+      "expected_invariant": "branch_return_without_fragmentation:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q7_A2_falsification",
+      "cell_index": 87,
+      "expected_invariant": "branch_return_without_fragmentation:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q7_A3_constructive",
+      "cell_index": 88,
+      "expected_invariant": "branch_return_without_fragmentation:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q7_A3_falsification",
+      "cell_index": 89,
+      "expected_invariant": "branch_return_without_fragmentation:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q7_A4_constructive",
+      "cell_index": 90,
+      "expected_invariant": "branch_return_without_fragmentation:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q7_A4_falsification",
+      "cell_index": 91,
+      "expected_invariant": "branch_return_without_fragmentation:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q7_A5_constructive",
+      "cell_index": 92,
+      "expected_invariant": "branch_return_without_fragmentation:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q7_A5_falsification",
+      "cell_index": 93,
+      "expected_invariant": "branch_return_without_fragmentation:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q7_A6_constructive",
+      "cell_index": 94,
+      "expected_invariant": "branch_return_without_fragmentation:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q7_A6_falsification",
+      "cell_index": 95,
+      "expected_invariant": "branch_return_without_fragmentation:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q7_A7_constructive",
+      "cell_index": 96,
+      "expected_invariant": "branch_return_without_fragmentation:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q7_A7_falsification",
+      "cell_index": 97,
+      "expected_invariant": "branch_return_without_fragmentation:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q8_A1_constructive",
+      "cell_index": 98,
+      "expected_invariant": "open_meaning_closed_law:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    },
+    {
+      "algorithm_id": "A1",
+      "algorithm_slug": "transition",
+      "cell_id": "Q8_A1_falsification",
+      "cell_index": 99,
+      "expected_invariant": "open_meaning_closed_law:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q8_A2_constructive",
+      "cell_index": 100,
+      "expected_invariant": "open_meaning_closed_law:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    },
+    {
+      "algorithm_id": "A2",
+      "algorithm_slug": "control_plane",
+      "cell_id": "Q8_A2_falsification",
+      "cell_index": 101,
+      "expected_invariant": "open_meaning_closed_law:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q8_A3_constructive",
+      "cell_index": 102,
+      "expected_invariant": "open_meaning_closed_law:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    },
+    {
+      "algorithm_id": "A3",
+      "algorithm_slug": "projection",
+      "cell_id": "Q8_A3_falsification",
+      "cell_index": 103,
+      "expected_invariant": "open_meaning_closed_law:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q8_A4_constructive",
+      "cell_index": 104,
+      "expected_invariant": "open_meaning_closed_law:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    },
+    {
+      "algorithm_id": "A4",
+      "algorithm_slug": "escape",
+      "cell_id": "Q8_A4_falsification",
+      "cell_index": 105,
+      "expected_invariant": "open_meaning_closed_law:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q8_A5_constructive",
+      "cell_index": 106,
+      "expected_invariant": "open_meaning_closed_law:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    },
+    {
+      "algorithm_id": "A5",
+      "algorithm_slug": "fano_path",
+      "cell_id": "Q8_A5_falsification",
+      "cell_index": 107,
+      "expected_invariant": "open_meaning_closed_law:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q8_A6_constructive",
+      "cell_index": 108,
+      "expected_invariant": "open_meaning_closed_law:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    },
+    {
+      "algorithm_id": "A6",
+      "algorithm_slug": "proposal_receipt",
+      "cell_id": "Q8_A6_falsification",
+      "cell_index": 109,
+      "expected_invariant": "open_meaning_closed_law:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q8_A7_constructive",
+      "cell_index": 110,
+      "expected_invariant": "open_meaning_closed_law:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    },
+    {
+      "algorithm_id": "A7",
+      "algorithm_slug": "branch_reconciliation",
+      "cell_id": "Q8_A7_falsification",
+      "cell_index": 111,
+      "expected_invariant": "open_meaning_closed_law:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law"
+    }
+  ],
+  "proof_form_count": 2,
+  "question_count": 8,
+  "replay_hash": "9c25ff169033d99909e3c369e706187e0230da466bb3d1771582c8cafdc12552",
+  "source_matrix_doc": "docs/112_PROOFS_MATRIX.md",
+  "source_matrix_sha256": "db4b6226107394ae18916a6193fe974c95731fb4d6f82e10918ff9c016b8ccf7",
+  "v": "proof_matrix_112.v0"
+}

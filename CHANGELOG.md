@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.3 - 2026-03-21
+
+### Asset-pack runtime reliability
+- hardened import manifest loader with deterministic fallback path resolution:
+  - `/assets/imports/asset-manifest.json`
+  - `./assets/imports/asset-manifest.json`
+  - `/docs/imports/asset-manifest.json`
+  - `./docs/imports/asset-manifest.json`
+  - `../docs/imports/asset-manifest.json`
+- startup scene now reports manifest source + loaded count via status channel
+- retained fail-closed behavior when no manifest is available (built-in fallback assets only)
+
+### Story gate diagnostics
+- improved `Chapter Gate Blocked` output to include per-artifact unlock guidance
+- added chapter-source lookup for missing artifact IDs based on chapter artifact/scene/choice grant records
+- no authority model change; gating semantics remain deterministic and requirement-driven
+
 ## v1.2 - 2026-03-20
 
 ### Release readiness (immediate use)

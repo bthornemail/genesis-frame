@@ -1,0 +1,2026 @@
+{
+  "agent_count": 112,
+  "agents": [
+    {
+      "agent_id": "agent_Q1_A1_constructive",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q1_A1_constructive",
+      "expected_invariant": "source_of_truth:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q1_A1_falsification",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q1_A1_falsification",
+      "expected_invariant": "source_of_truth:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q1_A2_constructive",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q1_A2_constructive",
+      "expected_invariant": "source_of_truth:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q1_A2_falsification",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q1_A2_falsification",
+      "expected_invariant": "source_of_truth:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q1_A3_constructive",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q1_A3_constructive",
+      "expected_invariant": "source_of_truth:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q1_A3_falsification",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q1_A3_falsification",
+      "expected_invariant": "source_of_truth:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q1_A4_constructive",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q1_A4_constructive",
+      "expected_invariant": "source_of_truth:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q1_A4_falsification",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q1_A4_falsification",
+      "expected_invariant": "source_of_truth:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q1_A5_constructive",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q1_A5_constructive",
+      "expected_invariant": "source_of_truth:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q1_A5_falsification",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q1_A5_falsification",
+      "expected_invariant": "source_of_truth:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q1_A6_constructive",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q1_A6_constructive",
+      "expected_invariant": "source_of_truth:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q1_A6_falsification",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q1_A6_falsification",
+      "expected_invariant": "source_of_truth:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q1_A7_constructive",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q1_A7_constructive",
+      "expected_invariant": "source_of_truth:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q1_A7_falsification",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q1_A7_falsification",
+      "expected_invariant": "source_of_truth:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q1",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q1"
+    },
+    {
+      "agent_id": "agent_Q2_A1_constructive",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q2_A1_constructive",
+      "expected_invariant": "system_motion:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q2_A1_falsification",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q2_A1_falsification",
+      "expected_invariant": "system_motion:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q2_A2_constructive",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q2_A2_constructive",
+      "expected_invariant": "system_motion:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q2_A2_falsification",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q2_A2_falsification",
+      "expected_invariant": "system_motion:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q2_A3_constructive",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q2_A3_constructive",
+      "expected_invariant": "system_motion:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q2_A3_falsification",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q2_A3_falsification",
+      "expected_invariant": "system_motion:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q2_A4_constructive",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q2_A4_constructive",
+      "expected_invariant": "system_motion:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q2_A4_falsification",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q2_A4_falsification",
+      "expected_invariant": "system_motion:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q2_A5_constructive",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q2_A5_constructive",
+      "expected_invariant": "system_motion:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q2_A5_falsification",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q2_A5_falsification",
+      "expected_invariant": "system_motion:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q2_A6_constructive",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q2_A6_constructive",
+      "expected_invariant": "system_motion:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q2_A6_falsification",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q2_A6_falsification",
+      "expected_invariant": "system_motion:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q2_A7_constructive",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q2_A7_constructive",
+      "expected_invariant": "system_motion:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q2_A7_falsification",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q2_A7_falsification",
+      "expected_invariant": "system_motion:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q2",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q2"
+    },
+    {
+      "agent_id": "agent_Q3_A1_constructive",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q3_A1_constructive",
+      "expected_invariant": "payload_control_separation:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q3_A1_falsification",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q3_A1_falsification",
+      "expected_invariant": "payload_control_separation:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q3_A2_constructive",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q3_A2_constructive",
+      "expected_invariant": "payload_control_separation:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q3_A2_falsification",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q3_A2_falsification",
+      "expected_invariant": "payload_control_separation:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q3_A3_constructive",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q3_A3_constructive",
+      "expected_invariant": "payload_control_separation:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q3_A3_falsification",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q3_A3_falsification",
+      "expected_invariant": "payload_control_separation:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q3_A4_constructive",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q3_A4_constructive",
+      "expected_invariant": "payload_control_separation:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q3_A4_falsification",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q3_A4_falsification",
+      "expected_invariant": "payload_control_separation:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q3_A5_constructive",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q3_A5_constructive",
+      "expected_invariant": "payload_control_separation:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q3_A5_falsification",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q3_A5_falsification",
+      "expected_invariant": "payload_control_separation:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q3_A6_constructive",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q3_A6_constructive",
+      "expected_invariant": "payload_control_separation:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q3_A6_falsification",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q3_A6_falsification",
+      "expected_invariant": "payload_control_separation:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q3_A7_constructive",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q3_A7_constructive",
+      "expected_invariant": "payload_control_separation:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q3_A7_falsification",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q3_A7_falsification",
+      "expected_invariant": "payload_control_separation:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q3",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q3"
+    },
+    {
+      "agent_id": "agent_Q4_A1_constructive",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q4_A1_constructive",
+      "expected_invariant": "projection_meaning_preservation:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q4_A1_falsification",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q4_A1_falsification",
+      "expected_invariant": "projection_meaning_preservation:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q4_A2_constructive",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q4_A2_constructive",
+      "expected_invariant": "projection_meaning_preservation:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q4_A2_falsification",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q4_A2_falsification",
+      "expected_invariant": "projection_meaning_preservation:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q4_A3_constructive",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q4_A3_constructive",
+      "expected_invariant": "projection_meaning_preservation:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q4_A3_falsification",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q4_A3_falsification",
+      "expected_invariant": "projection_meaning_preservation:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q4_A4_constructive",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q4_A4_constructive",
+      "expected_invariant": "projection_meaning_preservation:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q4_A4_falsification",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q4_A4_falsification",
+      "expected_invariant": "projection_meaning_preservation:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q4_A5_constructive",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q4_A5_constructive",
+      "expected_invariant": "projection_meaning_preservation:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q4_A5_falsification",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q4_A5_falsification",
+      "expected_invariant": "projection_meaning_preservation:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q4_A6_constructive",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q4_A6_constructive",
+      "expected_invariant": "projection_meaning_preservation:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q4_A6_falsification",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q4_A6_falsification",
+      "expected_invariant": "projection_meaning_preservation:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q4_A7_constructive",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q4_A7_constructive",
+      "expected_invariant": "projection_meaning_preservation:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q4_A7_falsification",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q4_A7_falsification",
+      "expected_invariant": "projection_meaning_preservation:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q4",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q4"
+    },
+    {
+      "agent_id": "agent_Q5_A1_constructive",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q5_A1_constructive",
+      "expected_invariant": "intervention_without_replay_loss:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q5_A1_falsification",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q5_A1_falsification",
+      "expected_invariant": "intervention_without_replay_loss:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q5_A2_constructive",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q5_A2_constructive",
+      "expected_invariant": "intervention_without_replay_loss:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q5_A2_falsification",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q5_A2_falsification",
+      "expected_invariant": "intervention_without_replay_loss:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q5_A3_constructive",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q5_A3_constructive",
+      "expected_invariant": "intervention_without_replay_loss:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q5_A3_falsification",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q5_A3_falsification",
+      "expected_invariant": "intervention_without_replay_loss:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q5_A4_constructive",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q5_A4_constructive",
+      "expected_invariant": "intervention_without_replay_loss:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q5_A4_falsification",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q5_A4_falsification",
+      "expected_invariant": "intervention_without_replay_loss:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q5_A5_constructive",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q5_A5_constructive",
+      "expected_invariant": "intervention_without_replay_loss:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q5_A5_falsification",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q5_A5_falsification",
+      "expected_invariant": "intervention_without_replay_loss:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q5_A6_constructive",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q5_A6_constructive",
+      "expected_invariant": "intervention_without_replay_loss:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q5_A6_falsification",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q5_A6_falsification",
+      "expected_invariant": "intervention_without_replay_loss:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q5_A7_constructive",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q5_A7_constructive",
+      "expected_invariant": "intervention_without_replay_loss:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q5_A7_falsification",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q5_A7_falsification",
+      "expected_invariant": "intervention_without_replay_loss:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q5",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q5"
+    },
+    {
+      "agent_id": "agent_Q6_A1_constructive",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q6_A1_constructive",
+      "expected_invariant": "collaboration_without_hidden_authority:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q6_A1_falsification",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q6_A1_falsification",
+      "expected_invariant": "collaboration_without_hidden_authority:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q6_A2_constructive",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q6_A2_constructive",
+      "expected_invariant": "collaboration_without_hidden_authority:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q6_A2_falsification",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q6_A2_falsification",
+      "expected_invariant": "collaboration_without_hidden_authority:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q6_A3_constructive",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q6_A3_constructive",
+      "expected_invariant": "collaboration_without_hidden_authority:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q6_A3_falsification",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q6_A3_falsification",
+      "expected_invariant": "collaboration_without_hidden_authority:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q6_A4_constructive",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q6_A4_constructive",
+      "expected_invariant": "collaboration_without_hidden_authority:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q6_A4_falsification",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q6_A4_falsification",
+      "expected_invariant": "collaboration_without_hidden_authority:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q6_A5_constructive",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q6_A5_constructive",
+      "expected_invariant": "collaboration_without_hidden_authority:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q6_A5_falsification",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q6_A5_falsification",
+      "expected_invariant": "collaboration_without_hidden_authority:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q6_A6_constructive",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q6_A6_constructive",
+      "expected_invariant": "collaboration_without_hidden_authority:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q6_A6_falsification",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q6_A6_falsification",
+      "expected_invariant": "collaboration_without_hidden_authority:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q6_A7_constructive",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q6_A7_constructive",
+      "expected_invariant": "collaboration_without_hidden_authority:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q6_A7_falsification",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q6_A7_falsification",
+      "expected_invariant": "collaboration_without_hidden_authority:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q6",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q6"
+    },
+    {
+      "agent_id": "agent_Q7_A1_constructive",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q7_A1_constructive",
+      "expected_invariant": "branch_return_without_fragmentation:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q7_A1_falsification",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q7_A1_falsification",
+      "expected_invariant": "branch_return_without_fragmentation:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q7_A2_constructive",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q7_A2_constructive",
+      "expected_invariant": "branch_return_without_fragmentation:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q7_A2_falsification",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q7_A2_falsification",
+      "expected_invariant": "branch_return_without_fragmentation:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q7_A3_constructive",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q7_A3_constructive",
+      "expected_invariant": "branch_return_without_fragmentation:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q7_A3_falsification",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q7_A3_falsification",
+      "expected_invariant": "branch_return_without_fragmentation:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q7_A4_constructive",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q7_A4_constructive",
+      "expected_invariant": "branch_return_without_fragmentation:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q7_A4_falsification",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q7_A4_falsification",
+      "expected_invariant": "branch_return_without_fragmentation:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q7_A5_constructive",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q7_A5_constructive",
+      "expected_invariant": "branch_return_without_fragmentation:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q7_A5_falsification",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q7_A5_falsification",
+      "expected_invariant": "branch_return_without_fragmentation:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q7_A6_constructive",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q7_A6_constructive",
+      "expected_invariant": "branch_return_without_fragmentation:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q7_A6_falsification",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q7_A6_falsification",
+      "expected_invariant": "branch_return_without_fragmentation:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q7_A7_constructive",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q7_A7_constructive",
+      "expected_invariant": "branch_return_without_fragmentation:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q7_A7_falsification",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q7_A7_falsification",
+      "expected_invariant": "branch_return_without_fragmentation:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q7",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q7"
+    },
+    {
+      "agent_id": "agent_Q8_A1_constructive",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q8_A1_constructive",
+      "expected_invariant": "open_meaning_closed_law:transition:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    },
+    {
+      "agent_id": "agent_Q8_A1_falsification",
+      "algorithm_id": "A1",
+      "authority": "advisory",
+      "cell_id": "Q8_A1_falsification",
+      "expected_invariant": "open_meaning_closed_law:transition:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    },
+    {
+      "agent_id": "agent_Q8_A2_constructive",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q8_A2_constructive",
+      "expected_invariant": "open_meaning_closed_law:control_plane:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    },
+    {
+      "agent_id": "agent_Q8_A2_falsification",
+      "algorithm_id": "A2",
+      "authority": "advisory",
+      "cell_id": "Q8_A2_falsification",
+      "expected_invariant": "open_meaning_closed_law:control_plane:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    },
+    {
+      "agent_id": "agent_Q8_A3_constructive",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q8_A3_constructive",
+      "expected_invariant": "open_meaning_closed_law:projection:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    },
+    {
+      "agent_id": "agent_Q8_A3_falsification",
+      "algorithm_id": "A3",
+      "authority": "advisory",
+      "cell_id": "Q8_A3_falsification",
+      "expected_invariant": "open_meaning_closed_law:projection:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    },
+    {
+      "agent_id": "agent_Q8_A4_constructive",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q8_A4_constructive",
+      "expected_invariant": "open_meaning_closed_law:escape:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    },
+    {
+      "agent_id": "agent_Q8_A4_falsification",
+      "algorithm_id": "A4",
+      "authority": "advisory",
+      "cell_id": "Q8_A4_falsification",
+      "expected_invariant": "open_meaning_closed_law:escape:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    },
+    {
+      "agent_id": "agent_Q8_A5_constructive",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q8_A5_constructive",
+      "expected_invariant": "open_meaning_closed_law:fano_path:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    },
+    {
+      "agent_id": "agent_Q8_A5_falsification",
+      "algorithm_id": "A5",
+      "authority": "advisory",
+      "cell_id": "Q8_A5_falsification",
+      "expected_invariant": "open_meaning_closed_law:fano_path:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    },
+    {
+      "agent_id": "agent_Q8_A6_constructive",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q8_A6_constructive",
+      "expected_invariant": "open_meaning_closed_law:proposal_receipt:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    },
+    {
+      "agent_id": "agent_Q8_A6_falsification",
+      "algorithm_id": "A6",
+      "authority": "advisory",
+      "cell_id": "Q8_A6_falsification",
+      "expected_invariant": "open_meaning_closed_law:proposal_receipt:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    },
+    {
+      "agent_id": "agent_Q8_A7_constructive",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q8_A7_constructive",
+      "expected_invariant": "open_meaning_closed_law:branch_reconciliation:constructive:obligation_preserved",
+      "must_reject_conditions": [
+        "missing_inputs",
+        "schema_mismatch",
+        "non_deterministic_output"
+      ],
+      "proof_form": "constructive",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    },
+    {
+      "agent_id": "agent_Q8_A7_falsification",
+      "algorithm_id": "A7",
+      "authority": "advisory",
+      "cell_id": "Q8_A7_falsification",
+      "expected_invariant": "open_meaning_closed_law:branch_reconciliation:falsification:obligation_preserved",
+      "must_reject_conditions": [
+        "silent_mutation",
+        "authority_escalation",
+        "bypass_commit_boundary"
+      ],
+      "proof_form": "falsification",
+      "proposal_lane": "witness.proposal.pending",
+      "question_id": "Q8",
+      "receipt_lane": "witness.receipt.audit",
+      "role": "proof_cell_steward",
+      "zone_id": "Q8"
+    }
+  ],
+  "authority": "advisory",
+  "mapping_cardinality": "one_agent_per_cell",
+  "replay_hash": "cbb2ecb25dfeca2c790168142a9d0041a46432f1d82fbef0b34cb3f651f0678c",
+  "source_proof_matrix": "narrative_data/agent112/proof_matrix_112.v0.json",
+  "v": "agent_registry_112.v0"
+}

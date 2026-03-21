@@ -33,6 +33,7 @@
     .log{margin-top:10px;max-height:250px;overflow:auto;border:1px solid var(--edge);border-radius:8px;background:#081020;padding:8px;font-size:12px;white-space:pre-wrap}
     .hint{font-size:12px;color:var(--muted)}
     .meta{margin-top:10px;padding:8px;border:1px solid var(--edge);border-radius:8px;background:#081020;font-size:12px;line-height:1.45}
+    .agent112{margin-top:10px;padding:8px;border:1px solid var(--edge);border-radius:8px;background:#081020;font-size:12px;line-height:1.45;white-space:pre-wrap}
     .chip{display:inline-block;padding:3px 6px;border-radius:999px;border:1px solid #4c75b3;font-size:11px;margin-left:6px}
     .chip.ok{color:var(--ok);border-color:#39d98a}
     .chip.warn{color:var(--warn);border-color:#ffb020}
@@ -102,6 +103,10 @@
         <div id="storyState" class="meta">loading...</div>
         <div id="storyBody" class="meta">No chapter loaded.</div>
         <div id="proposalList" class="meta">pending proposals: 0</div>
+        <div class="k" style="margin-top:14px">Agent112 Steward Board</div>
+        <div id="agent112State" class="meta">loading...</div>
+        <div id="agent112Zones" class="agent112"></div>
+        <div id="agent112Visible" class="agent112"></div>
       </div>
 </div>
   </div>
@@ -329,6 +334,72 @@
         ? `${scene.heading}\n\n${String(scene.body_text || '...').slice(0, 800)}`
         : 'No chapter loaded.';
       updateProposalPanel();
+    }
+
+    function pickAgent112VisibleStewards(agentMatrix){
+      const visible = [];
+      for (const role of (agentMatrix?.roles || [])) {
+        const lanes = role.agents || [];
+        const preferred = lanes.find((lane) => String(lane.algorithm_id || '') === 'A1') || lanes[0];
+        for (const proofForm of ['constructive', 'falsification']) {
+          const assistant = (preferred?.assistants || []).find((x) => x.proof_form === proofForm);
+          if (!assistant) continue;
+          visible.push({
+            zone: role.question_id,
+            role_id: role.role_id,
+            proof_form: proofForm,
+            assistant_id: assistant.assistant_id,
+            lane_agent_id: preferred.agent_id,
+            algorithm_slug: preferred.algorithm_slug
+          });
+        }
+      }
+      return visible;
+    }
+
+    function renderAgent112Panel(proofMatrix, agentRegistry, agentMatrix, residentArtifact){
+      const stateEl = $('agent112State');
+      const zonesEl = $('agent112Zones');
+      const visibleEl = $('agent112Visible');
+      if (!stateEl || !zonesEl || !visibleEl) return;
+      if (!proofMatrix || !agentRegistry || !agentMatrix) {
+        stateEl.textContent = 'agent112 unavailable (projection fallback)';
+        zonesEl.textContent = '';
+        visibleEl.textContent = '';
+        return;
+      }
+      const zoneRows = [];
+      for (let i = 1; i <= 8; i += 1) {
+        const q = `Q${i}`;
+        const zoneCells = (proofMatrix.cells || []).filter((cell) => cell.question_id === q);
+        const constructive = zoneCells.filter((cell) => cell.proof_form === 'constructive').length;
+        const falsification = zoneCells.filter((cell) => cell.proof_form === 'falsification').length;
+        const slug = zoneCells[0]?.question_slug || 'unknown';
+        const role = (agentMatrix.roles || []).find((r) => r.question_id === q);
+        zoneRows.push(`- ${q} ${slug} · role=${role?.role_id || 'unknown'} · total=${zoneCells.length} (c=${constructive}, f=${falsification})`);
+      }
+      const visible = pickAgent112VisibleStewards(agentMatrix);
+      const residentCount = Array.isArray(residentArtifact?.residents) ? residentArtifact.residents.length : 0;
+      const residentProposalCount = Array.isArray(residentArtifact?.proposals) ? residentArtifact.proposals.length : 0;
+      stateEl.textContent = `matrix=${proofMatrix.cell_count || 0} · agents=${agentRegistry.agent_count || 0} · roles=${agentMatrix.role_count || 0} · visible=16 · residents=${residentCount} proposals=${residentProposalCount}`;
+      zonesEl.textContent = zoneRows.join('\n');
+      visibleEl.textContent = visible.map((row) => `- ${row.zone}/${row.role_id} · ${row.proof_form} · ${row.assistant_id} · ${row.algorithm_slug}`).join('\n');
+    }
+
+    async function loadAgent112Panel(){
+      const proofMatrix = await fetchJsonFirst([
+        '/atomic-kernel/narrative_data/agent112/proof_matrix_112.v0.json'
+      ]);
+      const agentRegistry = await fetchJsonFirst([
+        '/atomic-kernel/narrative_data/agent112/agent_registry_112.v0.json'
+      ]);
+      const agentMatrix = await fetchJsonFirst([
+        '/atomic-kernel/narrative_data/agent112/agent_matrix_112.v0.json'
+      ]);
+      const residentArtifact = await fetchJsonFirst([
+        '/atomic-kernel/artifacts/resident-agent-v1.normalized.json'
+      ]);
+      renderAgent112Panel(proofMatrix, agentRegistry, agentMatrix, residentArtifact);
     }
 
     function sid(prefix, data){
@@ -866,6 +937,7 @@
     seedWorld();
     applyManifestEnvironment();
     loadNarrativeSeries();
+    loadAgent112Panel();
     updateHUD();
     updateStoryPanel();
     animate();

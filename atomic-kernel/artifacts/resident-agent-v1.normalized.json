@@ -1,0 +1,274 @@
+{
+  "action_enum": [
+    "choice_select",
+    "camera_branch",
+    "avatar_swap",
+    "scene_pace_change"
+  ],
+  "authority": "advisory",
+  "chapter_id": "ch_0185dd34c89e",
+  "proposals": [
+    {
+      "action": "scene_pace_change",
+      "actor_id": "asabiyah",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_680cc0cc70ebc664b8f1e1a6",
+      "requested_state": "pace:adjust:t0",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t0",
+      "tick": 0
+    },
+    {
+      "action": "avatar_swap",
+      "actor_id": "solomon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_669f22bbabb916f0367b1116",
+      "requested_state": "avatar:cast_swap:t0",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t0",
+      "tick": 0
+    },
+    {
+      "action": "camera_branch",
+      "actor_id": "solon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_9c1c1ad1607f73d06ef3f461",
+      "requested_state": "camera:cinematic_branch:t0",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t0",
+      "tick": 0
+    },
+    {
+      "action": "scene_pace_change",
+      "actor_id": "asabiyah",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_23f9285b929b2bb661a3a17b",
+      "requested_state": "pace:adjust:t1",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t1",
+      "tick": 1
+    },
+    {
+      "action": "choice_select",
+      "actor_id": "solomon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_b9206162bbead44bf8538a51",
+      "requested_state": "branch:choice_window:t1",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t1",
+      "tick": 1
+    },
+    {
+      "action": "choice_select",
+      "actor_id": "solon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_7196b2753975a105d99bce6f",
+      "requested_state": "branch:choice_window:t1",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t1",
+      "tick": 1
+    },
+    {
+      "action": "scene_pace_change",
+      "actor_id": "asabiyah",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_cd190e5cbee1ccf7d36c7ae9",
+      "requested_state": "pace:adjust:t2",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t2",
+      "tick": 2
+    },
+    {
+      "action": "camera_branch",
+      "actor_id": "solomon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_fce159518c79a6605d8cb229",
+      "requested_state": "camera:cinematic_branch:t2",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t2",
+      "tick": 2
+    },
+    {
+      "action": "avatar_swap",
+      "actor_id": "solon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_9f369ac5bb9d2865af39f0c8",
+      "requested_state": "avatar:cast_swap:t2",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t2",
+      "tick": 2
+    },
+    {
+      "action": "camera_branch",
+      "actor_id": "asabiyah",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_81cbde113ef697bacc24cb0e",
+      "requested_state": "camera:cinematic_branch:t3",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t3",
+      "tick": 3
+    },
+    {
+      "action": "scene_pace_change",
+      "actor_id": "solomon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_3f53e564c7a42975a1b35c1e",
+      "requested_state": "pace:adjust:t3",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t3",
+      "tick": 3
+    },
+    {
+      "action": "avatar_swap",
+      "actor_id": "solon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_6a3649da3791f31659e53734",
+      "requested_state": "avatar:cast_swap:t3",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t3",
+      "tick": 3
+    },
+    {
+      "action": "avatar_swap",
+      "actor_id": "asabiyah",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_a2a7af72a196147ac7c6ddbb",
+      "requested_state": "avatar:cast_swap:t4",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t4",
+      "tick": 4
+    },
+    {
+      "action": "scene_pace_change",
+      "actor_id": "solomon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_5334d97bd43237a6639e7910",
+      "requested_state": "pace:adjust:t4",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t4",
+      "tick": 4
+    },
+    {
+      "action": "choice_select",
+      "actor_id": "solon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_18d5c4acaadf5253fa197e6b",
+      "requested_state": "branch:choice_window:t4",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t4",
+      "tick": 4
+    },
+    {
+      "action": "camera_branch",
+      "actor_id": "asabiyah",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_1bf12d8dac53fc26686f799f",
+      "requested_state": "camera:cinematic_branch:t5",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t5",
+      "tick": 5
+    },
+    {
+      "action": "avatar_swap",
+      "actor_id": "solomon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_c19b51cfc6d7ce6ffb86d8be",
+      "requested_state": "avatar:cast_swap:t5",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t5",
+      "tick": 5
+    },
+    {
+      "action": "camera_branch",
+      "actor_id": "solon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_2444d5c9625baea6a73b42f9",
+      "requested_state": "camera:cinematic_branch:t5",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t5",
+      "tick": 5
+    },
+    {
+      "action": "avatar_swap",
+      "actor_id": "asabiyah",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_3963275e060372813e2859ed",
+      "requested_state": "avatar:cast_swap:t6",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t6",
+      "tick": 6
+    },
+    {
+      "action": "avatar_swap",
+      "actor_id": "solomon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_8a2a89345e33b62469d6daf8",
+      "requested_state": "avatar:cast_swap:t6",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t6",
+      "tick": 6
+    },
+    {
+      "action": "scene_pace_change",
+      "actor_id": "solon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_14ead7449929e698c4e2794b",
+      "requested_state": "pace:adjust:t6",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t6",
+      "tick": 6
+    },
+    {
+      "action": "scene_pace_change",
+      "actor_id": "asabiyah",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_752009e884d9216e0e7fe35d",
+      "requested_state": "pace:adjust:t7",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t7",
+      "tick": 7
+    },
+    {
+      "action": "choice_select",
+      "actor_id": "solomon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_f4a0e8cc4864d243ce6d4c31",
+      "requested_state": "branch:choice_window:t7",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t7",
+      "tick": 7
+    },
+    {
+      "action": "camera_branch",
+      "actor_id": "solon",
+      "chapter_id": "ch_0185dd34c89e",
+      "proposal_id": "imm_206a078916b9f6445494d1bf",
+      "requested_state": "camera:cinematic_branch:t7",
+      "status": "pending",
+      "target": "scene:ch_0185dd34c89e:t7",
+      "tick": 7
+    }
+  ],
+  "replay_hash": "0c48f1be073ad2a5c3c6ad71b58233381230a56e0912cea305f9e4034d9ad7c5",
+  "residents": [
+    {
+      "goal": "maintain_shared_cohesion_surface",
+      "id": "asabiyah",
+      "role": "witness_cohesion"
+    },
+    {
+      "goal": "preserve_identity_before_power",
+      "id": "solomon",
+      "role": "advisor_wisdom"
+    },
+    {
+      "goal": "stabilize_disagreement_without_violence",
+      "id": "solon",
+      "role": "advisor_law"
+    }
+  ],
+  "seed": "resident-v1",
+  "start_tick": 0,
+  "ticks": 8,
+  "v": "resident_agent_tick.v1"
+}

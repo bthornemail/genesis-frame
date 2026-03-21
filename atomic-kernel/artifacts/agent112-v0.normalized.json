@@ -1,0 +1,15 @@
+{
+  "agent_count": 112,
+  "agent_matrix_replay_hash": "94af2b071fa62e90716b76ef19c7fe6de0a65322394f478ec7426788b730af23",
+  "agent_registry_replay_hash": "cbb2ecb25dfeca2c790168142a9d0041a46432f1d82fbef0b34cb3f651f0678c",
+  "algorithm_count": 7,
+  "authority": "advisory",
+  "cell_count": 112,
+  "proof_form_count": 2,
+  "proof_matrix_replay_hash": "9c25ff169033d99909e3c369e706187e0230da466bb3d1771582c8cafdc12552",
+  "question_count": 8,
+  "replay_hash": "9bf268adbd66cc99fd4ee7052eaebe0fda2fd45f671128b0cf6ee73c4b27d977",
+  "source_matrix_sha256": "db4b6226107394ae18916a6193fe974c95731fb4d6f82e10918ff9c016b8ccf7",
+  "type": "agent112_v0_gate",
+  "version": 1
+}

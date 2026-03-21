@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "header8_stream.v0.schema.json",
+  "title": "Header8 Stream v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "v",
+    "authority",
+    "stream_id",
+    "basis",
+    "encoding",
+    "units",
+    "digest"
+  ],
+  "properties": {
+    "v": { "const": "header8_stream.v0" },
+    "authority": { "enum": ["algorithmic", "advisory"] },
+    "stream_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["NULL", "ESC", "FS", "GS", "RS", "US"],
+      "properties": {
+        "NULL": { "const": "0x00" },
+        "ESC": { "const": "0x1B" },
+        "FS": { "const": "0x1C" },
+        "GS": { "const": "0x1D" },
+        "RS": { "const": "0x1E" },
+        "US": { "const": "0x1F" }
+      }
+    },
+    "encoding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["packed16_endian", "byte_domain", "block_domain"],
+      "properties": {
+        "packed16_endian": { "const": "big" },
+        "byte_domain": { "const": "0x00..0xFF" },
+        "block_domain": { "type": "string", "minLength": 5, "maxLength": 64 }
+      }
+    },
+    "units": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "index",
+          "byte_point",
+          "code_block",
+          "packed16",
+          "structural_role",
+          "semantic_block"
+        ],
+        "properties": {
+          "index": { "type": "integer", "minimum": 0 },
+          "byte_point": { "type": "string", "pattern": "^0x[0-9A-Fa-f]{2}$" },
+          "code_block": { "type": "string", "pattern": "^0x[0-9A-Fa-f]{2,8}$" },
+          "packed16": { "type": "string", "pattern": "^0x[0-9A-Fa-f]{4}$" },
+          "structural_role": {
+            "type": "string",
+            "enum": ["NULL", "ESC", "FS", "GS", "RS", "US", "PAYLOAD"]
+          },
+          "semantic_block": { "type": "string", "minLength": 1, "maxLength": 64 }
+        }
+      }
+    },
+    "digest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit_count", "packed16_rollup"],
+      "properties": {
+        "unit_count": { "type": "integer", "minimum": 0 },
+        "packed16_rollup": { "type": "string", "pattern": "^[0-9A-Fa-f]{8,}$" }
+      }
+    }
+  }
+}

@@ -1,0 +1,1422 @@
+{
+  "assistant_count_per_lane": 2,
+  "assistant_count_total": 112,
+  "authority": "advisory",
+  "lane_count_per_role": 7,
+  "mapping_formula": "8x7x2",
+  "replay_hash": "94af2b071fa62e90716b76ef19c7fe6de0a65322394f478ec7426788b730af23",
+  "role_count": 8,
+  "roles": [
+    {
+      "agents": [
+        {
+          "agent_id": "metatron.transition",
+          "algorithm_id": "A1",
+          "algorithm_slug": "transition",
+          "assistants": [
+            {
+              "assistant_id": "metatron.transition.constructive",
+              "cell_id": "Q1_A1_constructive",
+              "expected_invariant": "source_of_truth:transition:constructive:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q1_A1_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "metatron.transition.falsification",
+              "cell_id": "Q1_A1_falsification",
+              "expected_invariant": "source_of_truth:transition:falsification:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q1_A1_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "transition"
+        },
+        {
+          "agent_id": "metatron.control",
+          "algorithm_id": "A2",
+          "algorithm_slug": "control_plane",
+          "assistants": [
+            {
+              "assistant_id": "metatron.control.constructive",
+              "cell_id": "Q1_A2_constructive",
+              "expected_invariant": "source_of_truth:control_plane:constructive:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q1_A2_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "metatron.control.falsification",
+              "cell_id": "Q1_A2_falsification",
+              "expected_invariant": "source_of_truth:control_plane:falsification:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q1_A2_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "control"
+        },
+        {
+          "agent_id": "metatron.projection",
+          "algorithm_id": "A3",
+          "algorithm_slug": "projection",
+          "assistants": [
+            {
+              "assistant_id": "metatron.projection.constructive",
+              "cell_id": "Q1_A3_constructive",
+              "expected_invariant": "source_of_truth:projection:constructive:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q1_A3_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "metatron.projection.falsification",
+              "cell_id": "Q1_A3_falsification",
+              "expected_invariant": "source_of_truth:projection:falsification:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q1_A3_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "projection"
+        },
+        {
+          "agent_id": "metatron.escape",
+          "algorithm_id": "A4",
+          "algorithm_slug": "escape",
+          "assistants": [
+            {
+              "assistant_id": "metatron.escape.constructive",
+              "cell_id": "Q1_A4_constructive",
+              "expected_invariant": "source_of_truth:escape:constructive:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q1_A4_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "metatron.escape.falsification",
+              "cell_id": "Q1_A4_falsification",
+              "expected_invariant": "source_of_truth:escape:falsification:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q1_A4_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "escape"
+        },
+        {
+          "agent_id": "metatron.chirality",
+          "algorithm_id": "A5",
+          "algorithm_slug": "fano_path",
+          "assistants": [
+            {
+              "assistant_id": "metatron.chirality.constructive",
+              "cell_id": "Q1_A5_constructive",
+              "expected_invariant": "source_of_truth:fano_path:constructive:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q1_A5_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "metatron.chirality.falsification",
+              "cell_id": "Q1_A5_falsification",
+              "expected_invariant": "source_of_truth:fano_path:falsification:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q1_A5_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "chirality"
+        },
+        {
+          "agent_id": "metatron.proposal",
+          "algorithm_id": "A6",
+          "algorithm_slug": "proposal_receipt",
+          "assistants": [
+            {
+              "assistant_id": "metatron.proposal.constructive",
+              "cell_id": "Q1_A6_constructive",
+              "expected_invariant": "source_of_truth:proposal_receipt:constructive:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q1_A6_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "metatron.proposal.falsification",
+              "cell_id": "Q1_A6_falsification",
+              "expected_invariant": "source_of_truth:proposal_receipt:falsification:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q1_A6_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "proposal"
+        },
+        {
+          "agent_id": "metatron.reconcile",
+          "algorithm_id": "A7",
+          "algorithm_slug": "branch_reconciliation",
+          "assistants": [
+            {
+              "assistant_id": "metatron.reconcile.constructive",
+              "cell_id": "Q1_A7_constructive",
+              "expected_invariant": "source_of_truth:branch_reconciliation:constructive:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q1_A7_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "metatron.reconcile.falsification",
+              "cell_id": "Q1_A7_falsification",
+              "expected_invariant": "source_of_truth:branch_reconciliation:falsification:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q1_A7_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "reconcile"
+        }
+      ],
+      "priority_band": "critical",
+      "question_id": "Q1",
+      "question_slug": "source_of_truth",
+      "role_id": "metatron"
+    },
+    {
+      "agents": [
+        {
+          "agent_id": "enoch.transition",
+          "algorithm_id": "A1",
+          "algorithm_slug": "transition",
+          "assistants": [
+            {
+              "assistant_id": "enoch.transition.constructive",
+              "cell_id": "Q2_A1_constructive",
+              "expected_invariant": "system_motion:transition:constructive:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q2_A1_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "enoch.transition.falsification",
+              "cell_id": "Q2_A1_falsification",
+              "expected_invariant": "system_motion:transition:falsification:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q2_A1_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "transition"
+        },
+        {
+          "agent_id": "enoch.control",
+          "algorithm_id": "A2",
+          "algorithm_slug": "control_plane",
+          "assistants": [
+            {
+              "assistant_id": "enoch.control.constructive",
+              "cell_id": "Q2_A2_constructive",
+              "expected_invariant": "system_motion:control_plane:constructive:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q2_A2_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "enoch.control.falsification",
+              "cell_id": "Q2_A2_falsification",
+              "expected_invariant": "system_motion:control_plane:falsification:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q2_A2_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "control"
+        },
+        {
+          "agent_id": "enoch.projection",
+          "algorithm_id": "A3",
+          "algorithm_slug": "projection",
+          "assistants": [
+            {
+              "assistant_id": "enoch.projection.constructive",
+              "cell_id": "Q2_A3_constructive",
+              "expected_invariant": "system_motion:projection:constructive:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q2_A3_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "enoch.projection.falsification",
+              "cell_id": "Q2_A3_falsification",
+              "expected_invariant": "system_motion:projection:falsification:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q2_A3_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "projection"
+        },
+        {
+          "agent_id": "enoch.escape",
+          "algorithm_id": "A4",
+          "algorithm_slug": "escape",
+          "assistants": [
+            {
+              "assistant_id": "enoch.escape.constructive",
+              "cell_id": "Q2_A4_constructive",
+              "expected_invariant": "system_motion:escape:constructive:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q2_A4_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "enoch.escape.falsification",
+              "cell_id": "Q2_A4_falsification",
+              "expected_invariant": "system_motion:escape:falsification:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q2_A4_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "escape"
+        },
+        {
+          "agent_id": "enoch.chirality",
+          "algorithm_id": "A5",
+          "algorithm_slug": "fano_path",
+          "assistants": [
+            {
+              "assistant_id": "enoch.chirality.constructive",
+              "cell_id": "Q2_A5_constructive",
+              "expected_invariant": "system_motion:fano_path:constructive:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q2_A5_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "enoch.chirality.falsification",
+              "cell_id": "Q2_A5_falsification",
+              "expected_invariant": "system_motion:fano_path:falsification:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q2_A5_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "chirality"
+        },
+        {
+          "agent_id": "enoch.proposal",
+          "algorithm_id": "A6",
+          "algorithm_slug": "proposal_receipt",
+          "assistants": [
+            {
+              "assistant_id": "enoch.proposal.constructive",
+              "cell_id": "Q2_A6_constructive",
+              "expected_invariant": "system_motion:proposal_receipt:constructive:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q2_A6_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "enoch.proposal.falsification",
+              "cell_id": "Q2_A6_falsification",
+              "expected_invariant": "system_motion:proposal_receipt:falsification:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q2_A6_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "proposal"
+        },
+        {
+          "agent_id": "enoch.reconcile",
+          "algorithm_id": "A7",
+          "algorithm_slug": "branch_reconciliation",
+          "assistants": [
+            {
+              "assistant_id": "enoch.reconcile.constructive",
+              "cell_id": "Q2_A7_constructive",
+              "expected_invariant": "system_motion:branch_reconciliation:constructive:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q2_A7_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "enoch.reconcile.falsification",
+              "cell_id": "Q2_A7_falsification",
+              "expected_invariant": "system_motion:branch_reconciliation:falsification:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q2_A7_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "reconcile"
+        }
+      ],
+      "priority_band": "important",
+      "question_id": "Q2",
+      "question_slug": "system_motion",
+      "role_id": "enoch"
+    },
+    {
+      "agents": [
+        {
+          "agent_id": "solomon.transition",
+          "algorithm_id": "A1",
+          "algorithm_slug": "transition",
+          "assistants": [
+            {
+              "assistant_id": "solomon.transition.constructive",
+              "cell_id": "Q3_A1_constructive",
+              "expected_invariant": "payload_control_separation:transition:constructive:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q3_A1_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solomon.transition.falsification",
+              "cell_id": "Q3_A1_falsification",
+              "expected_invariant": "payload_control_separation:transition:falsification:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q3_A1_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "transition"
+        },
+        {
+          "agent_id": "solomon.control",
+          "algorithm_id": "A2",
+          "algorithm_slug": "control_plane",
+          "assistants": [
+            {
+              "assistant_id": "solomon.control.constructive",
+              "cell_id": "Q3_A2_constructive",
+              "expected_invariant": "payload_control_separation:control_plane:constructive:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q3_A2_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solomon.control.falsification",
+              "cell_id": "Q3_A2_falsification",
+              "expected_invariant": "payload_control_separation:control_plane:falsification:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q3_A2_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "control"
+        },
+        {
+          "agent_id": "solomon.projection",
+          "algorithm_id": "A3",
+          "algorithm_slug": "projection",
+          "assistants": [
+            {
+              "assistant_id": "solomon.projection.constructive",
+              "cell_id": "Q3_A3_constructive",
+              "expected_invariant": "payload_control_separation:projection:constructive:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q3_A3_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solomon.projection.falsification",
+              "cell_id": "Q3_A3_falsification",
+              "expected_invariant": "payload_control_separation:projection:falsification:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q3_A3_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "projection"
+        },
+        {
+          "agent_id": "solomon.escape",
+          "algorithm_id": "A4",
+          "algorithm_slug": "escape",
+          "assistants": [
+            {
+              "assistant_id": "solomon.escape.constructive",
+              "cell_id": "Q3_A4_constructive",
+              "expected_invariant": "payload_control_separation:escape:constructive:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q3_A4_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solomon.escape.falsification",
+              "cell_id": "Q3_A4_falsification",
+              "expected_invariant": "payload_control_separation:escape:falsification:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q3_A4_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "escape"
+        },
+        {
+          "agent_id": "solomon.chirality",
+          "algorithm_id": "A5",
+          "algorithm_slug": "fano_path",
+          "assistants": [
+            {
+              "assistant_id": "solomon.chirality.constructive",
+              "cell_id": "Q3_A5_constructive",
+              "expected_invariant": "payload_control_separation:fano_path:constructive:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q3_A5_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solomon.chirality.falsification",
+              "cell_id": "Q3_A5_falsification",
+              "expected_invariant": "payload_control_separation:fano_path:falsification:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q3_A5_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "chirality"
+        },
+        {
+          "agent_id": "solomon.proposal",
+          "algorithm_id": "A6",
+          "algorithm_slug": "proposal_receipt",
+          "assistants": [
+            {
+              "assistant_id": "solomon.proposal.constructive",
+              "cell_id": "Q3_A6_constructive",
+              "expected_invariant": "payload_control_separation:proposal_receipt:constructive:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q3_A6_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solomon.proposal.falsification",
+              "cell_id": "Q3_A6_falsification",
+              "expected_invariant": "payload_control_separation:proposal_receipt:falsification:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q3_A6_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "proposal"
+        },
+        {
+          "agent_id": "solomon.reconcile",
+          "algorithm_id": "A7",
+          "algorithm_slug": "branch_reconciliation",
+          "assistants": [
+            {
+              "assistant_id": "solomon.reconcile.constructive",
+              "cell_id": "Q3_A7_constructive",
+              "expected_invariant": "payload_control_separation:branch_reconciliation:constructive:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q3_A7_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solomon.reconcile.falsification",
+              "cell_id": "Q3_A7_falsification",
+              "expected_invariant": "payload_control_separation:branch_reconciliation:falsification:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q3_A7_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "reconcile"
+        }
+      ],
+      "priority_band": "critical",
+      "question_id": "Q3",
+      "question_slug": "payload_control_separation",
+      "role_id": "solomon"
+    },
+    {
+      "agents": [
+        {
+          "agent_id": "solon.transition",
+          "algorithm_id": "A1",
+          "algorithm_slug": "transition",
+          "assistants": [
+            {
+              "assistant_id": "solon.transition.constructive",
+              "cell_id": "Q4_A1_constructive",
+              "expected_invariant": "projection_meaning_preservation:transition:constructive:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q4_A1_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solon.transition.falsification",
+              "cell_id": "Q4_A1_falsification",
+              "expected_invariant": "projection_meaning_preservation:transition:falsification:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q4_A1_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "transition"
+        },
+        {
+          "agent_id": "solon.control",
+          "algorithm_id": "A2",
+          "algorithm_slug": "control_plane",
+          "assistants": [
+            {
+              "assistant_id": "solon.control.constructive",
+              "cell_id": "Q4_A2_constructive",
+              "expected_invariant": "projection_meaning_preservation:control_plane:constructive:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q4_A2_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solon.control.falsification",
+              "cell_id": "Q4_A2_falsification",
+              "expected_invariant": "projection_meaning_preservation:control_plane:falsification:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q4_A2_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "control"
+        },
+        {
+          "agent_id": "solon.projection",
+          "algorithm_id": "A3",
+          "algorithm_slug": "projection",
+          "assistants": [
+            {
+              "assistant_id": "solon.projection.constructive",
+              "cell_id": "Q4_A3_constructive",
+              "expected_invariant": "projection_meaning_preservation:projection:constructive:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q4_A3_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solon.projection.falsification",
+              "cell_id": "Q4_A3_falsification",
+              "expected_invariant": "projection_meaning_preservation:projection:falsification:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q4_A3_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "projection"
+        },
+        {
+          "agent_id": "solon.escape",
+          "algorithm_id": "A4",
+          "algorithm_slug": "escape",
+          "assistants": [
+            {
+              "assistant_id": "solon.escape.constructive",
+              "cell_id": "Q4_A4_constructive",
+              "expected_invariant": "projection_meaning_preservation:escape:constructive:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q4_A4_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solon.escape.falsification",
+              "cell_id": "Q4_A4_falsification",
+              "expected_invariant": "projection_meaning_preservation:escape:falsification:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q4_A4_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "escape"
+        },
+        {
+          "agent_id": "solon.chirality",
+          "algorithm_id": "A5",
+          "algorithm_slug": "fano_path",
+          "assistants": [
+            {
+              "assistant_id": "solon.chirality.constructive",
+              "cell_id": "Q4_A5_constructive",
+              "expected_invariant": "projection_meaning_preservation:fano_path:constructive:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q4_A5_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solon.chirality.falsification",
+              "cell_id": "Q4_A5_falsification",
+              "expected_invariant": "projection_meaning_preservation:fano_path:falsification:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q4_A5_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "chirality"
+        },
+        {
+          "agent_id": "solon.proposal",
+          "algorithm_id": "A6",
+          "algorithm_slug": "proposal_receipt",
+          "assistants": [
+            {
+              "assistant_id": "solon.proposal.constructive",
+              "cell_id": "Q4_A6_constructive",
+              "expected_invariant": "projection_meaning_preservation:proposal_receipt:constructive:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q4_A6_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solon.proposal.falsification",
+              "cell_id": "Q4_A6_falsification",
+              "expected_invariant": "projection_meaning_preservation:proposal_receipt:falsification:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q4_A6_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "proposal"
+        },
+        {
+          "agent_id": "solon.reconcile",
+          "algorithm_id": "A7",
+          "algorithm_slug": "branch_reconciliation",
+          "assistants": [
+            {
+              "assistant_id": "solon.reconcile.constructive",
+              "cell_id": "Q4_A7_constructive",
+              "expected_invariant": "projection_meaning_preservation:branch_reconciliation:constructive:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q4_A7_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "solon.reconcile.falsification",
+              "cell_id": "Q4_A7_falsification",
+              "expected_invariant": "projection_meaning_preservation:branch_reconciliation:falsification:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q4_A7_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "reconcile"
+        }
+      ],
+      "priority_band": "important",
+      "question_id": "Q4",
+      "question_slug": "projection_meaning_preservation",
+      "role_id": "solon"
+    },
+    {
+      "agents": [
+        {
+          "agent_id": "asabiyah.transition",
+          "algorithm_id": "A1",
+          "algorithm_slug": "transition",
+          "assistants": [
+            {
+              "assistant_id": "asabiyah.transition.constructive",
+              "cell_id": "Q5_A1_constructive",
+              "expected_invariant": "intervention_without_replay_loss:transition:constructive:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q5_A1_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "asabiyah.transition.falsification",
+              "cell_id": "Q5_A1_falsification",
+              "expected_invariant": "intervention_without_replay_loss:transition:falsification:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q5_A1_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "transition"
+        },
+        {
+          "agent_id": "asabiyah.control",
+          "algorithm_id": "A2",
+          "algorithm_slug": "control_plane",
+          "assistants": [
+            {
+              "assistant_id": "asabiyah.control.constructive",
+              "cell_id": "Q5_A2_constructive",
+              "expected_invariant": "intervention_without_replay_loss:control_plane:constructive:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q5_A2_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "asabiyah.control.falsification",
+              "cell_id": "Q5_A2_falsification",
+              "expected_invariant": "intervention_without_replay_loss:control_plane:falsification:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q5_A2_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "control"
+        },
+        {
+          "agent_id": "asabiyah.projection",
+          "algorithm_id": "A3",
+          "algorithm_slug": "projection",
+          "assistants": [
+            {
+              "assistant_id": "asabiyah.projection.constructive",
+              "cell_id": "Q5_A3_constructive",
+              "expected_invariant": "intervention_without_replay_loss:projection:constructive:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q5_A3_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "asabiyah.projection.falsification",
+              "cell_id": "Q5_A3_falsification",
+              "expected_invariant": "intervention_without_replay_loss:projection:falsification:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q5_A3_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "projection"
+        },
+        {
+          "agent_id": "asabiyah.escape",
+          "algorithm_id": "A4",
+          "algorithm_slug": "escape",
+          "assistants": [
+            {
+              "assistant_id": "asabiyah.escape.constructive",
+              "cell_id": "Q5_A4_constructive",
+              "expected_invariant": "intervention_without_replay_loss:escape:constructive:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q5_A4_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "asabiyah.escape.falsification",
+              "cell_id": "Q5_A4_falsification",
+              "expected_invariant": "intervention_without_replay_loss:escape:falsification:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q5_A4_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "escape"
+        },
+        {
+          "agent_id": "asabiyah.chirality",
+          "algorithm_id": "A5",
+          "algorithm_slug": "fano_path",
+          "assistants": [
+            {
+              "assistant_id": "asabiyah.chirality.constructive",
+              "cell_id": "Q5_A5_constructive",
+              "expected_invariant": "intervention_without_replay_loss:fano_path:constructive:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q5_A5_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "asabiyah.chirality.falsification",
+              "cell_id": "Q5_A5_falsification",
+              "expected_invariant": "intervention_without_replay_loss:fano_path:falsification:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q5_A5_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "chirality"
+        },
+        {
+          "agent_id": "asabiyah.proposal",
+          "algorithm_id": "A6",
+          "algorithm_slug": "proposal_receipt",
+          "assistants": [
+            {
+              "assistant_id": "asabiyah.proposal.constructive",
+              "cell_id": "Q5_A6_constructive",
+              "expected_invariant": "intervention_without_replay_loss:proposal_receipt:constructive:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q5_A6_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "asabiyah.proposal.falsification",
+              "cell_id": "Q5_A6_falsification",
+              "expected_invariant": "intervention_without_replay_loss:proposal_receipt:falsification:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q5_A6_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "proposal"
+        },
+        {
+          "agent_id": "asabiyah.reconcile",
+          "algorithm_id": "A7",
+          "algorithm_slug": "branch_reconciliation",
+          "assistants": [
+            {
+              "assistant_id": "asabiyah.reconcile.constructive",
+              "cell_id": "Q5_A7_constructive",
+              "expected_invariant": "intervention_without_replay_loss:branch_reconciliation:constructive:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q5_A7_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "asabiyah.reconcile.falsification",
+              "cell_id": "Q5_A7_falsification",
+              "expected_invariant": "intervention_without_replay_loss:branch_reconciliation:falsification:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q5_A7_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "reconcile"
+        }
+      ],
+      "priority_band": "critical",
+      "question_id": "Q5",
+      "question_slug": "intervention_without_replay_loss",
+      "role_id": "asabiyah"
+    },
+    {
+      "agents": [
+        {
+          "agent_id": "writer.transition",
+          "algorithm_id": "A1",
+          "algorithm_slug": "transition",
+          "assistants": [
+            {
+              "assistant_id": "writer.transition.constructive",
+              "cell_id": "Q6_A1_constructive",
+              "expected_invariant": "collaboration_without_hidden_authority:transition:constructive:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q6_A1_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "writer.transition.falsification",
+              "cell_id": "Q6_A1_falsification",
+              "expected_invariant": "collaboration_without_hidden_authority:transition:falsification:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q6_A1_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "transition"
+        },
+        {
+          "agent_id": "writer.control",
+          "algorithm_id": "A2",
+          "algorithm_slug": "control_plane",
+          "assistants": [
+            {
+              "assistant_id": "writer.control.constructive",
+              "cell_id": "Q6_A2_constructive",
+              "expected_invariant": "collaboration_without_hidden_authority:control_plane:constructive:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q6_A2_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "writer.control.falsification",
+              "cell_id": "Q6_A2_falsification",
+              "expected_invariant": "collaboration_without_hidden_authority:control_plane:falsification:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q6_A2_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "control"
+        },
+        {
+          "agent_id": "writer.projection",
+          "algorithm_id": "A3",
+          "algorithm_slug": "projection",
+          "assistants": [
+            {
+              "assistant_id": "writer.projection.constructive",
+              "cell_id": "Q6_A3_constructive",
+              "expected_invariant": "collaboration_without_hidden_authority:projection:constructive:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q6_A3_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "writer.projection.falsification",
+              "cell_id": "Q6_A3_falsification",
+              "expected_invariant": "collaboration_without_hidden_authority:projection:falsification:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q6_A3_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "projection"
+        },
+        {
+          "agent_id": "writer.escape",
+          "algorithm_id": "A4",
+          "algorithm_slug": "escape",
+          "assistants": [
+            {
+              "assistant_id": "writer.escape.constructive",
+              "cell_id": "Q6_A4_constructive",
+              "expected_invariant": "collaboration_without_hidden_authority:escape:constructive:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q6_A4_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "writer.escape.falsification",
+              "cell_id": "Q6_A4_falsification",
+              "expected_invariant": "collaboration_without_hidden_authority:escape:falsification:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q6_A4_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "escape"
+        },
+        {
+          "agent_id": "writer.chirality",
+          "algorithm_id": "A5",
+          "algorithm_slug": "fano_path",
+          "assistants": [
+            {
+              "assistant_id": "writer.chirality.constructive",
+              "cell_id": "Q6_A5_constructive",
+              "expected_invariant": "collaboration_without_hidden_authority:fano_path:constructive:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q6_A5_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "writer.chirality.falsification",
+              "cell_id": "Q6_A5_falsification",
+              "expected_invariant": "collaboration_without_hidden_authority:fano_path:falsification:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q6_A5_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "chirality"
+        },
+        {
+          "agent_id": "writer.proposal",
+          "algorithm_id": "A6",
+          "algorithm_slug": "proposal_receipt",
+          "assistants": [
+            {
+              "assistant_id": "writer.proposal.constructive",
+              "cell_id": "Q6_A6_constructive",
+              "expected_invariant": "collaboration_without_hidden_authority:proposal_receipt:constructive:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q6_A6_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "writer.proposal.falsification",
+              "cell_id": "Q6_A6_falsification",
+              "expected_invariant": "collaboration_without_hidden_authority:proposal_receipt:falsification:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q6_A6_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "proposal"
+        },
+        {
+          "agent_id": "writer.reconcile",
+          "algorithm_id": "A7",
+          "algorithm_slug": "branch_reconciliation",
+          "assistants": [
+            {
+              "assistant_id": "writer.reconcile.constructive",
+              "cell_id": "Q6_A7_constructive",
+              "expected_invariant": "collaboration_without_hidden_authority:branch_reconciliation:constructive:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q6_A7_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "writer.reconcile.falsification",
+              "cell_id": "Q6_A7_falsification",
+              "expected_invariant": "collaboration_without_hidden_authority:branch_reconciliation:falsification:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q6_A7_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "reconcile"
+        }
+      ],
+      "priority_band": "critical",
+      "question_id": "Q6",
+      "question_slug": "collaboration_without_hidden_authority",
+      "role_id": "writer"
+    },
+    {
+      "agents": [
+        {
+          "agent_id": "reader.transition",
+          "algorithm_id": "A1",
+          "algorithm_slug": "transition",
+          "assistants": [
+            {
+              "assistant_id": "reader.transition.constructive",
+              "cell_id": "Q7_A1_constructive",
+              "expected_invariant": "branch_return_without_fragmentation:transition:constructive:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q7_A1_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "reader.transition.falsification",
+              "cell_id": "Q7_A1_falsification",
+              "expected_invariant": "branch_return_without_fragmentation:transition:falsification:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q7_A1_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "transition"
+        },
+        {
+          "agent_id": "reader.control",
+          "algorithm_id": "A2",
+          "algorithm_slug": "control_plane",
+          "assistants": [
+            {
+              "assistant_id": "reader.control.constructive",
+              "cell_id": "Q7_A2_constructive",
+              "expected_invariant": "branch_return_without_fragmentation:control_plane:constructive:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q7_A2_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "reader.control.falsification",
+              "cell_id": "Q7_A2_falsification",
+              "expected_invariant": "branch_return_without_fragmentation:control_plane:falsification:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q7_A2_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "control"
+        },
+        {
+          "agent_id": "reader.projection",
+          "algorithm_id": "A3",
+          "algorithm_slug": "projection",
+          "assistants": [
+            {
+              "assistant_id": "reader.projection.constructive",
+              "cell_id": "Q7_A3_constructive",
+              "expected_invariant": "branch_return_without_fragmentation:projection:constructive:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q7_A3_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "reader.projection.falsification",
+              "cell_id": "Q7_A3_falsification",
+              "expected_invariant": "branch_return_without_fragmentation:projection:falsification:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q7_A3_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "projection"
+        },
+        {
+          "agent_id": "reader.escape",
+          "algorithm_id": "A4",
+          "algorithm_slug": "escape",
+          "assistants": [
+            {
+              "assistant_id": "reader.escape.constructive",
+              "cell_id": "Q7_A4_constructive",
+              "expected_invariant": "branch_return_without_fragmentation:escape:constructive:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q7_A4_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "reader.escape.falsification",
+              "cell_id": "Q7_A4_falsification",
+              "expected_invariant": "branch_return_without_fragmentation:escape:falsification:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q7_A4_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "escape"
+        },
+        {
+          "agent_id": "reader.chirality",
+          "algorithm_id": "A5",
+          "algorithm_slug": "fano_path",
+          "assistants": [
+            {
+              "assistant_id": "reader.chirality.constructive",
+              "cell_id": "Q7_A5_constructive",
+              "expected_invariant": "branch_return_without_fragmentation:fano_path:constructive:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q7_A5_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "reader.chirality.falsification",
+              "cell_id": "Q7_A5_falsification",
+              "expected_invariant": "branch_return_without_fragmentation:fano_path:falsification:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q7_A5_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "chirality"
+        },
+        {
+          "agent_id": "reader.proposal",
+          "algorithm_id": "A6",
+          "algorithm_slug": "proposal_receipt",
+          "assistants": [
+            {
+              "assistant_id": "reader.proposal.constructive",
+              "cell_id": "Q7_A6_constructive",
+              "expected_invariant": "branch_return_without_fragmentation:proposal_receipt:constructive:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q7_A6_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "reader.proposal.falsification",
+              "cell_id": "Q7_A6_falsification",
+              "expected_invariant": "branch_return_without_fragmentation:proposal_receipt:falsification:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q7_A6_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "proposal"
+        },
+        {
+          "agent_id": "reader.reconcile",
+          "algorithm_id": "A7",
+          "algorithm_slug": "branch_reconciliation",
+          "assistants": [
+            {
+              "assistant_id": "reader.reconcile.constructive",
+              "cell_id": "Q7_A7_constructive",
+              "expected_invariant": "branch_return_without_fragmentation:branch_reconciliation:constructive:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q7_A7_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "reader.reconcile.falsification",
+              "cell_id": "Q7_A7_falsification",
+              "expected_invariant": "branch_return_without_fragmentation:branch_reconciliation:falsification:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q7_A7_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "reconcile"
+        }
+      ],
+      "priority_band": "critical",
+      "question_id": "Q7",
+      "question_slug": "branch_return_without_fragmentation",
+      "role_id": "reader"
+    },
+    {
+      "agents": [
+        {
+          "agent_id": "composer.transition",
+          "algorithm_id": "A1",
+          "algorithm_slug": "transition",
+          "assistants": [
+            {
+              "assistant_id": "composer.transition.constructive",
+              "cell_id": "Q8_A1_constructive",
+              "expected_invariant": "open_meaning_closed_law:transition:constructive:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q8_A1_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "composer.transition.falsification",
+              "cell_id": "Q8_A1_falsification",
+              "expected_invariant": "open_meaning_closed_law:transition:falsification:obligation_preserved",
+              "lane_id": "transition",
+              "mapped_agent_id": "agent_Q8_A1_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "transition"
+        },
+        {
+          "agent_id": "composer.control",
+          "algorithm_id": "A2",
+          "algorithm_slug": "control_plane",
+          "assistants": [
+            {
+              "assistant_id": "composer.control.constructive",
+              "cell_id": "Q8_A2_constructive",
+              "expected_invariant": "open_meaning_closed_law:control_plane:constructive:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q8_A2_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "composer.control.falsification",
+              "cell_id": "Q8_A2_falsification",
+              "expected_invariant": "open_meaning_closed_law:control_plane:falsification:obligation_preserved",
+              "lane_id": "control",
+              "mapped_agent_id": "agent_Q8_A2_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "control"
+        },
+        {
+          "agent_id": "composer.projection",
+          "algorithm_id": "A3",
+          "algorithm_slug": "projection",
+          "assistants": [
+            {
+              "assistant_id": "composer.projection.constructive",
+              "cell_id": "Q8_A3_constructive",
+              "expected_invariant": "open_meaning_closed_law:projection:constructive:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q8_A3_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "composer.projection.falsification",
+              "cell_id": "Q8_A3_falsification",
+              "expected_invariant": "open_meaning_closed_law:projection:falsification:obligation_preserved",
+              "lane_id": "projection",
+              "mapped_agent_id": "agent_Q8_A3_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "projection"
+        },
+        {
+          "agent_id": "composer.escape",
+          "algorithm_id": "A4",
+          "algorithm_slug": "escape",
+          "assistants": [
+            {
+              "assistant_id": "composer.escape.constructive",
+              "cell_id": "Q8_A4_constructive",
+              "expected_invariant": "open_meaning_closed_law:escape:constructive:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q8_A4_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "composer.escape.falsification",
+              "cell_id": "Q8_A4_falsification",
+              "expected_invariant": "open_meaning_closed_law:escape:falsification:obligation_preserved",
+              "lane_id": "escape",
+              "mapped_agent_id": "agent_Q8_A4_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "escape"
+        },
+        {
+          "agent_id": "composer.chirality",
+          "algorithm_id": "A5",
+          "algorithm_slug": "fano_path",
+          "assistants": [
+            {
+              "assistant_id": "composer.chirality.constructive",
+              "cell_id": "Q8_A5_constructive",
+              "expected_invariant": "open_meaning_closed_law:fano_path:constructive:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q8_A5_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "composer.chirality.falsification",
+              "cell_id": "Q8_A5_falsification",
+              "expected_invariant": "open_meaning_closed_law:fano_path:falsification:obligation_preserved",
+              "lane_id": "chirality",
+              "mapped_agent_id": "agent_Q8_A5_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "chirality"
+        },
+        {
+          "agent_id": "composer.proposal",
+          "algorithm_id": "A6",
+          "algorithm_slug": "proposal_receipt",
+          "assistants": [
+            {
+              "assistant_id": "composer.proposal.constructive",
+              "cell_id": "Q8_A6_constructive",
+              "expected_invariant": "open_meaning_closed_law:proposal_receipt:constructive:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q8_A6_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "composer.proposal.falsification",
+              "cell_id": "Q8_A6_falsification",
+              "expected_invariant": "open_meaning_closed_law:proposal_receipt:falsification:obligation_preserved",
+              "lane_id": "proposal",
+              "mapped_agent_id": "agent_Q8_A6_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "proposal"
+        },
+        {
+          "agent_id": "composer.reconcile",
+          "algorithm_id": "A7",
+          "algorithm_slug": "branch_reconciliation",
+          "assistants": [
+            {
+              "assistant_id": "composer.reconcile.constructive",
+              "cell_id": "Q8_A7_constructive",
+              "expected_invariant": "open_meaning_closed_law:branch_reconciliation:constructive:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q8_A7_constructive",
+              "proof_form": "constructive"
+            },
+            {
+              "assistant_id": "composer.reconcile.falsification",
+              "cell_id": "Q8_A7_falsification",
+              "expected_invariant": "open_meaning_closed_law:branch_reconciliation:falsification:obligation_preserved",
+              "lane_id": "reconcile",
+              "mapped_agent_id": "agent_Q8_A7_falsification",
+              "proof_form": "falsification"
+            }
+          ],
+          "lane_id": "reconcile"
+        }
+      ],
+      "priority_band": "expansive",
+      "question_id": "Q8",
+      "question_slug": "open_meaning_closed_law",
+      "role_id": "composer"
+    }
+  ],
+  "source_agent_registry": "narrative_data/agent112/agent_registry_112.v0.json",
+  "source_proof_matrix": "narrative_data/agent112/proof_matrix_112.v0.json",
+  "v": "agent_matrix_112.v0"
+}

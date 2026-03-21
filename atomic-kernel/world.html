@@ -780,6 +780,12 @@ item toggle_toolbox Toolbox color=#2f78a6 angle=200 radius=6.2"></textarea>
               <div class="section-title">Codex</div>
               <div id="codex-list" class="codex-list"></div>
             </div>
+            <div class="story-block" data-plane-scope="FS,GS">
+              <div class="section-title">Agent112 Steward Board</div>
+              <div id="agent112-state" class="mono-note">loading agent112...</div>
+              <div id="agent112-zones" class="codex-list"></div>
+              <div id="agent112-visible" class="codex-list"></div>
+            </div>
           </aside>
         </div>
       </div>
@@ -2491,6 +2497,80 @@ Enter the Prologue and begin reconciliation.`
       if (!cue || !Array.isArray(cue.timeline)) return null;
       narrativeDirectorState.cueCache.set(cid, cue);
       return cue;
+    }
+
+    function pickAgent112VisibleStewards(agentMatrix) {
+      const visible = [];
+      for (const role of (agentMatrix?.roles || [])) {
+        const lanes = role.agents || [];
+        const preferred = lanes.find((lane) => String(lane.algorithm_id || '') === 'A1') || lanes[0];
+        for (const proofForm of ['constructive', 'falsification']) {
+          const assistant = (preferred?.assistants || []).find((x) => x.proof_form === proofForm);
+          if (!assistant) continue;
+          visible.push({
+            zone: role.question_id,
+            role_id: role.role_id,
+            proof_form: proofForm,
+            assistant_id: assistant.assistant_id,
+            lane_agent_id: preferred.agent_id,
+            algorithm_slug: preferred.algorithm_slug,
+          });
+        }
+      }
+      return visible;
+    }
+
+    function renderAgent112Panel(proofMatrix, agentRegistry, agentMatrix, residentArtifact) {
+      const stateEl = document.getElementById('agent112-state');
+      const zonesEl = document.getElementById('agent112-zones');
+      const visibleEl = document.getElementById('agent112-visible');
+      if (!stateEl || !zonesEl || !visibleEl) return;
+
+      if (!proofMatrix || !agentRegistry || !agentMatrix) {
+        stateEl.textContent = 'agent112 unavailable (projection-only fallback)';
+        zonesEl.textContent = '';
+        visibleEl.textContent = '';
+        return;
+      }
+
+      const zoneRows = [];
+      for (let i = 1; i <= 8; i += 1) {
+        const q = `Q${i}`;
+        const zoneCells = (proofMatrix.cells || []).filter((cell) => cell.question_id === q);
+        const constructive = zoneCells.filter((cell) => cell.proof_form === 'constructive').length;
+        const falsification = zoneCells.filter((cell) => cell.proof_form === 'falsification').length;
+        const slug = zoneCells[0]?.question_slug || 'unknown';
+        const role = (agentMatrix.roles || []).find((r) => r.question_id === q);
+        zoneRows.push(`- ${q} ${slug} · role=${role?.role_id || 'unknown'} · total=${zoneCells.length} (c=${constructive}, f=${falsification})`);
+      }
+
+      const visible = pickAgent112VisibleStewards(agentMatrix);
+      const residentCount = Array.isArray(residentArtifact?.residents) ? residentArtifact.residents.length : 0;
+      const residentProposalCount = Array.isArray(residentArtifact?.proposals) ? residentArtifact.proposals.length : 0;
+
+      stateEl.textContent = `matrix=${proofMatrix.cell_count || 0} cells · agents=${agentRegistry.agent_count || 0} · roles=${agentMatrix.role_count || 0} · visible=16 · residents=${residentCount} proposals=${residentProposalCount}`;
+      zonesEl.textContent = zoneRows.join('\n');
+      visibleEl.textContent = visible.map((row) => `- ${row.zone}/${row.role_id} · ${row.proof_form} · ${row.assistant_id} · ${row.algorithm_slug}`).join('\n');
+    }
+
+    async function loadAgent112Panel() {
+      const proofMatrix = await fetchJsonFirst([
+        './narrative_data/agent112/proof_matrix_112.v0.json',
+        '/atomic-kernel/narrative_data/agent112/proof_matrix_112.v0.json',
+      ]);
+      const agentRegistry = await fetchJsonFirst([
+        './narrative_data/agent112/agent_registry_112.v0.json',
+        '/atomic-kernel/narrative_data/agent112/agent_registry_112.v0.json',
+      ]);
+      const agentMatrix = await fetchJsonFirst([
+        './narrative_data/agent112/agent_matrix_112.v0.json',
+        '/atomic-kernel/narrative_data/agent112/agent_matrix_112.v0.json',
+      ]);
+      const residentArtifact = await fetchJsonFirst([
+        './artifacts/resident-agent-v1.normalized.json',
+        '/atomic-kernel/artifacts/resident-agent-v1.normalized.json',
+      ]);
+      renderAgent112Panel(proofMatrix, agentRegistry, agentMatrix, residentArtifact);
     }
 
     function updateNarrativeDirectorReadout() {
@@ -7591,6 +7671,7 @@ Enter the Prologue and begin reconciliation.`
     }
     startIdleStoryAutoplay();
     updateNarrativeDirectorReadout();
+    loadAgent112Panel();
 
     window.addEventListener('pointerdown', markIdleStoryTouched, { passive: true });
     window.addEventListener('wheel', markIdleStoryTouched, { passive: true });
