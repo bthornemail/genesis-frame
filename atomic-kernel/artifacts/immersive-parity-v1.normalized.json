@@ -1,0 +1,154 @@
+{
+  "authority": "advisory",
+  "casting_mirror_parity": true,
+  "casting_sha256": {
+    "avatar_cast_map.v1.json": "c28e47a443c00d4cc13081e30135c4d8c0206c99191e08604e42bcecf4dda63c",
+    "landscape_cast_map.v1.json": "ee02fe3b9c06e9c028c8653dfdf7d73a409e99f595a1adfc30c29c94a332c7ac",
+    "public_allowlist.v1.json": "5402f45c7ca45c2953415b66000a55188c34ff682d43dd85ad4f20306a0fee38"
+  },
+  "chapter_count": 14,
+  "chapters": [
+    "ch_0185dd34c89e",
+    "ch_17ee69f7fe32",
+    "ch_1d1b90232e14",
+    "ch_277f36609f50",
+    "ch_3286b092b5b2",
+    "ch_77cc06497bd3",
+    "ch_81ddc4c731b3",
+    "ch_8d3557f1baeb",
+    "ch_954378336484",
+    "ch_af53cb38dfaa",
+    "ch_b48b924b0464",
+    "ch_ba9d45d38bd3",
+    "ch_c429d3abd60e",
+    "ch_dcdf6301992e"
+  ],
+  "cue_count": 14,
+  "cue_digests": {
+    "ch_0185dd34c89e.cinematic_cues.v1.json": {
+      "chapter_id": "ch_0185dd34c89e",
+      "cue_digest_sha256": "8937f724d32528ba760b5eef477f86bb09aed47dbbac7b1a19a26123bb68acb1",
+      "sha256": "a1182c6c77bf04ea4a0a46de61ede97f7022adaa5ce34027fb70b43040dd894a",
+      "timeline_tick_span": 396
+    },
+    "ch_17ee69f7fe32.cinematic_cues.v1.json": {
+      "chapter_id": "ch_17ee69f7fe32",
+      "cue_digest_sha256": "93b80136217e4e9fd01ec188f56325594c4c8a39ef5fae0eddd6383db2559e0e",
+      "sha256": "a303158e99ddcc4080715dea02104173fee1f2c8a27b3928ec6daaa576ce68ca",
+      "timeline_tick_span": 72
+    },
+    "ch_1d1b90232e14.cinematic_cues.v1.json": {
+      "chapter_id": "ch_1d1b90232e14",
+      "cue_digest_sha256": "a623b4f1c31104b6418947a387ce18319733a6d491e5246cd5627199a5d23838",
+      "sha256": "5876bed39acb5d6a84eb1732892420293e021f31e160b6828eaa4410129b0947",
+      "timeline_tick_span": 432
+    },
+    "ch_277f36609f50.cinematic_cues.v1.json": {
+      "chapter_id": "ch_277f36609f50",
+      "cue_digest_sha256": "29677f159a29607a94f8ef69b56d606918a0422e58c6ec6314654718e9ec36e5",
+      "sha256": "a2dda941f3a379ee74eef1061d833b3c7367e8de5a72a019931bbd679f46da26",
+      "timeline_tick_span": 360
+    },
+    "ch_3286b092b5b2.cinematic_cues.v1.json": {
+      "chapter_id": "ch_3286b092b5b2",
+      "cue_digest_sha256": "67b36a061640296141118acf0fba58f87214a0ea0932ebede5df3698e97c422a",
+      "sha256": "ddaca04eed7e5c0f5ccb179011470a2e31d726475d741a1c96be56989876921e",
+      "timeline_tick_span": 360
+    },
+    "ch_77cc06497bd3.cinematic_cues.v1.json": {
+      "chapter_id": "ch_77cc06497bd3",
+      "cue_digest_sha256": "6ad07286ec33e2f8af11b37f85a210c9fcaf30e97be44af6de0dab8e86ba692c",
+      "sha256": "f59b5f0fb7dfcc92879175773b0abf6bba5a5327ac57e7be1db3422a85946f76",
+      "timeline_tick_span": 72
+    },
+    "ch_81ddc4c731b3.cinematic_cues.v1.json": {
+      "chapter_id": "ch_81ddc4c731b3",
+      "cue_digest_sha256": "5373108674a99091d8df80c894eb3bff8d2eac191645fd45a40005332baee07f",
+      "sha256": "80eefb7cf34b9e263fcb72bf09be56adbff3c374b643743fe60b39ab8bcebb20",
+      "timeline_tick_span": 900
+    },
+    "ch_8d3557f1baeb.cinematic_cues.v1.json": {
+      "chapter_id": "ch_8d3557f1baeb",
+      "cue_digest_sha256": "6b294aba46635a82fd12efceb8a32a48f1c9bca2a2b149923be22e2472d08bfa",
+      "sha256": "c7a7399e5c18497aa86f3e652e714eacbb5a08e82a2aa192dd4016fc0d55f416",
+      "timeline_tick_span": 360
+    },
+    "ch_954378336484.cinematic_cues.v1.json": {
+      "chapter_id": "ch_954378336484",
+      "cue_digest_sha256": "fd030cb64bb7fff0684380fec9334134e88e66a50f2e602d7c04d8e7f59875d0",
+      "sha256": "c07ba8bae5766e6fc2b59ba6d3c0b3065843ad94f1df81d63cbeb43dec346c1f",
+      "timeline_tick_span": 936
+    },
+    "ch_af53cb38dfaa.cinematic_cues.v1.json": {
+      "chapter_id": "ch_af53cb38dfaa",
+      "cue_digest_sha256": "24cecf2bfea3af4320bdde8701afdb7b82f5747155af7d74c31dc43ececdb4cb",
+      "sha256": "073bad411b615278a26077cdfc53e2e002d959d5a4a6871d5523449880867dae",
+      "timeline_tick_span": 612
+    },
+    "ch_b48b924b0464.cinematic_cues.v1.json": {
+      "chapter_id": "ch_b48b924b0464",
+      "cue_digest_sha256": "dfae71a286f86b10b3e4447b8859ffdae3d34382c324ce1d38466b6fef6bc752",
+      "sha256": "2226ca6e97f4da7c78e28028ad1e1df6b4571c2f9d3da015d5b0efd70065ba40",
+      "timeline_tick_span": 36
+    },
+    "ch_ba9d45d38bd3.cinematic_cues.v1.json": {
+      "chapter_id": "ch_ba9d45d38bd3",
+      "cue_digest_sha256": "4addec4c4cfa12098626e1fc2632e31d12b5316ec32404eb48a237a7895779f4",
+      "sha256": "9955dea120293e016c8d42a93f11a1aa7ab5c9cb9bebde43fa25f7a89bdc28fb",
+      "timeline_tick_span": 396
+    },
+    "ch_c429d3abd60e.cinematic_cues.v1.json": {
+      "chapter_id": "ch_c429d3abd60e",
+      "cue_digest_sha256": "739f020d44c2410ef7ca267ded6c6cb3caa3eab2aa14abaf25369aa0bed95521",
+      "sha256": "7aec1fec2ff16096bef37df04a323bc21d9f4a04ccc63129e52a7eb56625a996",
+      "timeline_tick_span": 324
+    },
+    "ch_dcdf6301992e.cinematic_cues.v1.json": {
+      "chapter_id": "ch_dcdf6301992e",
+      "cue_digest_sha256": "5cd23a99ac34545a05250643c149ae3d1e1fda029c208fd44fdc2827640b5518",
+      "sha256": "3c731e026f6dd2344857eff355959fc953c68ad88935289522ef3cea25b839e6",
+      "timeline_tick_span": 684
+    }
+  },
+  "cue_mirror_parity": true,
+  "portal_controls_present": [
+    "storyPlay",
+    "storyStepIn",
+    "storyDiverge",
+    "storyAccept",
+    "storyReject",
+    "storyState",
+    "storyBody",
+    "proposalList"
+  ],
+  "proposal_action_enum": [
+    "choice_select",
+    "camera_branch",
+    "avatar_swap",
+    "scene_pace_change"
+  ],
+  "proposal_lifecycle_tokens_present": {
+    "portal_accept_hook": true,
+    "portal_pending": true,
+    "portal_queue_hook": true,
+    "portal_reject_hook": true,
+    "world_accept_hook": true,
+    "world_pending": true,
+    "world_queue_hook": true,
+    "world_reject_hook": true
+  },
+  "receipt_decision_enum": [
+    "accepted",
+    "rejected"
+  ],
+  "type": "immersive_parity_v1",
+  "version": 1,
+  "world_controls_present": [
+    "btn-story-director-play",
+    "btn-story-director-stepin",
+    "btn-story-director-diverge",
+    "btn-story-director-accept",
+    "btn-story-director-reject",
+    "story-director-meta"
+  ]
+}

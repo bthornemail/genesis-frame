@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "check:parity": "node js_runtime/check_parity.mjs",
+    "immersive:parity:v1:gate": "bash tools/immersive_parity_v1_gate.sh",
     "build:artifact-package-fixtures": "python3 tools/build_artifact_package_fixture.py --write && node tools/build_artifact_package_png_fixture.mjs --write",
     "verify:artifact-package-fixtures": "python3 tools/build_artifact_package_fixture.py --verify && node tools/build_artifact_package_png_fixture.mjs --verify",
     "build:wordnet": "python3 tools/build_wordnet_5wn_index.py --write",
